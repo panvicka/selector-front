@@ -1,9 +1,10 @@
 // Api.js
 import axios from 'axios';
 
+console.log(import.meta.env.BASE_URL);
 // Create a instance of axios to use the same base url.
 const axiosAPI = axios.create({
-	baseURL: 'http://178.128.197.33:3000/' // it's not recommended to have this info here.
+	baseURL: import.meta.env.VITE_BASE_URL,
 });
 
 // implement a method to execute all the request from here.

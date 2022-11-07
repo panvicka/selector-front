@@ -1,6 +1,7 @@
 import Api from '../services/Api';
 
 export const getAllItems = async () => {
+	console.log("i am doing something")
 	try {
 		const response = await Api.get('/rotationItems/get/');
 		return response.rotationItems;
