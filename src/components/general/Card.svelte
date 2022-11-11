@@ -19,7 +19,7 @@
 </script>
 
 <div
-	class="card w-96 bg-neutral shadow-xl overflow-visible"
+	class="card w-96 bg-neutral shadow-xl overflow-visible p-2"
 	style="width: {width}px; height: {height}px"
 >
 	<div class="card-body">

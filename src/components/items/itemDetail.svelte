@@ -47,9 +47,6 @@
 			{/each}
 		</div>
 
-		<input type="checkbox" class="toggle toggle-primary"  />
-
-
 		<button
 			class="btn btn-accent"
 			on:click={() => {
