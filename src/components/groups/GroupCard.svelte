@@ -1,7 +1,6 @@
 <script>
 	// @ts-nocheck
 
- 
 	import { createEventDispatcher } from 'svelte';
 	import Card from '../general/Card.svelte';
 

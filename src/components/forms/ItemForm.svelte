@@ -19,6 +19,7 @@
 	}
 
 	function onSubmit() {
+		console.log(item)
 		dispatch('submit', {
 			item
 		});
@@ -28,9 +29,11 @@
 		name: '',
 		description: '',
 		roles: [],
-		isLongerThenOneDay: false
+		isLongerThenOneDay: false,
+		groupes: []
 	};
 
+	export let allGroupes = [];
 	export let allRoles = [];
 	export let title = '';
 
@@ -45,14 +48,35 @@
 
 	$: item.roles = selectedRoles;
 
+	let groupesForSelect = allGroupes.map((group) => {
+		return {
+			value: group._id,
+			label: group.name
+		};
+	});
+
+	let selectedGroupes = item.groupes || [];
+
+	$: item.groupes = selectedGroupes;
+
 	const handleSelect = (event) => {
 		console.log(event);
 		let role = findByKeyInArray('_id', event.detail.selected.value, allRoles);
 		selectedRoles = addToArrayIfKeyValueDoesntExist(selectedRoles, '_id', role);
 	};
 
+	const handleSelectGroup = (event) => {
+		console.log(event);
+		let group = findByKeyInArray('_id', event.detail.selected.value, allGroupes);
+		selectedGroupes = addToArrayIfKeyValueDoesntExist(selectedGroupes, '_id', group);
+	};
+
 	const deleteTrigger = (roleId) => {
 		selectedRoles = removeFromArrayBasedOnKey('_id', roleId, selectedRoles);
+	};
+
+	const deleteGroupTrigger = (groupId) => {
+		selectedGroupes = removeFromArrayBasedOnKey('_id', groupId, selectedGroupes);
 	};
 </script>
 
@@ -77,32 +101,60 @@
 			<input type="checkbox" class="toggle toggle-primary" bind:checked={item.isLongerThenOneDay} />
 		</label>
 	</div>
-	<div class="divider divider-horizontal"></div>
+	<div class="divider divider-horizontal" />
 
 	<div class="bg-base-300 rounded-box w-80 p-4">
-		<div class="item">
-			Roles
-			<SelectDropdown
-				items={rolesForSelect}
-				placeholder={'Select..'}
-				value={null}
-				on:dropdownSelect={(event) => handleSelect(event)}
-			/>
+		<div>
+			<div class="item">
+				Roles
+				<SelectDropdown
+					items={rolesForSelect}
+					placeholder={'Select..'}
+					value={null}
+					on:dropdownSelect={(event) => handleSelect(event)}
+				/>
+			</div>
+
+			Selected roles:
+			<div>
+				{#each selectedRoles || [] as role}
+					<div class="badge badge-ghost">
+						<Fa size="lg" class="role-icon" icon={role.icon} />
+						{role.name}
+						<button
+							on:click={() => {
+								deleteTrigger(role._id);
+							}}><Fa size="xs" id="delete" icon={faXmark} /></button
+						>
+					</div>
+				{/each}
+			</div>
 		</div>
 
-		Selected roles:
 		<div>
-			{#each selectedRoles || [] as role}
-				<div class="badge badge-ghost">
-					<Fa size="lg" class="role-icon" icon={role.icon} />
-					{role.name}
-					<button
-						on:click={() => {
-							deleteTrigger(role._id);
-						}}><Fa size="xs" id="delete" icon={faXmark} /></button
-					>
-				</div>
-			{/each}
+			<div class="item">
+				Groupes
+				<SelectDropdown
+					items={groupesForSelect}
+					placeholder={'Select..'}
+					value={null}
+					on:dropdownSelect={(event) => handleSelectGroup(event)}
+				/>
+			</div>
+
+			Selected Groupes:
+			<div>
+				{#each selectedGroupes || [] as group}
+					<div class="badge badge-ghost">
+						{group.name}
+						<button
+							on:click={() => {
+								deleteGroupTrigger(group._id);
+							}}><Fa size="xs" id="delete" icon={faXmark} /></button
+						>
+					</div>
+				{/each}
+			</div>
 		</div>
 	</div>
 </div>

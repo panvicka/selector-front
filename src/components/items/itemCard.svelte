@@ -10,6 +10,9 @@
 	import Fa from 'svelte-fa';
 
 	const dispatch = createEventDispatcher();
+
+	console.log('card');
+	console.log(item);
 </script>
 
 <Card
@@ -32,11 +35,20 @@
 		<p>{item.description}</p>
 
 		<br />
-
+		Roles
 		{#each item.roles || [] as role}
 			<div class="tooltip tooltip-info" data-tip={role.description}>
 				<div class="badge badge-ghost">
 					<Fa size="s" class="role-icon" icon={Icons[role.icon]} />{role.name}
+				</div>
+			</div>
+		{/each}
+		<br />
+		Groups
+		{#each item.groupes || [] as group}
+			<div class="tooltip tooltip-info" data-tip={group.description}>
+				<div class="badge badge-ghost">
+					{group.name}
 				</div>
 			</div>
 		{/each}

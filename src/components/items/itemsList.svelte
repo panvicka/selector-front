@@ -10,12 +10,14 @@
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { getAllRoles } from '../../api/roles';
+	import { getAllGroups } from '../../api/groups';
 
  
 
 
 	let items = [];
 	let allRoles = [];
+	let allGroupes = [];
 	let workingItemReference = {};
 
 	onMount(async () => {
@@ -25,7 +27,8 @@
 	const fetch = async () => {
 		items = await getAllItems();
 		allRoles = await getAllRoles();
-		console.log(allRoles);
+		allGroupes = await getAllGroups();
+		console.log(items[0]);
 	};
 
 	let showCreateItemModal = false;
@@ -70,6 +73,7 @@
 		<ItemForm
 			title={'create new item'}
 			{allRoles}
+			{allGroupes}
 			on:submit={(event) => {
 				handleCreateNew(event, fetch);
 				showCreateItemModal = false;
@@ -106,6 +110,7 @@
 			title={'edit Item'}
 			item={workingItemReference}
 			{allRoles}
+			{allGroupes}
 			on:submit={(event) => {
 				handleEditItem(event, workingItemReference._id, fetch);
 				showEditItemModal = false;
