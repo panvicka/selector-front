@@ -34,6 +34,7 @@
 					<li><a class="btn btn-ghost normal-case text-xl" href="/">Items</a></li>
 					<li><a class="btn btn-ghost normal-case text-xl" href="/people">People</a></li>
 					<li><a class="btn btn-ghost normal-case text-xl" href="/roles">Roles</a></li>
+					<li><a class="btn btn-ghost normal-case text-xl" href="/groups">Groups</a></li>
 					<li><a class="btn btn-ghost normal-case text-xl" href="/about">About</a></li>
 				</ul>
 			</div>
