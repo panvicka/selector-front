@@ -1,11 +1,12 @@
 <script>
 	import { onMount } from 'svelte';
-	import { createRole, getAllRoles, updateRole } from './../../api/roles';
+	import { createRole, deleteRole, getAllRoles, updateRole } from './../../api/roles';
 	import Modal from '../../components/general/Modal.svelte';
 	import RoleForm from '../../components/forms/roleForm.svelte';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import RoleCard from '../../components/roles/RoleCard.svelte';
+	import ConfirmAction from '../../components/general/ConfirmAction.svelte';
 
 	let roles = [];
 
@@ -29,6 +30,12 @@
 		fetchAllRoles();
 	};
 
+	const handleDeleteRole = async (roleId) => {
+		const res = await deleteRole(roleId);
+		fetchAllRoles();
+		showDeleteModal = false;
+	};
+
 	const handleEditRole = async (event) => {
 		const res = await updateRole(roleToBeEdited._id, event.detail);
 		fetchAllRoles();
@@ -36,7 +43,8 @@
 	};
 
 	const triggeredDeleteRole = async (event) => {
-		console.log(event);
+		roleToBeDeleted = event.detail.role;
+		showDeleteModal = true;
 	};
 
 	let roleToBeDeleted = {};
@@ -96,6 +104,24 @@
 				letShowEditModal = false;
 			}}
 		/>
+	</Modal>
+{/if}
+
+{#if showDeleteModal}
+	<Modal>
+		<ConfirmAction
+			on:cancel={() => {
+				showDeleteModal = false;
+			}}
+			on:ok={() => {
+				handleDeleteRole(roleToBeDeleted._id);
+			}}
+		>
+			<svelte:fragment slot="title">Confirmation</svelte:fragment>
+			<span slot="content"
+				>Do you really want to delete {roleToBeDeleted.name}? You can not reverse this action.
+			</span>
+		</ConfirmAction>
 	</Modal>
 {/if}
 
