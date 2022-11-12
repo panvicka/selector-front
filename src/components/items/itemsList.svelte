@@ -50,7 +50,7 @@
 	>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-9">
+<div class="flex flex-wrap gap-9 ">
 	{#each items as item}
 		<div>
 			<ItemCard

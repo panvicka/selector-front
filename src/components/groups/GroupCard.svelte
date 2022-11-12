@@ -5,13 +5,14 @@
 	import Card from '../general/Card.svelte';
 
 	export let group;
+	console.log(group);
 
 	const dispatch = createEventDispatcher();
 </script>
 
 <Card
 	width={400}
-	height={200}
+	height={500}
 	on:deleteTrigger={() => {
 		dispatch('delete', {
 			group
@@ -28,6 +29,15 @@
 
 	<div slot="content">
 		<div>{group.description}</div>
+		<br> 
+		<h3>Items tagged with this groups:</h3>
+		<ul>
+			{#each group.items as item}
+				<div>
+					<li><a class="link link-primary" href={`items/${item._id}`}>{item.name}</a></li>
+				</div>
+			{/each}
+		</ul>
 	</div>
 </Card>
 
