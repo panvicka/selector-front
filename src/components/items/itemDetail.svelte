@@ -28,8 +28,7 @@
 
 	onMount(async () => {
 		selectablePeople = await getAllSelectablePeople(item._id);
-		console.log(selectablePeople);
-		fetchAllItemEvents();
+ 		fetchAllItemEvents();
 	});
 
 	const fetchAllItemEvents = async () => {

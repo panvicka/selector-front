@@ -1,7 +1,6 @@
 import Api from '../services/Api';
 
 export const getAllItems = async () => {
-	console.log("i am doing something")
 	try {
 		const response = await Api.get('/rotationItems/get/');
 		return response.rotationItems;
@@ -33,7 +32,7 @@ export const createItem = async (payload) => {
 		// to do trimm trailing spaces
 		console.log(payload);
 		const response = await Api.post(`/rotationItems/create/`, payload);
- 		return response.rotationItemId;
+		return response.rotationItemId;
 	} catch (error) {
 		console.error(error);
 	}
@@ -42,7 +41,7 @@ export const createItem = async (payload) => {
 export const getItemById = async (itemId) => {
 	try {
 		const response = await Api.get(`/rotationItems/get/${itemId}`);
- 		return response.rotationItemId;
+		return response.rotationItemId;
 	} catch (error) {
 		console.error(error);
 	}
@@ -51,7 +50,7 @@ export const getItemById = async (itemId) => {
 export const getItemPeopleAttendance = async (itemId) => {
 	try {
 		const response = await Api.get(`/rotationItems/get/${itemId}/peopleCount`);
- 		return response.attendanceByRole;
+		return response.attendanceByRole;
 	} catch (error) {
 		console.error(error);
 	}

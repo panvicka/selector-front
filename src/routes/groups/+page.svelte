@@ -76,7 +76,6 @@
 				on:edit={(event) => {
 					letShowEditModal = true;
 					groupToBeEdited = event.detail.group;
-					console.log(groupToBeDeleted);
 				}}
 			/>
 		</div>

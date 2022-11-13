@@ -28,8 +28,7 @@
 		items = await getAllItems();
 		allRoles = await getAllRoles();
 		allGroupes = await getAllGroups();
-		console.log(items[0]);
-	};
+ 	};
 
 	let showCreateItemModal = false;
 	let showDeleteItemModal = false;

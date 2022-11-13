@@ -9,7 +9,6 @@ export const getAllRoles = async () => {
 	}
 };
 
-
 export const deleteRole = async (roleId) => {
 	try {
 		const response = await Api.delete(`/roles/delete/${roleId}`);
@@ -29,7 +28,6 @@ export const updateRole = async (roleId, payload) => {
 };
 
 export const createRole = async (payload) => {
-    console.log(payload)
 	try {
 		const response = await Api.post(`/roles/create/`, payload);
 		return response.roleId;

@@ -18,8 +18,6 @@
 		icon: ''
 	};
 
-	console.log(role);
-
 	function close() {
 		dispatch('close');
 	}
@@ -43,12 +41,9 @@
 			label: key[1].iconName
 		});
 	}
-	console.log(selectableIcons);
 
 	let selectedIcon = role.icon || '';
 	const handleSelect = (event) => {
-		console.log('getting');
-		console.log(event);
 		selectedIcon = event.detail.selected.value;
 	};
 </script>

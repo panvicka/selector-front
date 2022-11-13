@@ -25,8 +25,6 @@
 		roles: {}
 	};
 
-	console.log(event);
-
 	onMount(async () => {
 		event.participants.forEach((participant) => {
 			selectedParticipants.push({

@@ -12,8 +12,6 @@
 		description: ''
 	};
 
-	console.log(group);
-
 	function close() {
 		dispatch('close');
 	}

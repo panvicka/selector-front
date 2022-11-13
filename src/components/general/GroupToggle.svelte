@@ -3,7 +3,6 @@
 	const dispatch = createEventDispatcher();
 
 	export let data = [];
-	console.log(data);
 
 	function onChange() {
 		dispatch('change', {

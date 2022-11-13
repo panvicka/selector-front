@@ -1,7 +1,6 @@
 import { createEvent, updateEvent, deleteEvent } from '../../api/event';
 
 export const handleCreateNewEvent = async (event, item) => {
-	console.log(event.participants);
 	const payload = {
 		item: item._id,
 		people: event.people,

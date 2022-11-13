@@ -10,9 +10,6 @@
 	import Fa from 'svelte-fa';
 
 	const dispatch = createEventDispatcher();
-
-	console.log('card');
-	console.log(item);
 </script>
 
 <Card

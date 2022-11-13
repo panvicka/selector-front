@@ -19,8 +19,7 @@
 	const dispatch = createEventDispatcher();
 
 	let itemCheckStates = [];
-	let stringItemArray = [];
-	export let allItems = [];
+ 	export let allItems = [];
 
 	export let title = '';
 
@@ -49,8 +48,7 @@
 			active = true;
 		}
 		let group = findByKeyInArray('_id', groupId, allGroupes);
-		console.log(group);
-
+ 
 		const mappedGroupData = group.items.map((item) => {
 			if (person.itemsCanBeAttended.includes(item._id)) {
 				return {

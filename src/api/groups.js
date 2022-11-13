@@ -9,7 +9,6 @@ export const getAllGroups = async () => {
 	}
 };
 
-
 export const deleteGroup = async (groupId) => {
 	try {
 		const response = await Api.delete(`/groups/delete/${groupId}`);
@@ -29,9 +28,7 @@ export const updateGroups = async (groupId, payload) => {
 };
 
 export const createGroup = async (payload) => {
-	console.log("...")
-	console.log(payload);
- 	try {
+	try {
 		const response = await Api.post(`/groups/create/`, payload);
 		return response.groupId;
 	} catch (error) {

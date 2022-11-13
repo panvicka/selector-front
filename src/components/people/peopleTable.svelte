@@ -8,9 +8,6 @@
 	export let data = {};
 	export let item = {};
 
-	console.log('person table');
-	console.log(data);
-	console.log(item);
 	let grid;
 	let mappedTableData;
 	let columns;
@@ -18,7 +15,6 @@
 	let mapColumns = (item) => {
 		let dateColumns = [];
 
-		console.log('map cols');
 		item.roles.forEach((role) => {
 			dateColumns.push(role.name);
 			dateColumns.push(`last time in ${role.name}`);
@@ -108,7 +104,6 @@
 		let tableData = [];
 
 		for (const key in data) {
-			// console.log(key);
 			data[key].forEach((roleAttendance) => {
 				const position = findKeyPositionInArray([...tableData], 'name', roleAttendance.name);
 				const allDates = roleAttendance.dates.map((date) => {

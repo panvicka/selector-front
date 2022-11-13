@@ -2,7 +2,6 @@
 	// @ts-nocheck
 	import TextInput from '../general/textInput.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import Select from 'svelte-select';
 	import Fa from 'svelte-fa';
 	import { faXmark } from '@fortawesome/free-solid-svg-icons';
 	import {
@@ -19,7 +18,6 @@
 	}
 
 	function onSubmit() {
-		console.log(item);
 		dispatch('submit', {
 			item
 		});
@@ -55,38 +53,20 @@
 		};
 	});
 
-	let selectedGroupes = item.groupes || [];
-
 	$: item.groupes = [selectedRadioGroup];
 	let selectedRadioGroup = item.groupes[0]?._id || null;
-	console.log('selected radio group');
-	console.log(selectedRadioGroup);
 
 	const handleSelect = (event) => {
-		console.log(event);
 		let role = findByKeyInArray('_id', event.detail.selected.value, allRoles);
 		selectedRoles = addToArrayIfKeyValueDoesntExist(selectedRoles, '_id', role);
-	};
-
-	const handleSelectGroup = (event) => {
-		console.log(event);
-		let group = findByKeyInArray('_id', event.detail.selected.value, allGroupes);
-		selectedGroupes = addToArrayIfKeyValueDoesntExist(selectedGroupes, '_id', group);
 	};
 
 	const deleteTrigger = (roleId) => {
 		selectedRoles = removeFromArrayBasedOnKey('_id', roleId, selectedRoles);
 	};
 
-	const deleteGroupTrigger = (groupId) => {
-		selectedGroupes = removeFromArrayBasedOnKey('_id', groupId, selectedGroupes);
-	};
-
-	let radioGroup = 1;
-
 	function onRadioChange(event) {
 		selectedRadioGroup = event.currentTarget.value;
-		console.log(selectedRadioGroup);
 	}
 </script>
 

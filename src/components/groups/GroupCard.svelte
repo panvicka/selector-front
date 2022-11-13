@@ -5,7 +5,6 @@
 	import Card from '../general/Card.svelte';
 
 	export let group;
-	console.log(group);
 
 	const dispatch = createEventDispatcher();
 </script>
@@ -19,7 +18,6 @@
 		});
 	}}
 	on:settingsTrigger={() => {
-		console.log('edit', group._id);
 		dispatch('edit', {
 			group
 		});
@@ -29,7 +27,7 @@
 
 	<div slot="content">
 		<div>{group.description}</div>
-		<br> 
+		<br />
 		<h3>Items tagged with this groups:</h3>
 		<ul>
 			{#each group.items as item}
