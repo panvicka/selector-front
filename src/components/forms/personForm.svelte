@@ -19,7 +19,7 @@
 	const dispatch = createEventDispatcher();
 
 	let itemCheckStates = [];
- 	export let allItems = [];
+	export let allItems = [];
 
 	export let title = '';
 
@@ -48,7 +48,7 @@
 			active = true;
 		}
 		let group = findByKeyInArray('_id', groupId, allGroupes);
- 
+
 		const mappedGroupData = group.items.map((item) => {
 			if (person.itemsCanBeAttended.includes(item._id)) {
 				return {
@@ -126,7 +126,7 @@
 			name: person.name,
 			itemsCanBeAttended: newSelectedItems,
 			groupes: newSelectedGroupes,
-			active: true
+			active: person.active,
 		});
 	}
 
@@ -152,6 +152,11 @@
 <div class="flex w-full">
 	<div class="bg-base-300 rounded-box w-80 p-4">
 		<TextInput inputLabel={'Name'} inputPlaceholder="Name" bind:textValue={person.name} />
+
+		<label class="cursor-pointer label">
+			<span class="label-text">Active</span>
+			<input type="checkbox" class="toggle toggle-primary" bind:checked={person.active} />
+		</label>
 	</div>
 	<div class="divider divider-horizontal" />
 

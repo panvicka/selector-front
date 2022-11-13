@@ -11,6 +11,8 @@
 	export let peopleToSelectFrom = [];
 	export let title = '';
 
+	console.log(peopleToSelectFrom);
+
 	let selectedPeople = [];
 
 	export let event = {

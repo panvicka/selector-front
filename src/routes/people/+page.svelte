@@ -28,9 +28,12 @@
 	};
 
 	const handleCreateNewPerson = async (event) => {
+		console.log(event.detail);
 		const res = await createPerson({
 			name: event.detail.name,
-			itemsCanBeAttended: event.detail.itemsCanBeAttended
+			itemsCanBeAttended: event.detail.itemsCanBeAttended,
+			groupes: event.detail.groupes,
+			active: event.detail.active
 		});
 		letShowCreateModal = false;
 		fetchAllPeople();
@@ -43,7 +46,7 @@
 	};
 
 	const handleEditPerson = async (event) => {
- 		const res = await updatePerson(personToBeEdited._id, event.detail);
+		const res = await updatePerson(personToBeEdited._id, event.detail);
 		fetchAllPeople();
 		letShowEditModal = false;
 	};
@@ -89,7 +92,7 @@
 		}}><Fa size="lg" class="add-new-person-icon" icon={faPlus} /> Add person</button
 	>
 </div>
-<div class="grid grid-cols-4 gap-5">
+<div class="flex flex-wrap gap-9 ">
 	{#each people as person}
 		<div>
 			<PersonCard

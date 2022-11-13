@@ -6,6 +6,8 @@
 
 	export let width = 300;
 	export let height = 250;
+	export let backgroundColor = 'bg-neutral';
+	export let titleTextColor = 'accent';
 
 	const dispatch = createEventDispatcher();
 
@@ -19,12 +21,14 @@
 </script>
 
 <div
-	class="card w-96 bg-neutral shadow-xl overflow-visible p-2 h-fit"
+	class="card w-96 {backgroundColor} shadow-xl overflow-visible p-2 h-fit"
 	style="width: {width}px; height: {height}px"
 >
 	<div class="card-body">
 		<div class="card-header flex justify-between align-center">
-			<h2 class="text-accent hover:text-accent-focus card-title"><slot name="title" /></h2>
+			<h2 class="text-{titleTextColor} hover:text-{titleTextColor}-focus card-title">
+				<slot name="title" />
+			</h2>
 
 			<div class="card-actions justify-end">
 				<button on:click={settingsTrigger}><Fa size="lg" id="setting" icon={faGear} /></button>
