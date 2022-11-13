@@ -1,6 +1,7 @@
 <script>
 	// @ts-nocheck
 	import Grid from 'gridjs-svelte';
+	import { html } from 'gridjs';
 	import 'gridjs/dist/theme/mermaid.css';
 	import dayjs from 'dayjs';
 	import { camelize } from '../../utils/stringUtils';
@@ -11,6 +12,8 @@
 	let grid;
 	let mappedTableData;
 	let columns;
+
+	console.log(data);
 
 	let mapColumns = (item) => {
 		let dateColumns = [];
@@ -50,34 +53,16 @@
 			};
 		});
 
-		return ['name', ...mapped];
-	};
-
-	const test = {
-		main: [
+		return [
 			{
-				name: 'Sven',
-				_id: '634effc8ea122e72a9a21965',
-				attended: 2
+				id: 'name',
+				name: 'name',
+				formatter: (cell, row) =>
+					html(`<span class="${row.cells[1].data === 'no' && 'text-error'} ">${cell} </span>`)
 			},
-			{
-				name: 'Petr',
-				_id: '634f0086ea122e72a9a21972',
-				attended: 0
-			}
-		],
-		support: [
-			{
-				name: 'Sven',
-				_id: '634effc8ea122e72a9a21965',
-				attended: 0
-			},
-			{
-				name: 'Petr',
-				_id: '634f0086ea122e72a9a21972',
-				attended: 2
-			}
-		]
+			{ id: 'active', name: 'active', width: '6%', hidden: true },
+			...mapped
+		];
 	};
 
 	const findKeyPositionInArray = (arr, key, value) => {
@@ -117,6 +102,7 @@
 				} else {
 					tableData.push({
 						name: roleAttendance.name,
+						active: roleAttendance.active ? 'yes' : 'no',
 						[camelize(key)]: roleAttendance.attended,
 
 						[camelize(`last Time In ${key}`)]: roleAttendance.latestDate
