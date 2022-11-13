@@ -22,6 +22,8 @@
 	let stringItemArray = [];
 	export let allItems = [];
 
+	export let title = '';
+
 	export let person = {
 		name: '',
 		itemsCanBeAttended: [],
@@ -33,9 +35,6 @@
 
 	let newSelectedGroupes = [];
 	let newSelectedItems = [];
-
-	console.log(allGroupes);
-	console.log(person);
 
 	let mappedData = [];
 	const mapGroups = (groupId) => {
@@ -105,27 +104,6 @@
 	});
 	setSelectedGroupsAndItems(mappedData);
 
-	console.log('mapped data');
-	console.log(mappedData);
-
-	let groupesForSelect = allGroupes.map((group) => {
-		return {
-			value: group._id,
-			label: group.name
-		};
-	});
-	let selectedGroup = null;
-	let selectedGroupes = person.groupes || [];
-	$: person.groupes = selectedGroupes;
-
-	const handleSelectGroup = (event) => {
-		let group = findByKeyInArray('_id', event.detail.selected.value, allGroupes);
-		selectedGroupes = addToArrayIfKeyValueDoesntExist(selectedGroupes, '_id', group);
-	};
-	const deleteGroupTrigger = (groupId) => {
-		selectedGroupes = removeFromArrayBasedOnKey('_id', groupId, selectedGroupes);
-	};
-
 	onMount(async () => {
 		itemCheckStates = allItems.map((item) => {
 			let itemSummary = {
@@ -154,25 +132,11 @@
 		});
 	}
 
-	function setItemsToUser() {
-		stringItemArray = [];
-		itemCheckStates.forEach((item) => {
-			if (item.checked) {
-				stringItemArray.push(item._id);
-			}
-		});
-	}
-
 	const handleToggleChange = (event, id) => {
-		console.log(mappedData);
-
 		const index = findIndexByKeyInArray('_id', id, mappedData);
-		// console.log(index);
-		// console.log(event.detail.data.activeInGroup);
 
 		mappedData[index].activeInGroup = event.detail.data.activeInGroup;
 		if (mappedData[index].activeInGroup == true) {
-			console.log('in the group');
 			mappedData[index].items = mappedData[index].items.map((item) => {
 				return {
 					...item,
@@ -182,14 +146,7 @@
 		}
 
 		setSelectedGroupsAndItems(mappedData);
-
-		console.log('new selected groups');
-		console.log(newSelectedGroupes);
-		console.log('new selected items');
-		console.log(newSelectedItems);
 	};
-
-	export let title = '';
 </script>
 
 <h1>{title}</h1>
