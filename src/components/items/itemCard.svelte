@@ -44,7 +44,7 @@
 			</div>
 		{/each}
 		<br />
-		Groups
+		Group
 		{#each item.groupes || [] as group}
 			<div class="tooltip tooltip-info" data-tip={group.description}>
 				<div class="badge badge-ghost">

@@ -19,7 +19,7 @@
 	}
 
 	function onSubmit() {
-		console.log(item)
+		console.log(item);
 		dispatch('submit', {
 			item
 		});
@@ -57,7 +57,10 @@
 
 	let selectedGroupes = item.groupes || [];
 
-	$: item.groupes = selectedGroupes;
+	$: item.groupes = [selectedRadioGroup];
+	let selectedRadioGroup = item.groupes[0]?._id || null;
+	console.log('selected radio group');
+	console.log(selectedRadioGroup);
 
 	const handleSelect = (event) => {
 		console.log(event);
@@ -78,6 +81,13 @@
 	const deleteGroupTrigger = (groupId) => {
 		selectedGroupes = removeFromArrayBasedOnKey('_id', groupId, selectedGroupes);
 	};
+
+	let radioGroup = 1;
+
+	function onRadioChange(event) {
+		selectedRadioGroup = event.currentTarget.value;
+		console.log(selectedRadioGroup);
+	}
 </script>
 
 <h1>{title}</h1>
@@ -131,30 +141,21 @@
 			</div>
 		</div>
 
-		<div>
-			<div class="item">
-				Groupes
-				<SelectDropdown
-					items={groupesForSelect}
-					placeholder={'Select..'}
-					value={null}
-					on:dropdownSelect={(event) => handleSelectGroup(event)}
-				/>
-			</div>
-
-			Selected Groupes:
-			<div>
-				{#each selectedGroupes || [] as group}
-					<div class="badge badge-ghost">
-						{group.name}
-						<button
-							on:click={() => {
-								deleteGroupTrigger(group._id);
-							}}><Fa size="xs" id="delete" icon={faXmark} /></button
-						>
-					</div>
-				{/each}
-			</div>
+		Choose Group:
+		<div class="flex flex-col">
+			{#each groupesForSelect || [] as group}
+				<label>
+					<input
+						on:change={onRadioChange}
+						type="radio"
+						bind:group={selectedRadioGroup}
+						name="groupes"
+						class="radio radio-accent"
+						value={group.value}
+					/>
+					{group.label}
+				</label>
+			{/each}
 		</div>
 	</div>
 </div>
