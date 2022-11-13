@@ -9,15 +9,20 @@
 	import ConfirmAction from '../../components/general/ConfirmAction.svelte';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
+	import { getAllGroups } from '../../api/groups';
 
 	let people = [];
 
 	let allItems = [];
+	let allGroupes = [];
+
 	let itemCheckStates = [];
 
 	onMount(async () => {
 		await fetchAllPeople();
 		allItems = await getAllItems();
+		allGroupes = await getAllGroups();
+		console.log(people);
 	});
 
 	const fetchAllPeople = async () => {
@@ -41,6 +46,7 @@
 	};
 
 	const handleEditPerson = async (event) => {
+		console.log(event.detail);
 		const res = await updatePerson(personToBeEdited._id, event.detail);
 		fetchAllPeople();
 		letShowEditModal = false;
@@ -107,6 +113,7 @@
 		<PersonForm
 			title={'create new person'}
 			{allItems}
+			{allGroupes}
 			on:submit={handleCreateNewPerson}
 			on:close={() => {
 				letShowCreateModal = false;
@@ -121,6 +128,7 @@
 			title={'edit person'}
 			person={personToBeEdited}
 			{allItems}
+			{allGroupes}
 			on:submit={handleEditPerson}
 			on:close={() => {
 				letShowEditModal = false;

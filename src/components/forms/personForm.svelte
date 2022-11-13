@@ -3,6 +3,18 @@
 	import TextInput from '../general/textInput.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { onMount } from 'svelte';
+	import SelectDropdown from '../general/SelectDropdown.svelte';
+	import Fa from 'svelte-fa';
+	import {
+		addItemToArrayIfNotAlreadyThere,
+		addToArrayIfKeyValueDoesntExist,
+		findByKeyInArray,
+		findIndexByKeyInArray,
+		removeFromArrayBasedOnKey,
+		removeItemFromArray
+	} from '../../utils/arrayUtils';
+	import { faXmark } from '@fortawesome/free-solid-svg-icons';
+	import GroupToggle from '../general/GroupToggle.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -12,10 +24,107 @@
 
 	export let person = {
 		name: '',
-		itemsCanBeAttended: []
+		itemsCanBeAttended: [],
+		groupes: [],
+		active: true
 	};
 
+	export let allGroupes = [];
+
+	let newSelectedGroupes = [];
+	let newSelectedItems = [];
+
+	console.log(allGroupes);
 	console.log(person);
+
+	let mappedData = [];
+	const mapGroups = (groupId) => {
+		let active = false;
+
+		const index = findIndexByKeyInArray('_id', groupId, person.groupes);
+		if (index != -1) {
+			active = true;
+		}
+
+		if (person.groupes.includes(groupId)) {
+			active = true;
+		}
+		let group = findByKeyInArray('_id', groupId, allGroupes);
+		console.log(group);
+
+		const mappedGroupData = group.items.map((item) => {
+			if (person.itemsCanBeAttended.includes(item._id)) {
+				return {
+					_id: item._id,
+					name: item.name,
+					description: item.description,
+					groupActive: true
+				};
+			} else {
+				return {
+					_id: item._id,
+					name: item.name,
+					description: item.description,
+					groupActive: false
+				};
+			}
+		});
+
+		mappedData.push({
+			_id: group._id,
+			name: group.name,
+			descriptions: group.description,
+			activeInGroup: active,
+			items: [...mappedGroupData]
+		});
+	};
+
+	const setSelectedGroupsAndItems = (mappedData) => {
+		mappedData.forEach((mappedDataItem) => {
+			if (mappedDataItem.activeInGroup === true) {
+				newSelectedGroupes = addItemToArrayIfNotAlreadyThere(
+					newSelectedGroupes,
+					mappedDataItem._id
+				);
+			} else {
+				newSelectedGroupes = removeItemFromArray(newSelectedGroupes, mappedDataItem._id);
+			}
+
+			mappedDataItem.items.forEach((item) => {
+				if (item.groupActive == true) {
+					newSelectedItems = addItemToArrayIfNotAlreadyThere(newSelectedItems, item._id);
+				} else {
+					newSelectedItems = removeItemFromArray(newSelectedItems, item._id);
+				}
+			});
+		});
+	};
+
+	allGroupes.forEach((group) => {
+		mapGroups(group._id);
+	});
+	setSelectedGroupsAndItems(mappedData);
+
+	console.log('mapped data');
+	console.log(mappedData);
+
+	let groupesForSelect = allGroupes.map((group) => {
+		return {
+			value: group._id,
+			label: group.name
+		};
+	});
+	let selectedGroup = null;
+	let selectedGroupes = person.groupes || [];
+	$: person.groupes = selectedGroupes;
+
+	const handleSelectGroup = (event) => {
+		let group = findByKeyInArray('_id', event.detail.selected.value, allGroupes);
+		selectedGroupes = addToArrayIfKeyValueDoesntExist(selectedGroupes, '_id', group);
+	};
+	const deleteGroupTrigger = (groupId) => {
+		selectedGroupes = removeFromArrayBasedOnKey('_id', groupId, selectedGroupes);
+	};
 
 	onMount(async () => {
 		itemCheckStates = allItems.map((item) => {
@@ -39,7 +148,9 @@
 	function onSubmit() {
 		dispatch('submit', {
 			name: person.name,
-			itemsCanBeAttended: stringItemArray
+			itemsCanBeAttended: newSelectedItems,
+			groupes: newSelectedGroupes,
+			active: true
 		});
 	}
 
@@ -52,23 +163,52 @@
 		});
 	}
 
+	const handleToggleChange = (event, id) => {
+		console.log(mappedData);
+
+		const index = findIndexByKeyInArray('_id', id, mappedData);
+		// console.log(index);
+		// console.log(event.detail.data.activeInGroup);
+
+		mappedData[index].activeInGroup = event.detail.data.activeInGroup;
+		if (mappedData[index].activeInGroup == true) {
+			console.log('in the group');
+			mappedData[index].items = mappedData[index].items.map((item) => {
+				return {
+					...item,
+					groupActive: true
+				};
+			});
+		}
+
+		setSelectedGroupsAndItems(mappedData);
+
+		console.log('new selected groups');
+		console.log(newSelectedGroupes);
+		console.log('new selected items');
+		console.log(newSelectedItems);
+	};
+
 	export let title = '';
 </script>
 
 <h1>{title}</h1>
-<TextInput inputLabel={'Name'} inputPlaceholder="Name" bind:textValue={person.name} />
 
-{#each itemCheckStates as item, index}
-	<label class="label cursor-pointer">
-		<span class="label-text">{item.name}</span>
-		<input
-			type="checkbox"
-			bind:checked={itemCheckStates[index].checked}
-			on:change={setItemsToUser}
-			class="checkbox checkbox-primary"
-		/>
-	</label>
-{/each}
+<div class="flex w-full">
+	<div class="bg-base-300 rounded-box w-80 p-4">
+		<TextInput inputLabel={'Name'} inputPlaceholder="Name" bind:textValue={person.name} />
+	</div>
+	<div class="divider divider-horizontal" />
+
+	<div class="bg-base-300 rounded-box w-80 p-4">
+		{#each mappedData as groupData}
+			<GroupToggle
+				data={groupData}
+				on:change={(event) => handleToggleChange(event, groupData._id)}
+			/>
+		{/each}
+	</div>
+</div>
 
 <div>
 	<button

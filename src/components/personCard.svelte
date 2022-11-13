@@ -8,7 +8,9 @@
 	export let person;
 </script>
 
-<Card width={250} height={100}
+<Card
+	width={250}
+	height={100}
 	on:deleteTrigger={() => {
 		dispatch('onDelete', {
 			person

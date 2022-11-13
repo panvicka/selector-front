@@ -48,3 +48,18 @@ export const replaceKeyValueInToArrayIfKeyExistOrAdd = (array, keyToExist, objec
 		return array;
 	}
 };
+
+export const removeItemFromArray = (arr, value) => {
+	const index = arr.indexOf(value);
+	if (index > -1) {
+		arr.splice(index, 1);
+	}
+	return arr;
+};
+
+export const addItemToArrayIfNotAlreadyThere = (arr, value) => {
+	if (arr.indexOf(value) === -1) {
+		arr.push(value);
+	}
+	return arr;
+};
