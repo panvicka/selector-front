@@ -14,7 +14,7 @@
 
 <Card
 	width={400}
-	height={250}
+	height={300}
 	on:deleteTrigger={() => {
 		dispatch('onDelete', {
 			item
