@@ -15,6 +15,8 @@
 
 	console.log(data);
 
+	let showInactivePeople = false;
+
 	let mapColumns = (item) => {
 		let dateColumns = [];
 
@@ -112,8 +114,11 @@
 				}
 			});
 		}
-		console.log(tableData);
 
+		if (showInactivePeople === false) {
+			let filteredData = tableData.filter((person) => person.active === 'yes');
+			return filteredData;
+		}
 		return tableData;
 	};
 
@@ -133,6 +138,19 @@
 	}
 </script>
 
+<label class="cursor-pointer label w-40">
+	<span class="label-text">show inactive people in the table</span>
+	<input
+		type="checkbox"
+		class="toggle toggle-primary"
+		bind:checked={showInactivePeople}
+		on:change={() => {
+			mappedTableData = mapData(data);
+			columns = mapColumns(item);
+			grid.updateConfig({ data: mappedTableData, columns: columns }).forceRender();
+		}}
+	/>
+</label>
 <Grid bind:instance={grid} data={mappedTableData} {columns} sort={true} {className} />
 
 <style global>
