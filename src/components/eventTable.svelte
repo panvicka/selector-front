@@ -9,13 +9,13 @@
 	import { createEventDispatcher } from 'svelte';
 	import { camelize } from '../utils/stringUtils';
 	import { addToArrayIfKeyValueDoesntExist } from '../utils/arrayUtils';
+	import dayjs from 'dayjs';
+	import { formatDate } from '../utils/date';
 	const dispatch = createEventDispatcher();
 
 	export let eventsToShow = [];
 	let mappedTableData = [];
 	let columns = ['startDate', 'endDate'];
-
-
 
 	let participantTableHeaderTitles = [];
 
@@ -48,8 +48,8 @@
 			});
 
 			return {
-				startDate: new Date(event.startDate).toLocaleString().split(',')[0],
-				endDate: event.endDate ? new Date(event.endDate).toLocaleString().split(',')[0] : '',
+				startDate: formatDate(event.startDate),
+				endDate: event.endDate ? formatDate(event.endDate) : '',
 				id: event._id,
 				...auxObject
 			};
@@ -62,8 +62,45 @@
 				name: 'id',
 				hidden: true
 			},
-			'startDate',
-			'endDate',
+			{
+				name: 'startDate',
+				id: 'startDate',
+				sort: {
+					compare: (a, b) => {
+						if (!a) return -1;
+						const distantFuture = dayjs('02/10/2060');
+						const dateA = a ? dayjs(a, 'DD.MM.YYYY') : distantFuture;
+						const dateB = b ? dayjs(b, 'DD.MM.YYYY') : distantFuture;
+						if (dateA.isBefore(dateB)) {
+							return 1;
+						} else if (dateB.isBefore(dateA)) {
+							return -1;
+						} else {
+							return 0;
+						}
+					}
+				}
+			},
+			{
+				name: 'endDate',
+				id: 'endDate',
+				sort: {
+					compare: (a, b) => {
+						if (!a) return -1;
+						const distantFuture = dayjs('02/10/2060');
+						const dateA = a ? dayjs(a, 'DD.MM.YYYY') : distantFuture;
+						const dateB = b ? dayjs(b, 'DD.MM.YYYY') : distantFuture;
+						if (dateA.isBefore(dateB)) {
+							return 1;
+						} else if (dateB.isBefore(dateA)) {
+							return -1;
+						} else {
+							return 0;
+						}
+					}
+				}
+			},
+
 			...participantTableHeaderTitles,
 			{
 				name: 'Edit',
