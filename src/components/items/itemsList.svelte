@@ -11,24 +11,23 @@
 	import Fa from 'svelte-fa';
 	import { getAllRoles } from '../../api/roles';
 	import { getAllGroups } from '../../api/groups';
-
- 
-
+	import Loader from '../general/Loader.svelte';
 
 	let items = [];
 	let allRoles = [];
 	let allGroupes = [];
 	let workingItemReference = {};
-
+	let isLoading = true;
 	onMount(async () => {
 		await fetch();
+		isLoading = false;
 	});
 
 	const fetch = async () => {
 		items = await getAllItems();
 		allRoles = await getAllRoles();
 		allGroupes = await getAllGroups();
- 	};
+	};
 
 	let showCreateItemModal = false;
 	let showDeleteItemModal = false;
@@ -48,24 +47,27 @@
 		}}><Fa size="lg" class="add-new-tracking-icon" icon={faPlus} /> Add new tracking</button
 	>
 </div>
-
-<div class="flex flex-wrap gap-9 ">
-	{#each items as item}
-		<div>
-			<ItemCard
-				{item}
-				on:onDelete={(event) => {
-					workingItemReference = event.detail.item;
-					showDeleteItemModal = true;
-				}}
-				on:onEdit={(event) => {
-					showEditItemModal = true;
-					workingItemReference = event.detail.item;
-				}}
-			/>
-		</div>
-	{/each}
-</div>
+{#if isLoading}
+	<Loader />
+{:else}
+	<div class="flex flex-wrap gap-9 ">
+		{#each items as item}
+			<div>
+				<ItemCard
+					{item}
+					on:onDelete={(event) => {
+						workingItemReference = event.detail.item;
+						showDeleteItemModal = true;
+					}}
+					on:onEdit={(event) => {
+						showEditItemModal = true;
+						workingItemReference = event.detail.item;
+					}}
+				/>
+			</div>
+		{/each}
+	</div>
+{/if}
 
 {#if showCreateItemModal}
 	<Modal>

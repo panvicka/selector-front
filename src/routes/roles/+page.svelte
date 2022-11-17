@@ -7,11 +7,14 @@
 	import Fa from 'svelte-fa';
 	import RoleCard from '../../components/roles/RoleCard.svelte';
 	import ConfirmAction from '../../components/general/ConfirmAction.svelte';
+	import Loader from '../../components/general/Loader.svelte';
 
 	let roles = [];
 
+	let isLoading = true;
 	onMount(async () => {
 		await fetchAllRoles();
+		isLoading = false;
 	});
 
 	const fetchAllRoles = async () => {
@@ -66,21 +69,25 @@
 	>
 </div>
 
-<div class="grid grid-cols-3 gap-5">
-	{#each roles as role}
-		<div>
-			<RoleCard
-				{role}
-				on:delete={triggeredDeleteRole}
-				on:edit={(event) => {
-					letShowEditModal = true;
-					roleToBeEdited = event.detail.role;
-					console.log(roleToBeEdited);
-				}}
-			/>
-		</div>
-	{/each}
-</div>
+{#if isLoading}
+	<Loader />
+{:else}
+	<div class="grid grid-cols-3 gap-5">
+		{#each roles as role}
+			<div>
+				<RoleCard
+					{role}
+					on:delete={triggeredDeleteRole}
+					on:edit={(event) => {
+						letShowEditModal = true;
+						roleToBeEdited = event.detail.role;
+						console.log(roleToBeEdited);
+					}}
+				/>
+			</div>
+		{/each}
+	</div>
+{/if}
 
 {#if letShowCreateModal}
 	<Modal>

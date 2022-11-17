@@ -10,16 +10,20 @@
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { getAllGroups } from '../../api/groups';
+	import Loader from '../../components/general/Loader.svelte';
 
 	let people = [];
 
 	let allItems = [];
 	let allGroupes = [];
 
+	let isLoading = true;
+
 	onMount(async () => {
 		await fetchAllPeople();
 		allItems = await getAllItems();
 		allGroupes = await getAllGroups();
+		isLoading = false;
 	});
 
 	const fetchAllPeople = async () => {
@@ -92,20 +96,24 @@
 		}}><Fa size="lg" class="add-new-person-icon" icon={faPlus} /> Add person</button
 	>
 </div>
-<div class="flex flex-wrap gap-9 ">
-	{#each people as person}
-		<div>
-			<PersonCard
-				{person}
-				on:onDelete={triggeredDeletePerson}
-				on:onEdit={(event) => {
-					letShowEditModal = true;
-					personToBeEdited = event.detail.person;
-				}}
-			/>
-		</div>
-	{/each}
-</div>
+{#if isLoading}
+	<Loader />
+{:else}
+	<div class="flex flex-wrap gap-9 ">
+		{#each people as person}
+			<div>
+				<PersonCard
+					{person}
+					on:onDelete={triggeredDeletePerson}
+					on:onEdit={(event) => {
+						letShowEditModal = true;
+						personToBeEdited = event.detail.person;
+					}}
+				/>
+			</div>
+		{/each}
+	</div>
+{/if}
 
 {#if letShowCreateModal}
 	<Modal>

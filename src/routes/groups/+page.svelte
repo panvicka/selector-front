@@ -9,17 +9,19 @@
 	import GroupCard from '../../components/groups/GroupCard.svelte';
 	import GroupForm from '../../components/forms/groupForm.svelte';
 	import ConfirmAction from '../../components/general/ConfirmAction.svelte';
+	import Loader from '../../components/general/Loader.svelte';
 
 	let groups = [];
+	let isLoading = true;
 
 	onMount(async () => {
 		await fetchAllGroups();
+		isLoading = false;
 	});
 
 	const fetchAllGroups = async () => {
 		const res = await getAllGroups();
 		groups = res;
-		console.log(groups);
 	};
 
 	const handleDeleteGroup = async (groupId) => {
@@ -67,20 +69,24 @@
 	>
 </div>
 
-<div class="flex flex-wrap gap-9 ">
-	{#each groups as group}
-		<div>
-			<GroupCard
-				{group}
-				on:delete={triggeredDeleteGroup}
-				on:edit={(event) => {
-					letShowEditModal = true;
-					groupToBeEdited = event.detail.group;
-				}}
-			/>
-		</div>
-	{/each}
-</div>
+{#if isLoading}
+	<Loader />
+{:else}
+	<div class="flex flex-wrap gap-9 ">
+		{#each groups as group}
+			<div>
+				<GroupCard
+					{group}
+					on:delete={triggeredDeleteGroup}
+					on:edit={(event) => {
+						letShowEditModal = true;
+						groupToBeEdited = event.detail.group;
+					}}
+				/>
+			</div>
+		{/each}
+	</div>
+{/if}
 
 {#if letShowCreateModal}
 	<Modal>

@@ -16,6 +16,7 @@
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import ItemEventSummary from './itemEventSummary.svelte';
+	import Loader from '../general/Loader.svelte';
 
 	export let item;
 
@@ -27,9 +28,12 @@
 	let showEditModalOpened = false;
 	let showDeleteEventModal = false;
 
+	let isLoading = true;
+
 	onMount(async () => {
 		selectablePeople = await getAllSelectablePeople(item._id);
 		fetchAllItemEvents();
+		isLoading = false;
 	});
 
 	const fetchAllItemEvents = async () => {
@@ -41,16 +45,20 @@
 	<div class="prose max-w-none">
 		<h1 class="">Detail of <span class="text-accent">{item.name}</span></h1>
 
-		{#if itemEvents.length > 0}
-			<ItemEventSummary lastFewEvents={itemEvents} />
-		{/if}
+		{#if isLoading}
+			<Loader />
+		{:else}
+			{#if itemEvents.length > 0}
+				<ItemEventSummary lastFewEvents={itemEvents} />
+			{/if}
 
-		<button
-			class="btn btn-accent"
-			on:click={() => {
-				showCreateEventModalOpened = true;
-			}}><Fa size="lg" class="add-new-tracking-icon" icon={faPlus} /> Add new event</button
-		>
+			<button
+				class="btn btn-accent"
+				on:click={() => {
+					showCreateEventModalOpened = true;
+				}}><Fa size="lg" class="add-new-tracking-icon" icon={faPlus} /> Add new event</button
+			>
+		{/if}
 	</div>
 </div>
 
