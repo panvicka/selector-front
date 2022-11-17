@@ -15,6 +15,7 @@
 	import { getAllPeopleAndRoleCount } from './itemHandlerFunctions';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
+	import ItemEventSummary from './itemEventSummary.svelte';
 
 	export let item;
 
@@ -28,7 +29,7 @@
 
 	onMount(async () => {
 		selectablePeople = await getAllSelectablePeople(item._id);
- 		fetchAllItemEvents();
+		fetchAllItemEvents();
 	});
 
 	const fetchAllItemEvents = async () => {
@@ -37,14 +38,12 @@
 </script>
 
 <div class="info">
-	<div class="prose">
+	<div class="prose max-w-none">
 		<h1 class="">Detail of <span class="text-accent">{item.name}</span></h1>
 
-		<div>
-			{#each item.roles as role}
-				<div class="badge badge-ghost">{role.name}</div>
-			{/each}
-		</div>
+		{#if itemEvents.length > 0}
+			<ItemEventSummary lastFewEvents={itemEvents} />
+		{/if}
 
 		<button
 			class="btn btn-accent"

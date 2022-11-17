@@ -8,6 +8,7 @@
 
 	import * as Icons from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
+	import RoleBadge from '../roles/RoleBadge.svelte';
 
 	const dispatch = createEventDispatcher();
 </script>
@@ -34,11 +35,7 @@
 		<br />
 		Roles
 		{#each item.roles || [] as role}
-			<div class="tooltip tooltip-info" data-tip={role.description}>
-				<div class="badge badge-ghost">
-					<Fa size="s" class="role-icon" icon={Icons[role.icon]} />{role.name}
-				</div>
-			</div>
+			<RoleBadge {role} />
 		{/each}
 		<br />
 		Group
