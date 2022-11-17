@@ -16,7 +16,7 @@
 	export let lastFewEvents = [];
 	console.log(lastFewEvents);
 
-	let lastEvent = lastFewEvents[0];
+	let lastEvent = lastFewEvents[lastFewEvents.length - 1];
 	let runningEvents = [];
 	let futureEvents = [];
 
