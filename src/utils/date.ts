@@ -25,14 +25,39 @@ export const getEventsWithFutureDates = (events) => {
 	return results;
 };
 
+export const getLastEvent = (events) => {
+	let resultEvent = events[0];
+	let today = new Date();
+
+	events.forEach((event) => {
+		const start = new Date(event.startDate);
+		if (!event.endDate) {
+			if (dayjs(start).isBefore(today, 'day')) {
+				if (!dayjs(resultEvent.startDate).isAfter(start, 'day')) {
+					resultEvent = event;
+				}
+			}
+		} else {
+			
+			const end = new Date(event.endDate);
+			if (dayjs(end).isBefore(today, 'day')) {
+				if (!dayjs(resultEvent.endDate).isAfter(end, 'day')) {
+					resultEvent = event;
+				}
+			}
+		}
+	});
+
+	return resultEvent;
+};
+
 export const getActiveEvents = (events) => {
 	const results = [];
 	const today = new Date();
 
 	events.forEach((event) => {
 		const start = new Date(event.startDate);
-		console.log({ start });
-		console.log({ today });
+
 		if (event.startDate && event.endDate) {
 			const end = new Date(event.endDate);
 			if (start < today && today < end) {

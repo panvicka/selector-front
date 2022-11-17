@@ -4,7 +4,7 @@
 	import { createEventDispatcher } from 'svelte';
 	import { onMount } from 'svelte';
 	import EventDetail from '../events/EventDetail.svelte';
-	import { getActiveEvents, getEventsWithFutureDates } from '../../utils/date';
+	import { getActiveEvents, getEventsWithFutureDates, getLastEvent } from '../../utils/date';
 
 	const dispatch = createEventDispatcher();
 
@@ -12,7 +12,7 @@
 	export let lastFewEvents = [];
 	console.log(lastFewEvents);
 
-	let lastEvent = lastFewEvents[lastFewEvents.length - 1];
+	let lastEvent = getLastEvent(lastFewEvents);
 	let runningEvents = [];
 	let futureEvents = [];
 

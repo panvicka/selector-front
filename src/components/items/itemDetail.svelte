@@ -49,7 +49,7 @@
 			<Loader />
 		{:else}
 			{#if itemEvents.length > 0}
-				<ItemEventSummary lastFewEvents={itemEvents} />
+				<ItemEventSummary lastFewEvents={itemEvents.slice(-10)} />
 			{/if}
 
 			<button
