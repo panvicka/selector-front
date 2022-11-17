@@ -2,10 +2,6 @@
 	// @ts-nocheck
 
 	import { createEventDispatcher } from 'svelte';
-	import Card from '../general/Card.svelte';
-
-	import * as Icons from '@fortawesome/free-solid-svg-icons';
-	import Fa from 'svelte-fa';
 	import { onMount } from 'svelte';
 	import EventDetail from '../events/EventDetail.svelte';
 	import { getActiveEvents, getEventsWithFutureDates } from '../../utils/date';
