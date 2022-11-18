@@ -6,6 +6,7 @@
 	import { replaceKeyValueInToArrayIfKeyExistOrAdd } from '../../utils/arrayUtils';
 	import SelectDropdown from '../general/SelectDropdown.svelte';
 	import Select from 'svelte-select';
+	import dayjs from 'dayjs';
 	const dispatch = createEventDispatcher();
 
 	export let peopleToSelectFrom = [];
@@ -47,8 +48,8 @@
 
 	function submit() {
 		event.people = selectedPeople;
-		event.startDate = startDate;
-		event.endDate = endDate;
+		event.startDate = dayjs(startDate).set('hour', 7).set('minute', 0).set('second', 0).toDate();
+		event.endDate = dayjs(endDate).set('hour', 18).set('minute', 0).set('second', 0).toDate();
 		event.participants = selectedParticipants;
 		dispatch('submit', {
 			event
