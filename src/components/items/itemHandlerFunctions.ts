@@ -7,7 +7,7 @@ export const handleCreateNew = async (event, fetchAllFunction) => {
 		roles: event.detail.item.roles,
 		description: event.detail.item.description,
 		isLongerThenOneDay: event.detail.item.isLongerThenOneDay,
-		groups: event.detail.item.groups
+		groupes: event.detail.item.groupes
 	});
 	fetchAllFunction();
 };
