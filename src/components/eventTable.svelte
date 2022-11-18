@@ -43,6 +43,7 @@
 	let mapDataNew = (events) => {
 		let auxObject = {};
 		return events.map((event) => {
+			auxObject = {}
 			event.participants.forEach((participant) => {
 				auxObject = { ...auxObject, [camelize(participant.role.name)]: participant.person.name };
 			});
