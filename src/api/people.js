@@ -53,3 +53,13 @@ export const getPersonById = async (personId) => {
 		console.error(error);
 	}
 };
+
+
+export const getAllPersonEvents = async (personId) => {
+	try {
+		const response = await Api.get(`/person/get/${personId}/summary`);
+		return response.attendedEvents;
+	} catch (error) {
+		console.error(error);
+	}
+};

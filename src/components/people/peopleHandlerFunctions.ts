@@ -1,4 +1,4 @@
-import { getAllPeopleByItem } from '../../api/people';
+import { getAllPeopleByItem, getAllPersonEvents } from '../../api/people';
 
 export const getAllSelectablePeople = async (itemId) => {
 	const res = await getAllPeopleByItem(itemId);
@@ -11,4 +11,8 @@ export const getAllSelectablePeople = async (itemId) => {
 	});
 
 	return people;
+};
+
+export const getAllEventsForPerson = async (personId) => {
+	return await getAllPersonEvents(personId);
 };

@@ -7,10 +7,11 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let role;
+	export let type = 'ghost';
 </script>
 
 <div class="tooltip tooltip-info" data-tip={role.description}>
-	<div class="badge badge-ghost">
+ 	<div class={`badge badge-${type}`}>
 		<Fa size="s" class="role-icon" icon={Icons[role.icon]} />{role.name}
 	</div>
 </div>

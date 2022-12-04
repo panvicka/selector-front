@@ -51,6 +51,7 @@
 		event.startDate = dayjs(startDate).set('hour', 7).set('minute', 0).set('second', 0).toDate();
 		event.endDate = dayjs(endDate).set('hour', 18).set('minute', 0).set('second', 0).toDate();
 		event.participants = selectedParticipants;
+		console.log(event)
 		dispatch('submit', {
 			event
 		});

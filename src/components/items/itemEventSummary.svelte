@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import EventDetail from '../events/EventDetail.svelte';
 	import { getActiveEvents, getEventsWithFutureDates, getLastEvent } from '../../utils/date';
+	import EventGroupOverview from '../events/EventGroupOverview.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -22,37 +23,12 @@
 	});
 </script>
 
-<div class="flex flex-col">
-	<div class="w-full">
-		<h3>Running</h3>
-		<div class="flex flex-wrap flex-row gap-9 ">
-			{#if runningEvents.length > 0}
-				{#each runningEvents as runningEvent}
-					<EventDetail runningEvent={true} event={runningEvent} />
-				{/each}
-			{:else}
-				No running events!
-			{/if}
-		</div>
-	</div>
+<EventGroupOverview runningEvent={true} eventArray={runningEvents}>
+	<svelte:fragment slot="title">Events running</svelte:fragment>
+	<p slot="noEventsText">No running events!</p>
+</EventGroupOverview>
 
-	{#if lastEvent}
-		<h3>Last</h3>
-		<div class="flex flex-wrap flex-row gap-9 ">
-			<EventDetail event={lastEvent} />
-		</div>
-	{/if}
-
-	<div class="w-full">
-		<h3>Comming up...</h3>
-		<div class="flex flex-wrap flex-row gap-9 ">
-			{#if futureEvents.length > 0}
-				{#each futureEvents as futureEvent}
-					<EventDetail event={futureEvent} />
-				{/each}
-			{:else}
-				No comming up event, maybe define one?
-			{/if}
-		</div>
-	</div>
-</div>
+<EventGroupOverview futureEvent={true} eventArray={futureEvents}>
+	<svelte:fragment slot="title">Comming up...</svelte:fragment>
+	<p slot="noEventsText">No comming up event, maybe define one?</p>
+</EventGroupOverview>
