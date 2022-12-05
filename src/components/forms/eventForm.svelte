@@ -25,8 +25,11 @@
 
 	export let item = {
 		_id: '',
-		roles: {}
+		roles: {},
+		isLongerThenOneDay: false
 	};
+
+	console.log(item);
 
 	onMount(async () => {
 		event.participants.forEach((participant) => {
@@ -51,7 +54,7 @@
 		event.startDate = dayjs(startDate).set('hour', 7).set('minute', 0).set('second', 0).toDate();
 		event.endDate = dayjs(endDate).set('hour', 18).set('minute', 0).set('second', 0).toDate();
 		event.participants = selectedParticipants;
-		console.log(event)
+		console.log(event);
 		dispatch('submit', {
 			event
 		});
@@ -82,10 +85,13 @@
 	Start Date
 	<DateInput bind:date={startDate} />
 </div>
-<div class="item">
-	End Date
-	<DateInput bind:date={endDate} />
-</div>
+
+{#if item.isLongerThenOneDay}
+	<div class="item">
+		End Date
+		<DateInput bind:date={endDate} />
+	</div>
+{/if}
 
 {#each item.roles as role, i}
 	<div class="item">

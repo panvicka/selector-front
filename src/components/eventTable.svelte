@@ -14,6 +14,7 @@
 	const dispatch = createEventDispatcher();
 
 	export let eventsToShow = [];
+	export let itemHasIntervalTracking = false;
 	let mappedTableData = [];
 	let columns = ['startDate', 'endDate'];
 
@@ -85,6 +86,7 @@
 			{
 				name: 'endDate',
 				id: 'endDate',
+				hidden: !itemHasIntervalTracking,
 				sort: {
 					compare: (a, b) => {
 						if (!a) return -1;

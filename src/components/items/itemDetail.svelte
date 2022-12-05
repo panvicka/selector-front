@@ -133,6 +133,7 @@
 </div>
 {#if itemEvents.length > 0}
 	<EventTable
+		itemHasIntervalTracking={item.isLongerThenOneDay}
 		on:submitEdit={async (event) => {
 			workingEventReference = await getEventById(event.detail.eventId);
 			showEditModalOpened = true;
