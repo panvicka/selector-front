@@ -75,16 +75,11 @@ export const getActiveEvents = (events) => {
 export const getRemainingTime = (countDownDate) => {
 	const now = new Date();
 	const timeleft = countDownDate - now;
-	console.log('countdowndate');
-	console.log(countDownDate);
-	console.log('now');
-	console.log(now);
 	const remaining = {};
 
 	remaining.days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
 	remaining.hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 	remaining.minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
 	remaining.seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
-	console.log(remaining);
 	return remaining;
 };

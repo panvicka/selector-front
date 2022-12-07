@@ -3,9 +3,6 @@
 	export let days = null;
 	export let hours = null;
 	export let minutes = null;
-	console.log(days);
-	console.log(hours);
-	console.log(minutes);
 </script>
 
 <div class="grid grid-flow-col gap-5 text-center auto-cols-max">

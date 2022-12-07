@@ -9,19 +9,19 @@
 
 	export let person;
 	let isLoading = true;
-	let allAttendedEvents = [];
-	let futureEvents = [];
-	let runningEvents = [];
+	// export let allAttendedEvents = [];
+	export let futureEvents = [];
+	export let runningEvents = [];
 
-	onMount(async () => {
-		allAttendedEvents = await getAllEventsForPerson(person._id);
-		isLoading = false;
+	// onMount(async () => {
+	// 	allAttendedEvents = await getAllEventsForPerson(person._id);
+	// 	isLoading = false;
 
-		futureEvents = getEventsWithFutureDates(allAttendedEvents);
-		runningEvents = getActiveEvents(allAttendedEvents);
-		console.log(futureEvents);
-		console.log(runningEvents);
-	});
+	// 	futureEvents = getEventsWithFutureDates(allAttendedEvents);
+	// 	runningEvents = getActiveEvents(allAttendedEvents);
+	// 	console.log(futureEvents);
+	// 	console.log(runningEvents);
+	// });
 </script>
 
 <div class="top prose">

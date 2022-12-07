@@ -21,7 +21,7 @@
 	export let futureEvent = false;
 	export let highlightPersonId = null;
 	export let showItemDetails = false;
-	console.log(highlightPersonId);
+	// console.log(highlightPersonId);
 
 	dayjs.extend(relativeTime);
 
