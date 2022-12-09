@@ -17,6 +17,7 @@
 	import Fa from 'svelte-fa';
 	import ItemEventSummary from './itemEventSummary.svelte';
 	import Loader from '../general/Loader.svelte';
+	import Error from '../general/Error.svelte';
 
 	export let item;
 
@@ -30,10 +31,16 @@
 
 	let isLoading = true;
 
+	let nonExistingItem = false;
+
 	onMount(async () => {
-		selectablePeople = await getAllSelectablePeople(item._id);
-		fetchAllItemEvents();
-		isLoading = false;
+		if (item._id) {
+			selectablePeople = await getAllSelectablePeople(item._id);
+			fetchAllItemEvents();
+			isLoading = false;
+		} else {
+			nonExistingItem = true;
+		}
 	});
 
 	const fetchAllItemEvents = async () => {
@@ -41,109 +48,116 @@
 	};
 </script>
 
-<div class="info">
-	<div class="prose max-w-none">
-		<h1 class="">Detail of <span class="text-accent">{item.name}</span></h1>
+{#if !nonExistingItem}
+	<div class="info">
+		<div class="prose max-w-none">
+			<h1 class="">Detail of <span class="text-accent">{item.name}</span></h1>
 
-		{#if isLoading}
-			<Loader />
-		{:else}
-			{#if itemEvents.length > 0}
-				<ItemEventSummary lastFewEvents={itemEvents.slice(-10)} />
+			{#if isLoading}
+				<Loader />
+			{:else}
+				{#if itemEvents.length > 0}
+					<ItemEventSummary lastFewEvents={itemEvents.slice(-10)} />
+				{/if}
+
+				<button
+					class="btn btn-accent"
+					on:click={() => {
+						showCreateEventModalOpened = true;
+					}}><Fa size="lg" class="add-new-tracking-icon" icon={faPlus} /> Add new event</button
+				>
 			{/if}
-
-			<button
-				class="btn btn-accent"
-				on:click={() => {
-					showCreateEventModalOpened = true;
-				}}><Fa size="lg" class="add-new-tracking-icon" icon={faPlus} /> Add new event</button
-			>
-		{/if}
+		</div>
 	</div>
-</div>
 
-{#if showCreateEventModalOpened}
-	<Modal>
-		<EventForm
-			title={'Create new event'}
-			peopleToSelectFrom={selectablePeople}
-			{item}
-			on:close={() => {
-				showCreateEventModalOpened = false;
+	{#if showCreateEventModalOpened}
+		<Modal>
+			<EventForm
+				title={'Create new event'}
+				peopleToSelectFrom={selectablePeople}
+				{item}
+				on:close={() => {
+					showCreateEventModalOpened = false;
+				}}
+				on:submit={(event) => {
+					handleCreateNewEvent(event.detail.event, item);
+					showCreateEventModalOpened = false;
+					fetchAllItemEvents();
+				}}
+			/>
+		</Modal>
+	{/if}
+
+	{#if showEditModalOpened}
+		<Modal>
+			<EventForm
+				title={'Edit event'}
+				peopleToSelectFrom={selectablePeople}
+				event={workingEventReference}
+				{item}
+				on:close={() => {
+					showEditModalOpened = false;
+				}}
+				on:submit={(event) => {
+					handleUpdateEvent(event.detail.event, fetchAllItemEvents);
+					showEditModalOpened = false;
+				}}
+			/>
+		</Modal>
+	{/if}
+
+	{#if showDeleteEventModal}
+		<Modal>
+			<ConfirmAction
+				on:cancel={() => {
+					showDeleteEventModal = false;
+				}}
+				on:ok={() => {
+					handleDeleteEvent(workingEventReference, fetchAllItemEvents);
+					showDeleteEventModal = false;
+				}}
+			>
+				<svelte:fragment slot="title">Delete confirmation</svelte:fragment>
+				<span slot="content"
+					>Do you really want to delete this event? You can not reverse this action.
+				</span>
+			</ConfirmAction>
+		</Modal>
+	{/if}
+
+	<div class="prose">
+		<h2>People</h2>
+	</div>
+	{#await getAllPeopleAndRoleCount(item._id)}
+		<p>loading</p>
+	{:then peopleAttendance}
+		<PeopleTable data={peopleAttendance} {item} />
+	{:catch error}
+		<p style="color: red">{error.message}</p>
+	{/await}
+
+	<div class="prose">
+		<h2>Event List</h2>
+	</div>
+	{#if itemEvents.length > 0}
+		<EventTable
+			itemHasIntervalTracking={item.isLongerThenOneDay}
+			on:submitEdit={async (event) => {
+				workingEventReference = await getEventById(event.detail.eventId);
+				showEditModalOpened = true;
 			}}
-			on:submit={(event) => {
-				handleCreateNewEvent(event.detail.event, item);
-				showCreateEventModalOpened = false;
-				fetchAllItemEvents();
+			on:submitDelete={async (event) => {
+				workingEventReference = await getEventById(event.detail.eventId);
+				showDeleteEventModal = true;
 			}}
+			eventsToShow={itemEvents}
 		/>
-	</Modal>
-{/if}
-
-{#if showEditModalOpened}
-	<Modal>
-		<EventForm
-			title={'Edit event'}
-			peopleToSelectFrom={selectablePeople}
-			event={workingEventReference}
-			{item}
-			on:close={() => {
-				showEditModalOpened = false;
-			}}
-			on:submit={(event) => {
-				handleUpdateEvent(event.detail.event, fetchAllItemEvents);
-				showEditModalOpened = false;
-			}}
-		/>
-	</Modal>
-{/if}
-
-{#if showDeleteEventModal}
-	<Modal>
-		<ConfirmAction
-			on:cancel={() => {
-				showDeleteEventModal = false;
-			}}
-			on:ok={() => {
-				handleDeleteEvent(workingEventReference, fetchAllItemEvents);
-				showDeleteEventModal = false;
-			}}
-		>
-			<svelte:fragment slot="title">Delete confirmation</svelte:fragment>
-			<span slot="content"
-				>Do you really want to delete this event? You can not reverse this action.
-			</span>
-		</ConfirmAction>
-	</Modal>
-{/if}
-
-<div class="prose">
-	<h2>People</h2>
-</div>
-{#await getAllPeopleAndRoleCount(item._id)}
-	<p>loading</p>
-{:then peopleAttendance}
-	<PeopleTable data={peopleAttendance} {item} />
-{:catch error}
-	<p style="color: red">{error.message}</p>
-{/await}
-
-<div class="prose">
-	<h2>Event List</h2>
-</div>
-{#if itemEvents.length > 0}
-	<EventTable
-		itemHasIntervalTracking={item.isLongerThenOneDay}
-		on:submitEdit={async (event) => {
-			workingEventReference = await getEventById(event.detail.eventId);
-			showEditModalOpened = true;
-		}}
-		on:submitDelete={async (event) => {
-			workingEventReference = await getEventById(event.detail.eventId);
-			showDeleteEventModal = true;
-		}}
-		eventsToShow={itemEvents}
-	/>
+	{/if}
+{:else}
+	<Error>
+		Oh no. Looks like this item doesnt exits.
+		<a class={`link`} href={`${import.meta.env.VITE_ADMIN_PAGE_BASE_URL}`}>Go home.</a>
+	</Error>
 {/if}
 
 <style>
