@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import TextInput from '../general/textInput.svelte';
+	import TextInput from '../general/TextInput.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import Fa from 'svelte-fa';
 	import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -10,7 +10,7 @@
 		removeFromArrayBasedOnKey
 	} from '../../utils/arrayUtils';
 	import SelectDropdown from '../general/SelectDropdown.svelte';
-	import TextField from '../general/textField.svelte';
+	import TextField from '../general/TextField.svelte';
 	const dispatch = createEventDispatcher();
 
 	function close() {
@@ -75,7 +75,7 @@
 	<div class="bg-base-300 rounded-box w-80 p-4">
 		<TextInput
 			inputLabel={'Name'}
-			styleClass={'input-info'}
+			class="input-info"
 			inputPlaceholder="Name of the item"
 			bind:textValue={item.name}
 		/>

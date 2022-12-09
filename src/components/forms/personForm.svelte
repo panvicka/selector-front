@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import TextInput from '../general/textInput.svelte';
+	import TextInput from '../general/TextInput.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { onMount } from 'svelte';
 	import SelectDropdown from '../general/SelectDropdown.svelte';

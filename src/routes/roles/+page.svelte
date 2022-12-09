@@ -6,7 +6,7 @@
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import RoleCard from '../../components/roles/RoleCard.svelte';
-	import ConfirmAction from '../../components/general/ConfirmAction.svelte';
+	import DangerZoneConfirmDeleteAction from '../../components/general/DangerZoneConfirmDeleteAction.svelte';
 	import Loader from '../../components/general/Loader.svelte';
 
 	let roles = [];
@@ -116,7 +116,9 @@
 
 {#if showDeleteModal}
 	<Modal>
-		<ConfirmAction
+		<DangerZoneConfirmDeleteAction
+			subject="role"
+			expectedConfirmationText={roleToBeDeleted.name}
 			on:cancel={() => {
 				showDeleteModal = false;
 			}}
@@ -128,7 +130,7 @@
 			<span slot="content"
 				>Do you really want to delete {roleToBeDeleted.name}? You can not reverse this action.
 			</span>
-		</ConfirmAction>
+		</DangerZoneConfirmDeleteAction>
 	</Modal>
 {/if}
 

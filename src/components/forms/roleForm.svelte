@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck
-	import TextInput from '../general/textInput.svelte';
-	import TextField from '../general/textField.svelte';
+	import TextInput from '../general/TextInput.svelte';
+	import TextField from '../general/TextField.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 
