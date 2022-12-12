@@ -11,7 +11,7 @@
 		handleUpdateEvent,
 		handleDeleteEvent
 	} from '../events/eventHandlerFuntions';
-	import ConfirmAction from '../general/ConfirmAction.svelte';
+	import ConfirmDeleteAction from '../general/ConfirmDeleteAction.svelte';
 	import { getAllPeopleAndRoleCount } from './itemHandlerFunctions';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
@@ -108,7 +108,7 @@
 
 	{#if showDeleteEventModal}
 		<Modal>
-			<ConfirmAction
+			<ConfirmDeleteAction
 				on:cancel={() => {
 					showDeleteEventModal = false;
 				}}
@@ -121,7 +121,7 @@
 				<span slot="content"
 					>Do you really want to delete this event? You can not reverse this action.
 				</span>
-			</ConfirmAction>
+			</ConfirmDeleteAction>
 		</Modal>
 	{/if}
 

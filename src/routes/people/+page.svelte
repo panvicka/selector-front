@@ -2,11 +2,10 @@
 	import { createPerson, deletePerson, getAllPeople, updatePerson } from '../../api/people';
 	import { onMount } from 'svelte';
 	import PersonCard from '../../components/personCard.svelte';
-	import { PlusCircleIcon } from 'svelte-feather-icons';
 	import { getAllItems } from '../../api/item';
 	import Modal from '../../components/general/Modal.svelte';
 	import PersonForm from '../../components/forms/personForm.svelte';
-	import ConfirmAction from '../../components/general/ConfirmAction.svelte';
+	import ConfirmDeleteAction from '../../components/general/DangerZoneConfirmDeleteAction.svelte';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import { getAllGroups } from '../../api/groups';
@@ -55,12 +54,12 @@
 		letShowEditModal = false;
 	};
 
+	let personToBeDeleted = {};
 	const triggeredDeletePerson = (event) => {
 		personToBeDeleted = event.detail.person;
 		showDeleteModal = true;
 	};
 
-	let personToBeDeleted = {};
 	let personToBeEdited = {};
 
 	let showDeleteModal = false;
@@ -70,7 +69,9 @@
 
 {#if showDeleteModal}
 	<Modal>
-		<ConfirmAction
+		<ConfirmDeleteAction
+			subject="Person"
+			expectedConfirmationText={personToBeDeleted.name}
 			on:cancel={() => {
 				showDeleteModal = false;
 			}}
@@ -82,7 +83,7 @@
 			<span slot="content"
 				>Do you really want to delete {personToBeDeleted.name}? You can not reverse this action.
 			</span>
-		</ConfirmAction>
+		</ConfirmDeleteAction>
 	</Modal>
 {/if}
 
@@ -91,7 +92,7 @@
 
 	<button
 		class="btn btn-accent"
-		on:click={(e) => {
+		on:click={() => {
 			letShowCreateModal = true;
 		}}><Fa size="lg" class="add-new-person-icon" icon={faPlus} /> Add person</button
 	>

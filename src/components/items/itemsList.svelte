@@ -5,7 +5,7 @@
 	import { getAllItems } from '../../api/item';
 	import Modal from '../general/Modal.svelte';
 	import ItemForm from '../forms/ItemForm.svelte';
-	import ConfirmAction from '../general/ConfirmAction.svelte';
+	import DangerZoneConfirmDeleteAction from '../general/DangerZoneConfirmDeleteAction.svelte';
 	import { handleCreateNew, handleDeleteItem, handleEditItem } from './itemHandlerFunctions';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
@@ -88,7 +88,9 @@
 
 {#if showDeleteItemModal}
 	<Modal>
-		<ConfirmAction
+		<DangerZoneConfirmDeleteAction
+			subject="item"
+			expectedConfirmationText={workingItemReference.name}
 			on:cancel={() => {
 				showDeleteItemModal = false;
 			}}
@@ -101,7 +103,7 @@
 			<span slot="content"
 				>Do you really want to delete {workingItemReference.name}? You can not reverse this action.
 			</span>
-		</ConfirmAction>
+		</DangerZoneConfirmDeleteAction>
 	</Modal>
 {/if}
 
