@@ -27,7 +27,12 @@
 </script>
 
 <h1>{title}</h1>
-<TextInput inputLabel={'Name'} inputPlaceholder="Name" bind:textValue={group.name} />
+<TextInput
+	inputLabel={'Name'}
+	inputPlaceholder="Name"
+	bind:textValue={group.name}
+	class="input-accent"
+/>
 <TextField
 	inputLabel={'Description'}
 	inputPlaceholder="Write the description here"
