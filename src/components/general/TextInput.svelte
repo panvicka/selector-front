@@ -3,7 +3,7 @@
 	export let inputPlaceholder;
 	export let textValue;
 
-	const clazz = $$props.class || 'input-accent';
+	const classesFromTheParent = $$props.class;
 </script>
 
 <label class="label" for={`${inputLabel}-ID`}>
@@ -14,12 +14,11 @@
 	type="text"
 	id={`${inputLabel}-ID`}
 	placeholder={inputPlaceholder || 'Type here'}
-	class={`input input-bordered w-full max-w-xs focus:ring-0 focus:ring-offset-0 ${clazz}`}
+	class={`input input-bordered w-full max-w-xs focus:ring-0 focus:ring-offset-0 ${classesFromTheParent}`}
 />
 
-
 <style>
-input:focus {
-	border: none;
-}
+	input:focus {
+		border: none;
+	}
 </style>
