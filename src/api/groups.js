@@ -1,4 +1,4 @@
-import Api from '../services/Api';
+import Api from './RemoteAPI';
 
 export const getAllGroups = async () => {
 	try {

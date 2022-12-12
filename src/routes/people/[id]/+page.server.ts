@@ -1,4 +1,4 @@
-import { getPersonById } from './../../../api/people';
+import { getPersonById } from '../../../api/people';
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {
