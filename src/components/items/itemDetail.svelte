@@ -3,7 +3,6 @@
 	import EventForm from '../forms/eventForm.svelte';
 	import Modal from '../general/Modal.svelte';
 	import { onMount } from 'svelte';
-	import { getAllEventsForItem, getEventById } from '../../api/event';
 	import PeopleTable from '../people/peopleTable.svelte';
 	import { getAllSelectablePeople } from '../people/peopleHandlerFunctions';
 	import {
@@ -17,6 +16,8 @@
 	import Fa from 'svelte-fa';
 	import ItemEventSummary from './itemEventSummary.svelte';
 	import Loader from '../general/Loader.svelte';
+	import { LocalApiItems } from '$lib/apiClient/items';
+	import { RemoteApiEvents } from '../../api/event';
 
 	export let item;
 
@@ -32,12 +33,12 @@
 
 	onMount(async () => {
 		selectablePeople = await getAllSelectablePeople(item._id);
-		fetchAllItemEvents();
+		await fetchAllItemEvents();
 		isLoading = false;
 	});
 
 	const fetchAllItemEvents = async () => {
-		itemEvents = await getAllEventsForItem(item._id);
+		itemEvents = await LocalApiItems.getAllEvents(item._id);
 	};
 </script>
 
@@ -137,11 +138,11 @@
 	<EventTable
 		itemHasIntervalTracking={item.isLongerThenOneDay}
 		on:submitEdit={async (event) => {
-			workingEventReference = await getEventById(event.detail.eventId);
+			workingEventReference = await RemoteApiEvents.getEventById(event.detail.eventId);
 			showEditModalOpened = true;
 		}}
 		on:submitDelete={async (event) => {
-			workingEventReference = await getEventById(event.detail.eventId);
+			workingEventReference = await RemoteApiEvents.getEventById(event.detail.eventId);
 			showDeleteEventModal = true;
 		}}
 		eventsToShow={itemEvents}

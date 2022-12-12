@@ -2,7 +2,6 @@
 	import { createPerson, deletePerson, getAllPeople, updatePerson } from '../../api/people';
 	import { onMount } from 'svelte';
 	import PersonCard from '../../components/personCard.svelte';
-	import { getAllItems } from '../../api/item';
 	import Modal from '../../components/general/Modal.svelte';
 	import PersonForm from '../../components/forms/personForm.svelte';
 	import ConfirmDeleteAction from '../../components/general/DangerZoneConfirmDeleteAction.svelte';
@@ -10,6 +9,7 @@
 	import Fa from 'svelte-fa';
 	import { getAllGroups } from '../../api/groups';
 	import Loader from '../../components/general/Loader.svelte';
+	import { LocalApiItems } from '$lib/apiClient/items';
 
 	let people = [];
 
@@ -20,7 +20,7 @@
 
 	onMount(async () => {
 		await fetchAllPeople();
-		allItems = await getAllItems();
+		allItems = await LocalApiItems.getAllItems();
 		allGroupes = await getAllGroups();
 		isLoading = false;
 	});

@@ -18,10 +18,10 @@ const get = (path: string, payload?: unknown) => apiRequest('GET', path, payload
 const deleteRequest = (path: string, payload?: unknown) => apiRequest('DELETE', path, payload);
 const post = (path: string, payload?: unknown) => apiRequest('POST', path, payload);
 const patch = (path: string, payload?: unknown) => apiRequest('PATCH', path, payload);
-const API = {
+const RemoteAPI = {
 	get,
 	delete: deleteRequest,
 	post,
 	patch
 };
-export default API;
+export default RemoteAPI;

@@ -2,7 +2,6 @@
 	// @ts-nocheck
 	import ItemCard from './itemCard.svelte';
 	import { onMount } from 'svelte';
-	import { getAllItems } from '../../api/item';
 	import Modal from '../general/Modal.svelte';
 	import ItemForm from '../forms/ItemForm.svelte';
 	import DangerZoneConfirmDeleteAction from '../general/DangerZoneConfirmDeleteAction.svelte';
@@ -12,6 +11,7 @@
 	import { getAllRoles } from '../../api/roles';
 	import { getAllGroups } from '../../api/groups';
 	import Loader from '../general/Loader.svelte';
+	import { LocalApiItems } from '$lib/apiClient/items';
 
 	let items = [];
 	let allRoles = [];
@@ -19,12 +19,12 @@
 	let workingItemReference = {};
 	let isLoading = true;
 	onMount(async () => {
-		await fetch();
+		await fetchEverything();
 		isLoading = false;
 	});
 
-	const fetch = async () => {
-		items = await getAllItems();
+	const fetchEverything = async () => {
+		items = await LocalApiItems.getAllItems();
 		allRoles = await getAllRoles();
 		allGroupes = await getAllGroups();
 	};
@@ -42,7 +42,7 @@
 	<h1>Tracked items</h1>
 	<button
 		class="btn btn-accent"
-		on:click={(e) => {
+		on:click={() => {
 			showCreateItemModal = true;
 		}}><Fa size="lg" class="add-new-tracking-icon" icon={faPlus} /> Add new tracking</button
 	>
@@ -76,7 +76,7 @@
 			{allRoles}
 			{allGroupes}
 			on:submit={(event) => {
-				handleCreateNew(event, fetch);
+				handleCreateNew(event, fetchEverything);
 				showCreateItemModal = false;
 			}}
 			on:close={() => {
@@ -95,7 +95,7 @@
 				showDeleteItemModal = false;
 			}}
 			on:ok={() => {
-				handleDeleteItem(workingItemReference._id, fetch);
+				handleDeleteItem(workingItemReference._id, fetchEverything);
 				showDeleteItemModal = false;
 			}}
 		>
@@ -115,7 +115,7 @@
 			{allRoles}
 			{allGroupes}
 			on:submit={(event) => {
-				handleEditItem(event, workingItemReference._id, fetch);
+				handleEditItem(event, workingItemReference._id, fetchEverything);
 				showEditItemModal = false;
 			}}
 			on:close={() => {
