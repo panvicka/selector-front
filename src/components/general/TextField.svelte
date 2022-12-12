@@ -2,8 +2,6 @@
 	export let inputLabel;
 	export let inputPlaceholder;
 	export let textValue;
-
-	export let styleClass = 'textarea-accent';
 </script>
 
 <label class="label" for={`${inputLabel}-ID`}>
@@ -11,7 +9,7 @@
 </label>
 
 <textarea
-	class="textarea {styleClass} w-full max-w-xs focus:ring-0 focus:ring-offset-0 focus:border-none"
+	class="textarea textarea-accent w-full max-w-xs focus:ring-0 focus:ring-offset-0 focus:border-none"
 	placeholder={inputPlaceholder || 'Type here'}
 	id={`${inputLabel}-ID`}
 	bind:value={textValue}

@@ -1,7 +1,7 @@
 <script>
 	// @ts-nocheck
-	import TextInput from '../general/textInput.svelte';
-	import TextField from '../general/textField.svelte';
+	import TextInput from '../general/TextInput.svelte';
+	import TextField from '../general/TextField.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 
@@ -49,7 +49,12 @@
 </script>
 
 <h1>{title}</h1>
-<TextInput inputLabel={'Name'} inputPlaceholder="Name" bind:textValue={role.name} />
+<TextInput
+	inputLabel={'Name'}
+	inputPlaceholder="Name"
+	bind:textValue={role.name}
+	class="input-accent"
+/>
 <TextField
 	inputLabel={'Description'}
 	inputPlaceholder="Write the description here"

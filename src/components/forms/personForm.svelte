@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import TextInput from '../general/textInput.svelte';
+	import TextInput from '../general/TextInput.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { onMount } from 'svelte';
 	import SelectDropdown from '../general/SelectDropdown.svelte';
@@ -151,7 +151,7 @@
 
 <div class="flex w-full">
 	<div class="bg-base-300 rounded-box w-80 p-4">
-		<TextInput inputLabel={'Name'} inputPlaceholder="Name" bind:textValue={person.name} />
+		<TextInput inputLabel={'Name'} inputPlaceholder="Name" bind:textValue={person.name} class="input-accent" />
 
 		<label class="cursor-pointer label">
 			<span class="label-text">Active</span>
