@@ -2,9 +2,12 @@
 	"name": "selector-frontend",
 	"version": "0.0.1",
 	"private": true,
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org/"
+	},
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
+		"build": "svelte-kit sync && vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -17,6 +20,8 @@
 		"@popperjs/core": "^2.11.6",
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/adapter-netlify": "^1.0.0-next.83",
+		"@sveltejs/adapter-node": "^1.0.0-next.102",
+		"@sveltejs/adapter-static": "^1.0.0-next.48",
 		"@sveltejs/kit": "next",
 		"@tailwindcss/typography": "^0.5.7",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
@@ -38,7 +43,7 @@
 		"tailwindcss": "^3.1.8",
 		"tslib": "^2.3.1",
 		"typescript": "^4.7.4",
-		"vite": "^3.1.0"
+		"vite": "^4.0.0"
 	},
 	"type": "module",
 	"dependencies": {
