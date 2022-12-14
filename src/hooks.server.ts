@@ -1,5 +1,6 @@
-/** @type {import('@sveltejs/kit').Handle} */
+import { env } from '$env/dynamic/private';
 
+/** @type {import('@sveltejs/kit').Handle} */
 export async function handle({
 	event,
 	resolve
@@ -8,7 +9,7 @@ export async function handle({
 
 	if (url.pathname.startsWith('/')) {
 		const auth = event.request.headers.get('Authorization');
-		if (auth !== `Basic ${btoa(import.meta.env.VITE_ADMIN_LOGIN)}`) {
+		if (auth !== `Basic ${btoa(env.ADMIN_LOGIN)}`) {
 			return new Response('Not authorized', {
 				status: 401,
 				headers: {

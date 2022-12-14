@@ -38,7 +38,8 @@
 		if (item._id) {
 			selectablePeople = await getAllSelectablePeople(item._id);
 			await fetchAllItemEvents();
-		isLoading = false;} else {
+			isLoading = false;
+		} else {
 			nonExistingItem = true;
 		}
 	});
@@ -156,7 +157,7 @@
 {:else}
 	<Error>
 		Oh no. Looks like this item doesnt exits.
-		<a class={`link`} href={`${import.meta.env.VITE_ADMIN_PAGE_BASE_URL}`}>Go home.</a>
+		<a class={`link`} href="/">Go home.</a>
 	</Error>
 {/if}
 
