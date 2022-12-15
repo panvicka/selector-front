@@ -1,5 +1,8 @@
+// TODO switch to private var, when RemoteAPI is called only server side import { env } from '$env/dynamic/private';
+import { env } from '$env/dynamic/public';
+
 const apiRequest = async (method: RequestInit['method'], path: string, payload?: unknown) => {
-	const baseUrl = import.meta.env.VITE_BASE_URL?.replace(/\/+$/, '') || '';
+	const baseUrl = env.PUBLIC_BASE_URL?.replace(/\/+$/, '') || '';
 	const url = `${baseUrl}${path}`;
 	const response = await fetch(url, {
 		method,

@@ -40,8 +40,7 @@
 {:else if invalidPerson}
 	<Error
 		>Uh no. This person doesnt exist.
-		<a class="link" href={`${import.meta.env.VITE_ADMIN_PAGE_BASE_URL}/people`}>Check all people here.</a
-		>
+		<a class="link" href="/people">Check all people here.</a>
 	</Error>
 {:else}
 	<PersonDetail person={data} {futureEvents} {runningEvents} />
