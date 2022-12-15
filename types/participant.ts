@@ -1,7 +1,7 @@
-import { Person } from './person';
-import { Role } from './role';
+import type { Person } from './person';
+import type { Role } from './role';
 
 export interface Participant {
-	role: Role;
-	person: Person;
+	role: Role | string;
+	person: Person | string;
 }

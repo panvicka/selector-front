@@ -1,17 +1,25 @@
-<script>
+<script lang="ts">
 	import Select from 'svelte-select';
 	import { createEventDispatcher } from 'svelte';
+	import type { SvelteSelectEvent } from 'types/svelte-select/event';
+	import type { SvelteSelectableItem } from 'types/svelte-select/detail';
 
-	export let items = [];
+	export let items: Array<SvelteSelectableItem> = [];
+
 	export let placeholder = '';
 	export let value = '';
 	export let colorStyle = 'primary';
 
 	const dispatch = createEventDispatcher();
 
-	let selected = {};
+	let selected: SvelteSelectableItem = {
+		value: '',
+		label: ''
+	};
 
-	const handleSelect = (e) => {
+	const handleSelect = (e: SvelteSelectEvent) => {
+		console.log('handle select');
+		console.log(e);
 		selected = {
 			value: e.detail.value,
 			label: e.detail.label

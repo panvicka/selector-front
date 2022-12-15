@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import EventTable from '../eventTable.svelte';
 	import EventForm from '../forms/eventForm.svelte';
 	import Modal from '../general/Modal.svelte';
@@ -19,12 +19,15 @@
 	import Error from '../general/Error.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
 	import { RemoteApiEvents } from '../../api/event';
+	import type { Item } from 'types/item';
+	import type { Event } from 'types/event';
+	import type { Person } from 'types/person';
 
-	export let item;
+	export let item: Item;
 
-	let itemEvents = [];
-	let selectablePeople = [];
-	let workingEventReference;
+	let itemEvents: Array<Event> = [];
+	let selectablePeople: Array<Person> = [];
+	let workingEventReference: Event;
 
 	let showCreateEventModalOpened = false;
 	let showEditModalOpened = false;

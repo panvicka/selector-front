@@ -1,32 +1,42 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import DateInput from '../general/DateInput.svelte';
 	import { onMount } from 'svelte';
 	import { replaceKeyValueInToArrayIfKeyExistOrAdd } from '../../utils/arrayUtils';
 	import SelectDropdown from '../general/SelectDropdown.svelte';
-	import Select from 'svelte-select';
 	import dayjs from 'dayjs';
+	import type { Person } from 'types/person';
+	import type { Event } from 'types/event';
+	import type { Participant } from 'types/participant';
+	import type { Role } from 'types/role';
+	import type { Item } from 'types/item';
+	import type { SvelteSelectableItem } from 'types/svelte-select/detail';
 	const dispatch = createEventDispatcher();
 
-	export let peopleToSelectFrom = [];
+	export let peopleToSelectFrom: Array<SvelteSelectableItem> = [];
 	export let title = '';
 
-	console.log(peopleToSelectFrom);
-
-	let selectedPeople = [];
-
-	export let event = {
-		startDate: '',
-		endDate: '',
-		people: [],
+	export let event: Event = {
+		_id: '',
+		item: {
+			_id: '',
+			description: '',
+			isLongerThenOneDay: false,
+			name: '',
+			groupes: [],
+			roles: []
+		},
+		startDate: new Date(),
+		endDate: undefined,
 		participants: []
 	};
 
-	export let item = {
+	export let item: Item = {
 		_id: '',
-		roles: {},
-		isLongerThenOneDay: false
+		roles: [],
+		isLongerThenOneDay: false,
+		name: '',
+		description: ''
 	};
 
 	console.log(item);
@@ -34,23 +44,22 @@
 	onMount(async () => {
 		event.participants.forEach((participant) => {
 			selectedParticipants.push({
-				role: participant.role._id,
-				person: participant.person._id
+				role: (participant.role as Role)._id,
+				person: (participant.person as Person)._id
 			});
 		});
 	});
 
-	let selectedParticipants = [];
+	let selectedParticipants: Array<Participant> = [];
 
 	let startDate = event.startDate;
-	let endDate = event.endDate ? event.endDate : '';
+	let endDate = event.endDate ? event.endDate : undefined;
 
 	function close() {
 		dispatch('close');
 	}
 
 	function submit() {
-		event.people = selectedPeople;
 		event.startDate = dayjs(startDate).set('hour', 7).set('minute', 0).set('second', 0).toDate();
 		event.endDate = dayjs(endDate).set('hour', 18).set('minute', 0).set('second', 0).toDate();
 		event.participants = selectedParticipants;
@@ -60,18 +69,19 @@
 		});
 	}
 
-	const getNameForRoleId = (roleId) => {
-		let person = null;
+	const getNameForRoleId = (roleId: Role['_id']): string => {
+		let person = '';
 		event.participants.forEach((participant) => {
-			if (participant.role._id == roleId) {
-				person = participant.person.name;
+			if ((participant.role as Role)._id == roleId) {
+				person = (participant.person as Person).name;
 				return;
 			}
 		});
 		return person;
 	};
 
-	function handleSelect(event, roleId) {
+	function handleSelect(event, roleId: Role['_id']) {
+		console.log(event);
 		replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipants, 'role', {
 			role: roleId,
 			person: event.detail.selected.value
@@ -93,18 +103,19 @@
 	</div>
 {/if}
 
-{#each item.roles as role, i}
-	<div class="item">
-		{role.name}
-		<SelectDropdown
-			items={peopleToSelectFrom}
-			placeholder={'Select..'}
-			value={getNameForRoleId(role._id)}
-			on:dropdownSelect={(event) => handleSelect(event, role._id)}
-		/>
-	</div>
-{/each}
-
+{#if item.roles}
+	{#each item.roles as role, i}
+		<div class="item">
+			{role.name}
+			<SelectDropdown
+				items={peopleToSelectFrom}
+				placeholder={'Select..'}
+				value={getNameForRoleId(role._id)}
+				on:dropdownSelect={(e) => handleSelect(e, role._id)}
+			/>
+		</div>
+	{/each}
+{/if}
 <div class="button-group">
 	<button
 		class="btn btn-outline btn-error"

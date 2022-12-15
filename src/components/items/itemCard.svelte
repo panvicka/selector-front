@@ -1,10 +1,9 @@
-<script>
-	// @ts-nocheck
-
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import type { Item } from 'types/item';
 	import Card from '../general/Card.svelte';
 
-	export let item;
+	export let item: Item;
 
 	import RoleBadge from '../roles/RoleBadge.svelte';
 

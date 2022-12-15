@@ -1,7 +1,8 @@
-import { Group } from './group';
-import { Item } from './item';
+import type { Group } from './group';
+import type { Item } from './item';
 
 export interface Person {
+	_id: string;
 	name: string;
 	active: boolean;
 	itemsCanBeAttended?: Array<Item>;
