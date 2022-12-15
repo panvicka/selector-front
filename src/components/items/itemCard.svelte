@@ -6,8 +6,6 @@
 
 	export let item;
 
-	import * as Icons from '@fortawesome/free-solid-svg-icons';
-	import Fa from 'svelte-fa';
 	import RoleBadge from '../roles/RoleBadge.svelte';
 
 	const dispatch = createEventDispatcher();
@@ -16,6 +14,7 @@
 <Card
 	width={400}
 	height={300}
+	testId="ItemCard"
 	on:deleteTrigger={() => {
 		dispatch('onDelete', {
 			item

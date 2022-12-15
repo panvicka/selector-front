@@ -8,6 +8,7 @@
 	export let height = 250;
 	export let backgroundColor = 'bg-neutral';
 	export let titleTextColor = 'accent';
+	export let testId = 'Card';
 
 	const dispatch = createEventDispatcher();
 
@@ -23,6 +24,7 @@
 <div
 	class="card w-96 {backgroundColor} shadow-xl overflow-visible p-2 h-fit"
 	style="width: {width}px; height: {height}px"
+	data-testid={testId}
 >
 	<div class="card-body">
 		<div class="card-header flex justify-between align-center">
