@@ -15,7 +15,7 @@ export const RemoteApiItems = {
 	deleteItem: async (itemId?: string) => {
 		try {
 			const response = await Api.delete(`/rotationItems/delete/${itemId}`);
-			return response.rotationItems;
+			return response.message;
 		} catch (error) {
 			console.error(error);
 		}
@@ -23,7 +23,8 @@ export const RemoteApiItems = {
 
 	updateItem: async (itemId?: string, payload?: Item): Promise<void> => {
 		try {
-			return await Api.patch(`/rotationItems/update/${itemId}`, payload);
+			const response = await Api.patch(`/rotationItems/update/${itemId}`, payload)
+			return response.rotationItem;
 		} catch (error) {
 			console.error(error);
 		}
@@ -34,7 +35,7 @@ export const RemoteApiItems = {
 			// to do trimm trailing spaces
 			console.log(payload);
 			const response = await Api.post(`/rotationItems/create/`, payload);
-			return response.rotationItemId;
+			return response.rotationItem;
 		} catch (error) {
 			console.error(error);
 		}

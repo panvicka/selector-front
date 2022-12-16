@@ -76,8 +76,10 @@
 			{allRoles}
 			{allGroupes}
 			on:submit={(event) => {
-				handleCreateNew(event, fetchEverything);
-				showCreateItemModal = false;
+				handleCreateNew(event).then(() => {
+					showCreateItemModal = false;
+					fetchEverything();
+				});
 			}}
 			on:close={() => {
 				showCreateItemModal = false;
@@ -95,8 +97,10 @@
 				showDeleteItemModal = false;
 			}}
 			on:ok={() => {
-				handleDeleteItem(workingItemReference._id, fetchEverything);
-				showDeleteItemModal = false;
+				handleDeleteItem(workingItemReference._id).then(() => {
+					showDeleteItemModal = false;
+					fetchEverything();
+				});
 			}}
 		>
 			<svelte:fragment slot="title">Confirmation</svelte:fragment>
@@ -115,8 +119,10 @@
 			{allRoles}
 			{allGroupes}
 			on:submit={(event) => {
-				handleEditItem(event, workingItemReference._id, fetchEverything);
-				showEditItemModal = false;
+				handleEditItem(event, workingItemReference._id).then(() => {
+					showEditItemModal = false;
+					fetchEverything();
+				});
 			}}
 			on:close={() => {
 				showEditItemModal = false;
