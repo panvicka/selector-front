@@ -10,7 +10,13 @@ const apiRequest = async (method: RequestInit['method'], path: string, payload?:
 		headers: payload !== undefined ? { 'Content-Type': 'application/json' } : undefined
 	});
 	if (response.ok) {
-		return await response.json();
+		try {
+			const result = await response.json();
+			console.log('RemoteAPI', path, result);
+			return result;
+		} catch (error) {
+			console.error(error);
+		}
 	} else {
 		throw new Error(response.statusText);
 	}

@@ -1,16 +1,18 @@
 import Api from './RemoteAPI';
+import type { Item } from '../../types/item';
 
 export const RemoteApiItems = {
-	getAllItems: async () => {
+	getAllItems: async (): Promise<Item[]> => {
 		try {
 			const response = await Api.get('/rotationItems/get/');
 			return response.rotationItems;
 		} catch (error) {
 			console.error(error);
+			return [];
 		}
 	},
 
-	deleteItem: async (itemId) => {
+	deleteItem: async (itemId?: string) => {
 		try {
 			const response = await Api.delete(`/rotationItems/delete/${itemId}`);
 			return response.rotationItems;
@@ -19,16 +21,15 @@ export const RemoteApiItems = {
 		}
 	},
 
-	updateItem: async (itemId, payload) => {
+	updateItem: async (itemId?: string, payload?: Item): Promise<void> => {
 		try {
-			const response = await Api.patch(`/rotationItems/update/${itemId}`, payload);
-			return response.rotationItemId;
+			return await Api.patch(`/rotationItems/update/${itemId}`, payload);
 		} catch (error) {
 			console.error(error);
 		}
 	},
 
-	createItem: async (payload) => {
+	createItem: async (payload: Item) => {
 		try {
 			// to do trimm trailing spaces
 			console.log(payload);
@@ -39,7 +40,7 @@ export const RemoteApiItems = {
 		}
 	},
 
-	getItemById: async (itemId) => {
+	getItemById: async (itemId?: string) => {
 		try {
 			const response = await Api.get(`/rotationItems/get/${itemId}`);
 			return response.rotationItemId;
@@ -48,12 +49,13 @@ export const RemoteApiItems = {
 		}
 	},
 
-	getItemPeopleAttendance: async (itemId) => {
+	getItemPeopleAttendance: async (itemId?: string): Promise<Item | null> => {
 		try {
 			const response = await Api.get(`/rotationItems/get/${itemId}/peopleCount`);
 			return response.attendanceByRole;
 		} catch (error) {
 			console.error(error);
+			return null;
 		}
 	}
 };

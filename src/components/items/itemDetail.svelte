@@ -22,6 +22,7 @@
 	import type { Item } from 'types/item';
 	import type { Event } from 'types/event';
 	import type { Person } from 'types/person';
+	import { LocalApiEvents } from '$lib/apiClient/events.js';
 
 	export let item: Item;
 
@@ -84,9 +85,10 @@
 					showCreateEventModalOpened = false;
 				}}
 				on:submit={(event) => {
-					handleCreateNewEvent(event.detail.event, item);
-					showCreateEventModalOpened = false;
-					fetchAllItemEvents();
+					handleCreateNewEvent(event.detail.event, item).then(() => {
+						showCreateEventModalOpened = false;
+						fetchAllItemEvents();
+					});
 				}}
 			/>
 		</Modal>
@@ -103,8 +105,10 @@
 					showEditModalOpened = false;
 				}}
 				on:submit={(event) => {
-					handleUpdateEvent(event.detail.event, fetchAllItemEvents);
-					showEditModalOpened = false;
+					handleUpdateEvent(event.detail.event).then(() => {
+						showEditModalOpened = false;
+						fetchAllItemEvents();
+					});
 				}}
 			/>
 		</Modal>
@@ -117,7 +121,7 @@
 					showDeleteEventModal = false;
 				}}
 				on:ok={() => {
-					handleDeleteEvent(workingEventReference, fetchAllItemEvents);
+					handleDeleteEvent(workingEventReference).then(() => fetchAllItemEvents());
 					showDeleteEventModal = false;
 				}}
 			>
@@ -147,11 +151,11 @@
 		<EventTable
 			itemHasIntervalTracking={item.isLongerThenOneDay}
 			on:submitEdit={async (event) => {
-				workingEventReference = await RemoteApiEvents.getEventById(event.detail.eventId);
+				workingEventReference = await LocalApiEvents.getEventById(event.detail.eventId);
 				showEditModalOpened = true;
 			}}
 			on:submitDelete={async (event) => {
-				workingEventReference = await RemoteApiEvents.getEventById(event.detail.eventId);
+				workingEventReference = await LocalApiEvents.getEventById(event.detail.eventId);
 				showDeleteEventModal = true;
 			}}
 			eventsToShow={itemEvents}

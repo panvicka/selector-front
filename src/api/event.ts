@@ -1,49 +1,51 @@
 import RemoteAPI from './RemoteAPI';
+import type { Event } from '../../types/event';
 
 export const RemoteApiEvents = {
-	getAllEventsForItem: async (itemId) => {
+	getAllEventsForItem: async (itemId?: string): Promise<Event[]> => {
 		try {
 			const response = await RemoteAPI.get(`/rotationEvents/get/?item=${itemId}`);
 			return response.rotationEvents;
 		} catch (error) {
 			console.error(error);
+			return [];
 		}
 	},
 
-	deleteEvent: async (eventId) => {
+	deleteEvent: async (eventId?: string): Promise<unknown> => {
 		try {
-			const response = await RemoteAPI.delete(`/rotationEvents/delete/${eventId}`);
+			const response = await RemoteAPI.delete(`/rotationEvents/delete/${eventId}`)
 			return response.message;
 		} catch (error) {
 			console.error(error);
 		}
 	},
 
-	updateEvent: async (eventId, payload) => {
+	updateEvent: async (eventId?: string, payload?: Event): Promise<unknown> => {
 		try {
 			const response = await RemoteAPI.patch(`/rotationEvents/update/${eventId}`, payload);
-			return response.rotationEvents;
+			return response.rotationEvent;
 		} catch (error) {
 			console.error(error);
 		}
 	},
 
-	createEvent: async (payload) => {
-		console.log(payload);
+	createEvent: async (payload: Event) => {
 		try {
 			const response = await RemoteAPI.post(`/rotationEvents/create/`, payload);
-			return response.rotationEventId;
+			return response.rotationEvent;
 		} catch (error) {
 			console.error(error);
 		}
 	},
 
-	getEventById: async (eventId) => {
+	getEventById: async (eventId: string): Promise<Event | null> => {
 		try {
 			const response = await RemoteAPI.get(`/rotationEvents/get/${eventId}`);
 			return response.rotationEventId;
 		} catch (error) {
 			console.error(error);
+			return null;
 		}
 	}
 };

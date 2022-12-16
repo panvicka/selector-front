@@ -1,6 +1,8 @@
-import {RemoteApiEvents} from '../../api/event';
+import { LocalApiEvents } from '$lib/apiClient/events';
+import type { Item } from '../../../types/item';
+import type { Event } from '../../../types/event';
 
-export const handleCreateNewEvent = async (event, item) => {
+export const handleCreateNewEvent = async (event: Event, item: Item) => {
 	const payload = {
 		item: item._id,
 		people: event.people,
@@ -8,27 +10,19 @@ export const handleCreateNewEvent = async (event, item) => {
 		endDate: event.endDate,
 		participants: event.participants
 	};
-
-	await RemoteApiEvents.createEvent(payload);
+	return await LocalApiEvents.createEvent(payload);
 };
 
-export const handleUpdateEvent = async (event, refetchFunction) => {
-	await RemoteApiEvents.updateEvent(event._id, {
+export const handleUpdateEvent = async (event: Event) => {
+	return await LocalApiEvents.updateEvent(event._id, {
 		item: event.item._id,
 		people: event.people,
 		startDate: event.startDate,
 		endDate: event.endDate,
 		participants: event.participants
 	});
-
-	if (typeof refetchFunction === 'function') {
-		refetchFunction();
-	}
 };
 
-export const handleDeleteEvent = async (event, refetchFunction) => {
-	await RemoteApiEvents.deleteEvent(event._id);
-	if (typeof refetchFunction === 'function') {
-		refetchFunction();
-	}
+export const handleDeleteEvent = async (event: Event) => {
+	return await LocalApiEvents.deleteEvent(event._id);
 };

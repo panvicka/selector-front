@@ -1,31 +1,37 @@
 import ClientAPI from '$lib/apiClient/ClientAPI.js';
+import type { Item } from '../../../types/item';
+import type { Event } from '../../../types/event';
 
 export const LocalApiItems = {
-	getAllEvents: async (itemId: string) => {
+	getAllEvents: async (itemId: string): Promise<Event[]> => {
 		return await ClientAPI.get(`/items/${itemId}/events`);
 	},
 
-	getAllItems: async () => {
+	getAllItems: async (): Promise<Item[]> => {
 		return await ClientAPI.get(`/items`);
 	},
 
-	getItem: async (itemId: string) => {
+	getItem: async (itemId: string): Promise<Item> => {
 		return await ClientAPI.get(`/items/${itemId}`);
 	},
 
-	getItemPeopleAttendance: async (itemId: string) => {
+	/* TODO types for return */
+	getItemPeopleAttendance: async (itemId: string): Promise<unknown> => {
 		return await ClientAPI.get(`/items/${itemId}/attendance`);
 	},
 
-	createItem: async (payload: unknown) => {
+	/* TODO types for payloads and return */
+	createItem: async (payload: unknown): Promise<unknown> => {
 		return await ClientAPI.post(`/items`, payload);
 	},
 
-	deleteItem: async (itemId: string) => {
+	/* TODO types for return */
+	deleteItem: async (itemId: string): Promise<unknown> => {
 		return await ClientAPI.delete(`/items/${itemId}`);
 	},
 
-	updateItem: async (itemId: string, payload: unknown) => {
+	/* TODO types for payloads and return */
+	updateItem: async (itemId: string, payload: unknown): Promise<unknown> => {
 		return await ClientAPI.patch(`/items/${itemId}`, payload);
 	}
 };
