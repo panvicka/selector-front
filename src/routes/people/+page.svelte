@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import PersonCard from '../../components/personCard.svelte';
 	import Modal from '../../components/general/Modal.svelte';
@@ -10,13 +10,30 @@
 	import Loader from '../../components/general/Loader.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
 	import { LocalApiPeople } from '$lib/apiClient/people';
+	import type { Person } from 'types/person';
+	import type { Item } from 'types/item';
+	import type { Group } from 'types/group';
 
-	let people = [];
+	let people: Array<Person> = [];
+	let allItems: Array<Item> = [];
+	let allGroupes: Array<Group> = [];
 
-	let allItems = [];
-	let allGroupes = [];
+	let showDeleteModal = false;
+	let letShowCreateModal = false;
+	let letShowEditModal = false;
 
 	let isLoading = true;
+
+	let personToBeEdited: Person = {
+		_id: '',
+		active: false,
+		name: ''
+	};
+	let personToBeDeleted: Person = {
+		_id: '',
+		active: false,
+		name: ''
+	};
 
 	onMount(async () => {
 		await fetchAllPeople();
@@ -29,41 +46,28 @@
 		people = await LocalApiPeople.getAllPeople();
 	};
 
-	const handleCreateNewPerson = async (event) => {
-		console.log(event.detail);
-		const res = await LocalApiPeople.createPerson({
-			name: event.detail.name,
-			itemsCanBeAttended: event.detail.itemsCanBeAttended,
-			groupes: event.detail.groupes,
-			active: event.detail.active
-		});
-		letShowCreateModal = false;
+	const handleCreateNewPerson = async (event: CustomEvent<Person>) => {
+		await LocalApiPeople.createPerson(event.detail);
 		fetchAllPeople();
+		letShowCreateModal = false;
 	};
 
-	const handleDeletePerson = async (personId) => {
-		const res = await LocalApiPeople.deletePerson(personId);
+	const handleDeletePerson = async (personId: string) => {
+		await LocalApiPeople.deletePerson(personId);
 		fetchAllPeople();
 		showDeleteModal = false;
 	};
 
-	const handleEditPerson = async (event) => {
-		const res = await LocalApiPeople.updatePerson(personToBeEdited._id, event.detail);
+	const handleEditPerson = async (event: CustomEvent<Person>) => {
+		await LocalApiPeople.updatePerson(personToBeEdited._id, event.detail);
 		fetchAllPeople();
 		letShowEditModal = false;
 	};
 
-	let personToBeDeleted = {};
-	const triggeredDeletePerson = (event) => {
-		personToBeDeleted = event.detail.person;
+	const triggeredDeletePerson = (event: CustomEvent<Person>) => {
+		personToBeDeleted = event.detail;
 		showDeleteModal = true;
 	};
-
-	let personToBeEdited = {};
-
-	let showDeleteModal = false;
-	let letShowCreateModal = false;
-	let letShowEditModal = false;
 </script>
 
 {#if showDeleteModal}
@@ -107,7 +111,7 @@
 					on:onDelete={triggeredDeletePerson}
 					on:onEdit={(event) => {
 						letShowEditModal = true;
-						personToBeEdited = event.detail.person;
+						personToBeEdited = event.detail;
 					}}
 				/>
 			</div>

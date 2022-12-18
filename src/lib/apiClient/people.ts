@@ -1,4 +1,5 @@
 import ClientAPI from '$lib/apiClient/ClientAPI.js';
+import type { Event } from 'types/event';
 import type { Person } from '../../../types/person';
 
 export const LocalApiPeople = {
@@ -11,7 +12,7 @@ export const LocalApiPeople = {
 	getAllPeopleByItem: async (itemId: string): Promise<Person[]> => {
 		return await ClientAPI.get(`/people/item/${itemId}`);
 	},
-	getAllPersonEvents: async (personId: string): Promise<Person[]> => {
+	getAllPersonEvents: async (personId: string): Promise<Event[]> => {
 		return await ClientAPI.get(`/people/${personId}/summary`);
 	},
 	deletePerson: async (personId: string): Promise<unknown> => {

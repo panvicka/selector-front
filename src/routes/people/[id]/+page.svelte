@@ -1,17 +1,18 @@
-<script>
-	export let data;
+<script lang="ts">
 	import PersonDetail from '../../../components/personDetail.svelte';
 	import { onMount } from 'svelte';
 	import { getActiveEvents, getEventsWithFutureDates } from '../../../utils/date';
 	import Loader from '../../../components/general/Loader.svelte';
 	import Error from '../../../components/general/Error.svelte';
 	import { LocalApiPeople } from '$lib/apiClient/people';
+	import type { Person } from 'types/person';
+	import type { Event } from 'types/event';
 
-	export let person;
+	export let data: Person;
 	let isLoading = true;
-	let allAttendedEvents = [];
-	let futureEvents = [];
-	let runningEvents = [];
+	let allAttendedEvents: Array<Event> = [];
+	let futureEvents: Array<Event> = [];
+	let runningEvents: Array<Event> = [];
 
 	let invalidPerson = false;
 
@@ -20,13 +21,8 @@
 	onMount(async () => {
 		if (data._id) {
 			allAttendedEvents = await LocalApiPeople.getAllPersonEvents(data._id);
-
 			futureEvents = getEventsWithFutureDates(allAttendedEvents);
 			runningEvents = getActiveEvents(allAttendedEvents);
-			console.log('future events');
-			console.log(futureEvents);
-			console.log('running events');
-			console.log(runningEvents);
 			isLoading = false;
 		} else {
 			invalidPerson = true;

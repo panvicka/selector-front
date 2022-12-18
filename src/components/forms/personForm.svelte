@@ -1,39 +1,38 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
 	import TextInput from '../general/TextInput.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { onMount } from 'svelte';
-	import SelectDropdown from '../general/SelectDropdown.svelte';
-	import Fa from 'svelte-fa';
+
 	import {
 		addItemToArrayIfNotAlreadyThere,
-		addToArrayIfKeyValueDoesntExist,
 		findByKeyInArray,
 		findIndexByKeyInArray,
-		removeFromArrayBasedOnKey,
 		removeItemFromArray
 	} from '../../utils/arrayUtils';
-	import { faXmark } from '@fortawesome/free-solid-svg-icons';
 	import GroupToggle from '../general/GroupToggle.svelte';
+	import type { Item } from 'types/item';
+	import type { Group } from 'types/group';
+	import type { Person } from 'types/person';
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ submit: Person }>();
 
 	let itemCheckStates = [];
-	export let allItems = [];
+	export let allItems: Array<Item> = [];
 
 	export let title = '';
 
-	export let person = {
+	export let person: Person = {
+		_id: '',
 		name: '',
 		itemsCanBeAttended: [],
 		groupes: [],
 		active: true
 	};
 
-	export let allGroupes = [];
+	export let allGroupes: Array<Group> = [];
 
-	let newSelectedGroupes = [];
-	let newSelectedItems = [];
+	let newSelectedGroupes: Array<Group> = [];
+	let newSelectedItems: Array<Item> = [];
 
 	let mappedData = [];
 	const mapGroups = (groupId) => {
@@ -123,10 +122,11 @@
 
 	function onSubmit() {
 		dispatch('submit', {
+			_id: person._id || '',
 			name: person.name,
 			itemsCanBeAttended: newSelectedItems,
 			groupes: newSelectedGroupes,
-			active: person.active,
+			active: person.active
 		});
 	}
 
@@ -151,7 +151,12 @@
 
 <div class="flex w-full">
 	<div class="bg-base-300 rounded-box w-80 p-4">
-		<TextInput inputLabel={'Name'} inputPlaceholder="Name" bind:textValue={person.name} class="input-accent" />
+		<TextInput
+			inputLabel={'Name'}
+			inputPlaceholder="Name"
+			bind:textValue={person.name}
+			class="input-accent"
+		/>
 
 		<label class="cursor-pointer label">
 			<span class="label-text">Active</span>

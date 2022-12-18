@@ -1,11 +1,11 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import type { Person } from 'types/person';
 	import Card from './general/Card.svelte';
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ onDelete: Person; onEdit: Person }>();
 
-	export let person;
+	export let person: Person;
 </script>
 
 <Card
@@ -15,12 +15,12 @@
 	titleTextColor={person.active ? 'accent' : 'error'}
 	on:deleteTrigger={() => {
 		dispatch('onDelete', {
-			person
+			...person
 		});
 	}}
 	on:settingsTrigger={() => {
 		dispatch('onEdit', {
-			person
+			...person
 		});
 	}}
 >
