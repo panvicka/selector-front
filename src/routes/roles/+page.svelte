@@ -1,6 +1,5 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
-	import { createRole, deleteRole, getAllRoles, updateRole } from './../../api/roles';
 	import Modal from '../../components/general/Modal.svelte';
 	import RoleForm from '../../components/forms/roleForm.svelte';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -8,39 +7,51 @@
 	import RoleCard from '../../components/roles/RoleCard.svelte';
 	import DangerZoneConfirmDeleteAction from '../../components/general/DangerZoneConfirmDeleteAction.svelte';
 	import Loader from '../../components/general/Loader.svelte';
+	import { LocalApiRoles } from '$lib/apiClient/roles';
+	import type { Role } from 'types/role';
 
-	let roles = [];
+	let roles: Array<Role> = [];
+
+	let roleToBeDeleted: Role = {
+		_id: '',
+		description: '',
+		name: '',
+		icon: ''
+	};
+	let roleToBeEdited: Role = {
+		_id: '',
+		description: '',
+		name: '',
+		icon: ''
+	};
 
 	let isLoading = true;
+
 	onMount(async () => {
 		await fetchAllRoles();
 		isLoading = false;
 	});
 
 	const fetchAllRoles = async () => {
-		const res = await getAllRoles();
+		const res = await LocalApiRoles.getAllRoles();
 		roles = res;
 		console.log(roles);
 	};
 
 	const handleCreateNewRole = async (event) => {
-		const res = await createRole({
-			name: event.detail.name,
-			description: event.detail.description,
-			icon: event.detail.icon
-		});
+		const res = await LocalApiRoles.createRole(event.detail);
 		letShowCreateModal = false;
 		fetchAllRoles();
 	};
 
-	const handleDeleteRole = async (roleId) => {
-		const res = await deleteRole(roleId);
+	const handleDeleteRole = async (roleId: Role['_id']) => {
+		const res = await LocalApiRoles.deleteRole(roleId);
 		fetchAllRoles();
 		showDeleteModal = false;
 	};
 
 	const handleEditRole = async (event) => {
-		const res = await updateRole(roleToBeEdited._id, event.detail);
+		const res = await LocalApiRoles.updateRole(roleToBeEdited._id, event.detail);
 		fetchAllRoles();
 		letShowEditModal = false;
 	};
@@ -49,9 +60,6 @@
 		roleToBeDeleted = event.detail.role;
 		showDeleteModal = true;
 	};
-
-	let roleToBeDeleted = {};
-	let roleToBeEdited = {};
 
 	let showDeleteModal = false;
 	let letShowCreateModal = false;
