@@ -9,12 +9,12 @@
 		findIndexByKeyInArray,
 		removeItemFromArray
 	} from '../../utils/arrayUtils';
-	import GroupToggle from '../general/GroupToggle.svelte';
+	import GroupToggle, { type mappedDataType } from '../general/GroupToggle.svelte';
 	import type { Item } from 'types/item';
 	import type { Group } from 'types/group';
 	import type { Person } from 'types/person';
 
-	const dispatch = createEventDispatcher<{ submit: Person }>();
+	const dispatch = createEventDispatcher<{ submit: Person; close: void }>();
 
 	let itemCheckStates = [];
 	export let allItems: Array<Item> = [];
@@ -34,8 +34,9 @@
 	let newSelectedGroupes: Array<Group> = [];
 	let newSelectedItems: Array<Item> = [];
 
-	let mappedData = [];
-	const mapGroups = (groupId) => {
+	let mappedData: Array<mappedDataType> = [];
+
+	const mapGroups = (groupId: string) => {
 		let active = false;
 
 		const index = findIndexByKeyInArray('_id', groupId, person.groupes);
@@ -43,13 +44,10 @@
 			active = true;
 		}
 
-		if (person.groupes.includes(groupId)) {
-			active = true;
-		}
 		let group = findByKeyInArray('_id', groupId, allGroupes);
-
-		const mappedGroupData = group.items.map((item) => {
-			if (person.itemsCanBeAttended.includes(item._id)) {
+		console.log(person);
+		const mappedGroupData = group.items.map((item: any) => {
+			if (person?.itemsCanBeAttended?.includes(item._id)) {
 				return {
 					_id: item._id,
 					name: item.name,
@@ -75,8 +73,8 @@
 		});
 	};
 
-	const setSelectedGroupsAndItems = (mappedData) => {
-		mappedData.forEach((mappedDataItem) => {
+	const setSelectedGroupsAndItems = (mappedData: Array<mappedDataType>) => {
+		mappedData.forEach((mappedDataItem: mappedDataType) => {
 			if (mappedDataItem.activeInGroup === true) {
 				newSelectedGroupes = addItemToArrayIfNotAlreadyThere(
 					newSelectedGroupes,
@@ -102,18 +100,19 @@
 	setSelectedGroupsAndItems(mappedData);
 
 	onMount(async () => {
-		itemCheckStates = allItems.map((item) => {
+		itemCheckStates = allItems.map((item: any) => {
 			let itemSummary = {
 				_id: item._id,
 				name: item.name,
 				checked: false
 			};
-			if (person.itemsCanBeAttended.includes(item._id)) {
+			if (person?.itemsCanBeAttended?.includes(item._id)) {
 				itemSummary.checked = true;
 			}
 
 			return itemSummary;
 		});
+		console.log(itemCheckStates);
 	});
 
 	function close() {
@@ -130,15 +129,16 @@
 		});
 	}
 
-	const handleToggleChange = (event, id) => {
+	const handleToggleChange = (event: CustomEvent<mappedDataType>, id: string) => {
 		const index = findIndexByKeyInArray('_id', id, mappedData);
 
-		mappedData[index].activeInGroup = event.detail.data.activeInGroup;
+		console.log(mappedData);
+		mappedData[index].activeInGroup = event.detail.activeInGroup;
 		if (mappedData[index].activeInGroup == true) {
 			mappedData[index].items = mappedData[index].items.map((item) => {
 				return {
 					...item,
-					groupActive: true
+					groupActive: true 
 				};
 			});
 		}

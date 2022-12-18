@@ -5,6 +5,6 @@ export interface Person {
 	_id: string;
 	name: string;
 	active: boolean;
-	itemsCanBeAttended?: Array<Item>;
+	itemsCanBeAttended?: Array<Item> | Array<string>;
 	groupes?: Array<Group>;
 }

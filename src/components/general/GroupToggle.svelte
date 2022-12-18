@@ -1,12 +1,31 @@
-<script>
+<script context="module" lang="ts">
+	export type mappedDataType = {
+		activeInGroup: boolean;
+		descriptions: string;
+		items: Array<Item & { groupActive: boolean }>;
+		name: string;
+		_id: string;
+	};
+</script>
+
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
+	import type { Item } from 'types/item';
 
-	export let data = [];
+	const dispatch = createEventDispatcher<{ change: mappedDataType }>();
 
+	export let data: mappedDataType = {
+		activeInGroup: false,
+		descriptions: '',
+		items: [],
+		name: '',
+		_id: ''
+	};
+
+	console.log(data);
 	function onChange() {
 		dispatch('change', {
-			data
+			...data
 		});
 	}
 </script>
