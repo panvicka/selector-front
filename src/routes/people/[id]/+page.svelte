@@ -2,10 +2,10 @@
 	export let data;
 	import PersonDetail from '../../../components/personDetail.svelte';
 	import { onMount } from 'svelte';
-	import { getAllEventsForPerson } from '../../../components/people/peopleHandlerFunctions';
 	import { getActiveEvents, getEventsWithFutureDates } from '../../../utils/date';
 	import Loader from '../../../components/general/Loader.svelte';
 	import Error from '../../../components/general/Error.svelte';
+	import { LocalApiPeople } from '$lib/apiClient/people';
 
 	export let person;
 	let isLoading = true;
@@ -19,7 +19,7 @@
 
 	onMount(async () => {
 		if (data._id) {
-			allAttendedEvents = await getAllEventsForPerson(data._id);
+			allAttendedEvents = await LocalApiPeople.getAllPersonEvents(data._id);
 
 			futureEvents = getEventsWithFutureDates(allAttendedEvents);
 			runningEvents = getActiveEvents(allAttendedEvents);

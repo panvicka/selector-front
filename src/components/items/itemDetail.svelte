@@ -41,6 +41,9 @@
 	onMount(async () => {
 		if (item._id) {
 			selectablePeople = await getAllSelectablePeople(item._id);
+			console.log('selecteable people');
+			console.log(item._id);
+			console.log(selectablePeople);
 			await fetchAllItemEvents();
 			isLoading = false;
 		} else {

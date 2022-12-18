@@ -1,5 +1,4 @@
 <script>
-	import { createPerson, deletePerson, getAllPeople, updatePerson } from '../../api/people';
 	import { onMount } from 'svelte';
 	import PersonCard from '../../components/personCard.svelte';
 	import Modal from '../../components/general/Modal.svelte';
@@ -10,6 +9,7 @@
 	import { getAllGroups } from '../../api/groups';
 	import Loader from '../../components/general/Loader.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
+	import { LocalApiPeople } from '$lib/apiClient/people';
 
 	let people = [];
 
@@ -26,13 +26,12 @@
 	});
 
 	const fetchAllPeople = async () => {
-		const res = await getAllPeople();
-		people = res;
+		people = await LocalApiPeople.getAllPeople();
 	};
 
 	const handleCreateNewPerson = async (event) => {
 		console.log(event.detail);
-		const res = await createPerson({
+		const res = await LocalApiPeople.createPerson({
 			name: event.detail.name,
 			itemsCanBeAttended: event.detail.itemsCanBeAttended,
 			groupes: event.detail.groupes,
@@ -43,13 +42,13 @@
 	};
 
 	const handleDeletePerson = async (personId) => {
-		const res = await deletePerson(personId);
+		const res = await LocalApiPeople.deletePerson(personId);
 		fetchAllPeople();
 		showDeleteModal = false;
 	};
 
 	const handleEditPerson = async (event) => {
-		const res = await updatePerson(personToBeEdited._id, event.detail);
+		const res = await LocalApiPeople.updatePerson(personToBeEdited._id, event.detail);
 		fetchAllPeople();
 		letShowEditModal = false;
 	};

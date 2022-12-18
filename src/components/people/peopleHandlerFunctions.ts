@@ -1,7 +1,9 @@
-import { getAllPeopleByItem, getAllPersonEvents } from '../../api/people';
+
+import { LocalApiPeople } from '$lib/apiClient/people';
 
 export const getAllSelectablePeople = async (itemId) => {
-	const res = await getAllPeopleByItem(itemId);
+	console.log("get all selectable people")
+	const res = await LocalApiPeople.getAllPeopleByItem(itemId);
 	const people = [];
 
 	res.map((person) => {
@@ -14,5 +16,5 @@ export const getAllSelectablePeople = async (itemId) => {
 };
 
 export const getAllEventsForPerson = async (personId) => {
-	return await getAllPersonEvents(personId);
+	return await LocalApiPeople.getAllPersonEvents(personId);
 };
