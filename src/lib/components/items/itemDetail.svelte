@@ -1,27 +1,26 @@
 <script lang="ts">
-	import EventTable from '../eventTable.svelte';
-	import EventForm from '../forms/eventForm.svelte';
-	import Modal from '../general/Modal.svelte';
+	import EventTable from 'components/events/eventTable.svelte';
+	import EventForm from 'components/forms/eventForm.svelte';
+	import Modal from 'components/general/Modal.svelte';
 	import { onMount } from 'svelte';
-	import PeopleTable from '../people/peopleTable.svelte';
-	import { getAllSelectablePeople } from '../people/peopleHandlerFunctions';
+	import PeopleTable from 'components/people/peopleTable.svelte';
+	import { getAllSelectablePeople } from 'components/people/peopleHandlerFunctions';
 	import {
 		handleCreateNewEvent,
 		handleUpdateEvent,
 		handleDeleteEvent
-	} from '../events/eventHandlerFuntions';
-	import ConfirmDeleteAction from '../general/ConfirmDeleteAction.svelte';
+	} from '$lib/components/events/eventHandlerFuntions';
+	import ConfirmDeleteAction from 'components/general/ConfirmDeleteAction.svelte';
 	import { getAllPeopleAndRoleCount } from './itemHandlerFunctions';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import ItemEventSummary from './itemEventSummary.svelte';
-	import Loader from '../general/Loader.svelte';
-	import Error from '../general/Error.svelte';
+	import Loader from 'components/general/Loader.svelte';
+	import Error from 'components/general/Error.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
-	import { RemoteApiEvents } from '../../api/event';
-	import type { Item } from 'types/item';
-	import type { Event } from 'types/event';
-	import type { Person } from 'types/person';
+	import type { Item } from '$lib/types/item';
+	import type { Event } from '$lib/types/event';
+	import type { Person } from '$lib/types/person';
 	import { LocalApiEvents } from '$lib/apiClient/events.js';
 
 	export let item: Item;

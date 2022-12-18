@@ -1,19 +1,13 @@
 <script>
 	// @ts-nocheck
 
-	import { createEventDispatcher } from 'svelte';
-	import Card from '../general/Card.svelte';
-
-	import * as Icons from '@fortawesome/free-solid-svg-icons';
-	import Fa from 'svelte-fa';
-	import { onMount } from 'svelte';
-	import { formatDate, getRemainingTime } from '../../utils/date';
+	import { formatDate, getRemainingTime } from 'utils/date';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
-	import RoleBadge from '../roles/RoleBadge.svelte';
-	import PersonLink from '../people/PersonLink.svelte';
-	import Counter from '../general/Counter.svelte';
-	import ItemLink from '../items/ItemLink.svelte';
+	import RoleBadge from 'components/roles/RoleBadge.svelte';
+	import PersonLink from 'components/people/PersonLink.svelte';
+	import Counter from 'components/general/Counter.svelte';
+	import ItemLink from 'components/items/ItemLink.svelte';
 
 	export let event = {};
 	// export let item = null;
@@ -31,9 +25,9 @@
 
 <div class="card w-96 bg-neutral shadow-xl overflow-visible p-6 h-fit w-200">
 	{#if event.item && showItemDetails}
-	<h4> 
-		<ItemLink item={event.item} />
-	</h4>
+		<h4>
+			<ItemLink item={event.item} />
+		</h4>
 	{/if}
 
 	{#if runningEvent}

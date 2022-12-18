@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Item } from 'types/item';
-	import Card from '../general/Card.svelte';
+	import type { Item } from '$lib/types/item';
+	import Card from 'components/general/Card.svelte';
 
 	export let item: Item;
 
-	import RoleBadge from '../roles/RoleBadge.svelte';
+	import RoleBadge from 'components/roles/RoleBadge.svelte';
 
 	const dispatch = createEventDispatcher();
 </script>

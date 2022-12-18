@@ -1,6 +1,6 @@
 import ClientAPI from '$lib/apiClient/ClientAPI.js';
-import type { Event } from 'types/event';
-import type { Person } from '../../../types/person';
+import type { Event } from '$lib/types/event';
+import type { Person } from '$lib/types/person';
 
 export const LocalApiPeople = {
 	getAllPeople: async (): Promise<Person[]> => {

@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import TextInput from '../general/TextInput.svelte';
+	import TextInput from 'components/general/TextInput.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import Fa from 'svelte-fa';
 	import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -8,9 +8,9 @@
 		addToArrayIfKeyValueDoesntExist,
 		findByKeyInArray,
 		removeFromArrayBasedOnKey
-	} from '../../utils/arrayUtils';
-	import SelectDropdown from '../general/SelectDropdown.svelte';
-	import TextField from '../general/TextField.svelte';
+	} from 'utils/arrayUtils';
+	import SelectDropdown from 'components/general/SelectDropdown.svelte';
+	import TextField from 'components/general/TextField.svelte';
 	const dispatch = createEventDispatcher();
 
 	function close() {

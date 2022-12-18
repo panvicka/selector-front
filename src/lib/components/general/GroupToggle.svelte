@@ -10,7 +10,7 @@
 
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Item } from 'types/item';
+	import type { Item } from '$lib/types/item';
 
 	const dispatch = createEventDispatcher<{ change: mappedDataType }>();
 

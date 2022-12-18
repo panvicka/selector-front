@@ -1,4 +1,4 @@
-import { RemoteApiEvents } from '../../../../api/event';
+import { RemoteApiEvents } from 'api/event';
 import type { RequestHandler } from './$types';
 import { json } from '@sveltejs/kit';
 

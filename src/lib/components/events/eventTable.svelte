@@ -7,10 +7,10 @@
 	import { onMount } from 'svelte';
 
 	import { createEventDispatcher } from 'svelte';
-	import { camelize } from '../utils/stringUtils';
-	import { addToArrayIfKeyValueDoesntExist } from '../utils/arrayUtils';
+	import { camelize } from 'utils/stringUtils';
+	import { addToArrayIfKeyValueDoesntExist } from 'utils/arrayUtils';
 	import dayjs from 'dayjs';
-	import { formatDate } from '../utils/date';
+	import { formatDate } from 'utils/date';
 	const dispatch = createEventDispatcher();
 
 	export let eventsToShow = [];

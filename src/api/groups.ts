@@ -1,4 +1,4 @@
-import type { Group } from 'types/group';
+import type { Group } from '$lib/types/group';
 import RemoteApi from './RemoteAPI';
 
 export const RemoteApiGroups = {

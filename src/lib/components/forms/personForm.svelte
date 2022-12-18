@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TextInput from '../general/TextInput.svelte';
+	import TextInput from 'components/general/TextInput.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { onMount } from 'svelte';
 
@@ -8,11 +8,11 @@
 		findByKeyInArray,
 		findIndexByKeyInArray,
 		removeItemFromArray
-	} from '../../utils/arrayUtils';
-	import GroupToggle, { type mappedDataType } from '../general/GroupToggle.svelte';
-	import type { Item } from 'types/item';
-	import type { Group } from 'types/group';
-	import type { Person } from 'types/person';
+	} from 'utils/arrayUtils';
+	import GroupToggle, { type mappedDataType } from 'components/general/GroupToggle.svelte';
+	import type { Item } from '$lib/types/item';
+	import type { Group } from '$lib/types/group';
+	import type { Person } from '$lib/types/person';
 
 	const dispatch = createEventDispatcher<{ submit: Person; close: void }>();
 

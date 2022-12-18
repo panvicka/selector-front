@@ -1,5 +1,5 @@
 import ClientAPI from '$lib/apiClient/ClientAPI.js';
-import type {Event} from '../../../types/event';
+import type {Event} from '$lib/types/event';
 
 export const LocalApiEvents = {
 	getEventById: async (eventId: string): Promise<Event> => {

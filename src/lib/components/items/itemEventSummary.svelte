@@ -3,9 +3,8 @@
 
 	import { createEventDispatcher } from 'svelte';
 	import { onMount } from 'svelte';
-	import EventDetail from '../events/EventDetail.svelte';
-	import { getActiveEvents, getEventsWithFutureDates, getLastEvent } from '../../utils/date';
-	import EventGroupOverview from '../events/EventGroupOverview.svelte';
+ 	import { getActiveEvents, getEventsWithFutureDates, getLastEvent } from 'utils/date';
+	import EventGroupOverview from 'components/events/EventGroupOverview.svelte';
 
 	const dispatch = createEventDispatcher();
 

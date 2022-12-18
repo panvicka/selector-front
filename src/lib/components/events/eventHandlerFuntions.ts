@@ -1,6 +1,6 @@
+import type { Event } from '$lib/types/event';
+import type { Item } from '$lib/types/item';
 import { LocalApiEvents } from '$lib/apiClient/events';
-import type { Item } from '../../../types/item';
-import type { Event } from '../../../types/event';
 
 export const handleCreateNewEvent = async (event: Event, item: Item) => {
 	const payload = {

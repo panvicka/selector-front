@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import PersonCard from '../../components/personCard.svelte';
-	import Modal from '../../components/general/Modal.svelte';
-	import PersonForm from '../../components/forms/personForm.svelte';
-	import ConfirmDeleteAction from '../../components/general/DangerZoneConfirmDeleteAction.svelte';
-	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
-	import Loader from '../../components/general/Loader.svelte';
+	import { faPlus } from '@fortawesome/free-solid-svg-icons';
+	import { onMount } from 'svelte';
+	import PersonCard from 'components/people/personCard.svelte';
+	import PersonForm from 'components/forms/personForm.svelte';
+	import ConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
+	import Loader from 'components/general/Loader.svelte';
+	import Modal from 'components/general/Modal.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
 	import { LocalApiPeople } from '$lib/apiClient/people';
 	import { LocalApiGroups } from '$lib/apiClient/groups';
-	import type { Person } from 'types/person';
-	import type { Item } from 'types/item';
-	import type { Group } from 'types/group';
+	import type { Person } from '$lib/types/person';
+	import type { Item } from '$lib/types/item';
+	import type { Group } from '$lib/types/group';
 
 	let people: Array<Person> = [];
 	let allItems: Array<Item> = [];

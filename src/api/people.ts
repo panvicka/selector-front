@@ -1,4 +1,4 @@
-import type { Person } from 'types/person';
+import type { Person } from '$lib/types/person';
 import RemoteAPI from './RemoteAPI';
 
 export const RemoteApiPeople = {

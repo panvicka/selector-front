@@ -1,9 +1,8 @@
 <script lang="ts">
-	import TextInput from '../general/TextInput.svelte';
-	import TextField from '../general/TextField.svelte';
-
+	import TextInput from 'components/general/TextInput.svelte';
+	import TextField from 'components/general/TextField.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import type { Group } from 'types/group';
+	import type { Group } from '$lib/types/group';
 
 	const dispatch = createEventDispatcher<{ submit: Group; close: void }>();
 

@@ -2,16 +2,16 @@
 	// @ts-nocheck
 	import ItemCard from './itemCard.svelte';
 	import { onMount } from 'svelte';
-	import Modal from '../general/Modal.svelte';
-	import ItemForm from '../forms/ItemForm.svelte';
-	import DangerZoneConfirmDeleteAction from '../general/DangerZoneConfirmDeleteAction.svelte';
+	import Modal from 'components/general/Modal.svelte';
+	import ItemForm from 'components/forms/ItemForm.svelte';
+	import DangerZoneConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
 	import { handleCreateNew, handleDeleteItem, handleEditItem } from './itemHandlerFunctions';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
-	import { getAllRoles } from '../../api/roles';
-	import { getAllGroups } from '../../api/groups';
-	import Loader from '../general/Loader.svelte';
+	import Loader from 'components/general/Loader.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
+	import { LocalApiGroups } from '$lib/apiClient/groups';
+	import { LocalApiRoles } from '$lib/apiClient/roles';
 
 	let items = [];
 	let allRoles = [];
@@ -25,8 +25,9 @@
 
 	const fetchEverything = async () => {
 		items = await LocalApiItems.getAllItems();
-		allRoles = await getAllRoles();
-		allGroupes = await getAllGroups();
+		console.log(items);
+		allRoles = await LocalApiRoles.getAllRoles();
+		allGroupes = await LocalApiGroups.getAllGroups();
 	};
 
 	let showCreateItemModal = false;

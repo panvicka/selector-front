@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Modal from '../../components/general/Modal.svelte';
-	import RoleForm from '../../components/forms/roleForm.svelte';
+	import Modal from 'components/general/Modal.svelte';
+	import RoleForm from 'components/forms/roleForm.svelte';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
-	import RoleCard from '../../components/roles/RoleCard.svelte';
-	import DangerZoneConfirmDeleteAction from '../../components/general/DangerZoneConfirmDeleteAction.svelte';
-	import Loader from '../../components/general/Loader.svelte';
+	import RoleCard from 'components/roles/RoleCard.svelte';
+	import DangerZoneConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
+	import Loader from 'components/general/Loader.svelte';
 	import { LocalApiRoles } from '$lib/apiClient/roles';
-	import type { Role } from 'types/role';
+	import type { Role } from '$lib/types/role';
 
 	let roles: Array<Role> = [];
 

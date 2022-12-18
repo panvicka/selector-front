@@ -1,14 +1,14 @@
 <script lang="ts">
-	import TextInput from '../general/TextInput.svelte';
-	import TextField from '../general/TextField.svelte';
+	import TextInput from 'components/general/TextInput.svelte';
+	import TextField from 'components/general/TextField.svelte';
 
 	import { createEventDispatcher } from 'svelte';
 
 	import * as Icons from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
-	import SelectDropdown from '../general/SelectDropdown.svelte';
-	import type { Role } from 'types/role';
-	import type { Icon } from 'types/icon';
+	import SelectDropdown from 'components/general/SelectDropdown.svelte';
+	import type { Role } from '$lib/types/role';
+	import type { Icon } from '$lib/types/icon';
 
 	const dispatch = createEventDispatcher<{ submit: Role; close: void }>();
 
@@ -37,7 +37,7 @@
 	let selectableIcons: Array<Icon> = [];
 
 	for (const key of Object.entries(Icons)) {
-		console.log(key)
+		console.log(key);
 		selectableIcons.push({
 			value: key[0],
 			label: key[1].iconName

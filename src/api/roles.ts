@@ -1,5 +1,5 @@
 import Api from './RemoteAPI';
-import type { Role } from 'types/role';
+import type { Role } from '$lib/types/role';
 
 export const RemoteApiRoles = {
 	getAllRoles: async () => {

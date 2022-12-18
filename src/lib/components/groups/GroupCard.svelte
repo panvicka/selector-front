@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Group } from 'types/group';
-	import Card from '../general/Card.svelte';
+	import type { Group } from '$lib/types/group';
+	import Card from 'components/general/Card.svelte';
 
 	export let group: Group;
 	const dispatch = createEventDispatcher<{ delete: Group; edit: Group }>();

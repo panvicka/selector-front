@@ -1,5 +1,5 @@
+import type { Event } from '$lib/types/event';
 import RemoteAPI from './RemoteAPI';
-import type { Event } from '../../types/event';
 
 export const RemoteApiEvents = {
 	getAllEventsForItem: async (itemId?: string): Promise<Event[]> => {

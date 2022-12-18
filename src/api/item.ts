@@ -1,5 +1,5 @@
 import Api from './RemoteAPI';
-import type { Item } from '../../types/item';
+import type { Item } from '$lib/types/item';
 
 export const RemoteApiItems = {
 	getAllItems: async (): Promise<Item[]> => {

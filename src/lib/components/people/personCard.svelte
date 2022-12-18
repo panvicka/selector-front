@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { Person } from 'types/person';
-	import Card from './general/Card.svelte';
+	import type { Person } from '$lib/types/person';
+	import Card from 'components/general/Card.svelte';
 
 	const dispatch = createEventDispatcher<{ onDelete: Person; onEdit: Person }>();
 

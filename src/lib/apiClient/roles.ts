@@ -1,5 +1,5 @@
 import ClientAPI from '$lib/apiClient/ClientAPI.js';
-import type { Role } from '../../../types/role';
+import type { Role } from '$lib/types/role';
 
 export const LocalApiRoles = {
 	getAllRoles: async (): Promise<Array<Role>> => {

@@ -1,5 +1,5 @@
 import ClientAPI from '$lib/apiClient/ClientAPI.js';
-import type { Group } from '../../../types/group';
+import type { Group } from '$lib/types/group';
 
 export const LocalApiGroups = {
 	getAllGroups: async (): Promise<Array<Group>> => {

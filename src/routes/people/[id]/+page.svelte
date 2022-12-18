@@ -1,12 +1,12 @@
 <script lang="ts">
-	import PersonDetail from '../../../components/personDetail.svelte';
+	import PersonDetail from 'components/people/personDetail.svelte';
 	import { onMount } from 'svelte';
-	import { getActiveEvents, getEventsWithFutureDates } from '../../../utils/date';
-	import Loader from '../../../components/general/Loader.svelte';
-	import Error from '../../../components/general/Error.svelte';
+	import { getActiveEvents, getEventsWithFutureDates } from 'utils/date';
+	import Loader from 'components/general/Loader.svelte';
+	import Error from 'components/general/Error.svelte';
 	import { LocalApiPeople } from '$lib/apiClient/people';
-	import type { Person } from 'types/person';
-	import type { Event } from 'types/event';
+	import type { Person } from '$lib/types/person';
+	import type { Event } from '$lib/types/event';
 
 	export let data: Person;
 	let isLoading = true;

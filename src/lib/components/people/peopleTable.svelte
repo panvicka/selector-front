@@ -4,7 +4,7 @@
 	import { html } from 'gridjs';
 	import 'gridjs/dist/theme/mermaid.css';
 	import dayjs from 'dayjs';
-	import { camelize } from '../../utils/stringUtils';
+	import { camelize } from 'utils/stringUtils';
 
 	export let data = {};
 	export let item = {};

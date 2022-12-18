@@ -3,8 +3,8 @@
 	import Fa from 'svelte-fa';
 
 	import { createEventDispatcher } from 'svelte';
-	import Card from '../general/Card.svelte';
-	import type { Role } from 'types/role';
+	import Card from 'components/general/Card.svelte';
+	import type { Role } from '$lib/types/role';
 
 	export let role: Role;
 

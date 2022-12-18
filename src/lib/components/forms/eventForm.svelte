@@ -1,16 +1,16 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import DateInput from '../general/DateInput.svelte';
+	import DateInput from 'components/general/DateInput.svelte';
 	import { onMount } from 'svelte';
-	import { replaceKeyValueInToArrayIfKeyExistOrAdd } from '../../utils/arrayUtils';
-	import SelectDropdown from '../general/SelectDropdown.svelte';
+	import { replaceKeyValueInToArrayIfKeyExistOrAdd } from 'utils/arrayUtils';
+	import SelectDropdown from 'components/general/SelectDropdown.svelte';
 	import dayjs from 'dayjs';
-	import type { Person } from 'types/person';
-	import type { Event } from 'types/event';
-	import type { Participant } from 'types/participant';
-	import type { Role } from 'types/role';
-	import type { Item } from 'types/item';
-	import type { SvelteSelectableItem } from 'types/svelte-select/detail';
+	import type { Person } from '$lib/types/person';
+	import type { Event } from '$lib/types/event';
+	import type { Participant } from '$lib/types/participant';
+	import type { Role } from '$lib/types/role';
+	import type { Item } from '$lib/types/item';
+	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
 	const dispatch = createEventDispatcher();
 
 	export let peopleToSelectFrom: Array<SvelteSelectableItem> = [];

@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Modal from '../../components/general/Modal.svelte';
+	import Modal from 'components/general/Modal.svelte';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
-	import GroupCard from '../../components/groups/GroupCard.svelte';
-	import GroupForm from '../../components/forms/groupForm.svelte';
-	import DangerZoneConfirmDeleteAction from '../../components/general/DangerZoneConfirmDeleteAction.svelte';
-	import Loader from '../../components/general/Loader.svelte';
+	import GroupCard from 'components/groups/GroupCard.svelte';
+	import GroupForm from 'components/forms/groupForm.svelte';
+	import DangerZoneConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
+	import Loader from 'components/general/Loader.svelte';
 	import { LocalApiGroups } from '$lib/apiClient/groups';
-	import type { Group } from 'types/group';
+	import type { Group } from '$lib/types/group';
 
 	let groups: Array<Group> = [];
 	let isLoading = true;
