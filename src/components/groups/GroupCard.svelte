@@ -1,12 +1,10 @@
-<script>
-	// @ts-nocheck
-
+<script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import type { Group } from 'types/group';
 	import Card from '../general/Card.svelte';
 
-	export let group;
-
-	const dispatch = createEventDispatcher();
+	export let group: Group;
+	const dispatch = createEventDispatcher<{ delete: Group; edit: Group }>();
 </script>
 
 <Card
@@ -14,12 +12,12 @@
 	height={500}
 	on:deleteTrigger={() => {
 		dispatch('delete', {
-			group
+			...group
 		});
 	}}
 	on:settingsTrigger={() => {
 		dispatch('edit', {
-			group
+			...group
 		});
 	}}
 >

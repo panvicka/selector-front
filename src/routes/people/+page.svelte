@@ -6,10 +6,10 @@
 	import ConfirmDeleteAction from '../../components/general/DangerZoneConfirmDeleteAction.svelte';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
-	import { getAllGroups } from '../../api/groups';
 	import Loader from '../../components/general/Loader.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
 	import { LocalApiPeople } from '$lib/apiClient/people';
+	import { LocalApiGroups } from '$lib/apiClient/groups';
 	import type { Person } from 'types/person';
 	import type { Item } from 'types/item';
 	import type { Group } from 'types/group';
@@ -38,7 +38,7 @@
 	onMount(async () => {
 		await fetchAllPeople();
 		allItems = await LocalApiItems.getAllItems();
-		allGroupes = await getAllGroups();
+		allGroupes = await LocalApiGroups.getAllGroups();
 		isLoading = false;
 	});
 

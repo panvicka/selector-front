@@ -1,13 +1,14 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
 	import TextInput from '../general/TextInput.svelte';
 	import TextField from '../general/TextField.svelte';
 
 	import { createEventDispatcher } from 'svelte';
+	import type { Group } from 'types/group';
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ submit: Group; close: void }>();
 
-	export let group = {
+	export let group: Group = {
+		_id: '',
 		name: '',
 		description: ''
 	};
@@ -18,6 +19,7 @@
 
 	function onSubmit() {
 		dispatch('submit', {
+			_id: group._id || '',
 			name: group.name,
 			description: group.description
 		});
