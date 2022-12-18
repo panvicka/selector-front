@@ -25,6 +25,10 @@
 		icon: ''
 	};
 
+	let showDeleteModal = false;
+	let letShowCreateModal = false;
+	let letShowEditModal = false;
+
 	let isLoading = true;
 
 	onMount(async () => {
@@ -33,37 +37,31 @@
 	});
 
 	const fetchAllRoles = async () => {
-		const res = await LocalApiRoles.getAllRoles();
-		roles = res;
-		console.log(roles);
+		roles = await LocalApiRoles.getAllRoles();
 	};
 
-	const handleCreateNewRole = async (event) => {
-		const res = await LocalApiRoles.createRole(event.detail);
+	const handleCreateNewRole = async (event: CustomEvent<Role>) => {
+		await LocalApiRoles.createRole(event.detail);
 		letShowCreateModal = false;
 		fetchAllRoles();
 	};
 
 	const handleDeleteRole = async (roleId: Role['_id']) => {
-		const res = await LocalApiRoles.deleteRole(roleId);
+		await LocalApiRoles.deleteRole(roleId);
 		fetchAllRoles();
 		showDeleteModal = false;
 	};
 
-	const handleEditRole = async (event) => {
-		const res = await LocalApiRoles.updateRole(roleToBeEdited._id, event.detail);
+	const handleEditRole = async (event: CustomEvent<Role>) => {
+		await LocalApiRoles.updateRole(roleToBeEdited._id, event.detail);
 		fetchAllRoles();
 		letShowEditModal = false;
 	};
 
-	const triggeredDeleteRole = async (event) => {
-		roleToBeDeleted = event.detail.role;
+	const triggeredDeleteRole = async (event: CustomEvent<Role>) => {
+		roleToBeDeleted = event.detail;
 		showDeleteModal = true;
 	};
-
-	let showDeleteModal = false;
-	let letShowCreateModal = false;
-	let letShowEditModal = false;
 </script>
 
 <div class="header prose">
@@ -88,7 +86,7 @@
 					on:delete={triggeredDeleteRole}
 					on:edit={(event) => {
 						letShowEditModal = true;
-						roleToBeEdited = event.detail.role;
+						roleToBeEdited = event.detail;
 						console.log(roleToBeEdited);
 					}}
 				/>

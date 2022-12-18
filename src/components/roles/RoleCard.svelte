@@ -1,15 +1,14 @@
-<script>
-	// @ts-nocheck
-
+<script lang="ts">
 	import * as Icons from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 
 	import { createEventDispatcher } from 'svelte';
 	import Card from '../general/Card.svelte';
+	import type { Role } from 'types/role';
 
-	export let role;
+	export let role: Role;
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ delete: Role; edit: Role }>();
 </script>
 
 <Card
@@ -17,12 +16,12 @@
 	height={200}
 	on:deleteTrigger={() => {
 		dispatch('delete', {
-			role
+			...role
 		});
 	}}
 	on:settingsTrigger={() => {
 		dispatch('edit', {
-			role
+			...role
 		});
 	}}
 >

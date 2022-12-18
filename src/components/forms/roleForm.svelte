@@ -1,5 +1,4 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
 	import TextInput from '../general/TextInput.svelte';
 	import TextField from '../general/TextField.svelte';
 
@@ -7,12 +6,14 @@
 
 	import * as Icons from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
-	import Select from 'svelte-select';
 	import SelectDropdown from '../general/SelectDropdown.svelte';
+	import type { Role } from 'types/role';
+	import type { Icon } from 'types/icon';
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ submit: Role; close: void }>();
 
-	export let role = {
+	export let role: Role = {
+		_id: '',
 		name: '',
 		description: '',
 		icon: ''
@@ -24,6 +25,7 @@
 
 	function onSubmit() {
 		dispatch('submit', {
+			_id: role._id || '',
 			name: role.name,
 			description: role.description,
 			icon: selectedIcon
@@ -32,15 +34,16 @@
 
 	export let title = '';
 
-	let selectableIcons = [];
+	let selectableIcons: Array<Icon> = [];
 
-	let keys = Object.keys(Icons);
 	for (const key of Object.entries(Icons)) {
+		console.log(key)
 		selectableIcons.push({
 			value: key[0],
 			label: key[1].iconName
 		});
 	}
+	console.log(selectableIcons);
 
 	let selectedIcon = role.icon || '';
 	const handleSelect = (event) => {
