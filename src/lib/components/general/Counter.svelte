@@ -1,8 +1,7 @@
-<script>
-	// @ts-nocheck
-	export let days = null;
-	export let hours = null;
-	export let minutes = null;
+<script lang="ts">
+	export let days: number | null = null;
+	export let hours: number | null = null;
+	export let minutes: number | null = null;
 </script>
 
 <div class="grid grid-flow-col gap-5 text-center auto-cols-max">

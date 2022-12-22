@@ -6,12 +6,10 @@
 	import SelectDropdown from 'components/general/SelectDropdown.svelte';
 	import dayjs from 'dayjs';
 	import type { Person } from '$lib/types/person';
-	import type { Event } from '$lib/types/event';
-	import type { Participant } from '$lib/types/participant';
+	import type { Event, EventRequestType } from '$lib/types/event';
 	import type { Role } from '$lib/types/role';
 	import type { Item } from '$lib/types/item';
 	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
-	const dispatch = createEventDispatcher();
 
 	export let peopleToSelectFrom: Array<SvelteSelectableItem> = [];
 	export let title = '';
@@ -26,8 +24,8 @@
 			groupes: [],
 			roles: []
 		},
-		startDate: new Date(),
-		endDate: undefined,
+		startDate: '',
+		endDate: '',
 		participants: []
 	};
 
@@ -39,33 +37,62 @@
 		description: ''
 	};
 
-	console.log(item);
+	let selectedParticipantsIds: Array<{
+		role: string;
+		person: string;
+	}> = [];
 
 	onMount(async () => {
 		event.participants.forEach((participant) => {
-			selectedParticipants.push({
-				role: (participant.role as Role)._id,
-				person: (participant.person as Person)._id
+			selectedParticipantsIds.push({
+				role: participant.role._id,
+				person: participant.person._id
 			});
 		});
+
+		console.log(selectedParticipantsIds);
 	});
 
-	let selectedParticipants: Array<Participant> = [];
+	let startDate = event.startDate || new Date().toDateString();
+	let endDate: EventRequestType['endDate'] = event.endDate ? event.endDate : '';
 
-	let startDate = event.startDate;
-	let endDate = event.endDate ? event.endDate : undefined;
+	$: if (item.isLongerThenOneDay === false) {
+		endDate = startDate;
+	}
+
+	const formEvent: EventRequestType = {
+		startDate: startDate,
+		endDate: endDate,
+		participants: selectedParticipantsIds
+	};
+
+	const dispatch = createEventDispatcher<{ submit: EventRequestType; close: void }>();
 
 	function close() {
 		dispatch('close');
 	}
 
 	function submit() {
-		event.startDate = dayjs(startDate).set('hour', 7).set('minute', 0).set('second', 0).toDate();
-		event.endDate = dayjs(endDate).set('hour', 18).set('minute', 0).set('second', 0).toDate();
-		event.participants = selectedParticipants;
-		console.log(event);
+		formEvent.startDate = dayjs(startDate)
+			.set('hour', 7)
+			.set('minute', 0)
+			.set('second', 0)
+			.toDate()
+			.toISOString();
+		formEvent.endDate = dayjs(endDate)
+			.set('hour', 18)
+			.set('minute', 0)
+			.set('second', 0)
+			.toDate()
+			.toISOString();
+		formEvent.participants = selectedParticipantsIds;
+		formEvent._id = event._id || undefined;
+
+		console.log('dispatchinf');
+		console.log(formEvent);
+
 		dispatch('submit', {
-			event
+			...formEvent
 		});
 	}
 
@@ -81,8 +108,7 @@
 	};
 
 	function handleSelect(event, roleId: Role['_id']) {
-		console.log(event);
-		replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipants, 'role', {
+		replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipantsIds, 'role', {
 			role: roleId,
 			person: event.detail.selected.value
 		});

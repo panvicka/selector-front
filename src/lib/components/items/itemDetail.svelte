@@ -87,7 +87,7 @@
 					showCreateEventModalOpened = false;
 				}}
 				on:submit={(event) => {
-					handleCreateNewEvent(event.detail.event, item).then(() => {
+					handleCreateNewEvent(event.detail, item).then(() => {
 						showCreateEventModalOpened = false;
 						fetchAllItemEvents();
 					});
@@ -107,7 +107,7 @@
 					showEditModalOpened = false;
 				}}
 				on:submit={(event) => {
-					handleUpdateEvent(event.detail.event).then(() => {
+					handleUpdateEvent(event.detail).then(() => {
 						showEditModalOpened = false;
 						fetchAllItemEvents();
 					});

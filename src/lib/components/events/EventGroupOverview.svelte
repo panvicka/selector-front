@@ -1,10 +1,9 @@
-<script>
+<script lang="ts">
+	import type { Event } from '$lib/types/event';
 	import EventDetail from './EventDetail.svelte';
 
-	// @ts-nocheck
-
-	export let eventArray = [];
-	export let highlightPersonId = null;
+	export let eventArray: Event[] = [];
+	export let highlightPersonId = '';
 	export let runningEvent = false;
 	export let futureEvent = false;
 	export let showItemDetails = false;

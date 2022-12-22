@@ -1,7 +1,7 @@
-<script>
-	export let inputLabel;
-	export let inputPlaceholder;
-	export let textValue;
+<script lang="ts">
+	export let inputLabel: string;
+	export let inputPlaceholder: string = "Type here";
+	export let textValue: string;
 
 	const classesFromTheParent = $$props.class;
 </script>
@@ -13,7 +13,7 @@
 	bind:value={textValue}
 	type="text"
 	id={`${inputLabel}-ID`}
-	placeholder={inputPlaceholder || 'Type here'}
+	placeholder={inputPlaceholder}
 	class={`input input-bordered w-full max-w-xs focus:ring-0 focus:ring-offset-0 ${classesFromTheParent}`}
 />
 

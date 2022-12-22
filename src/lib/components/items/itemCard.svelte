@@ -2,10 +2,9 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Item } from '$lib/types/item';
 	import Card from 'components/general/Card.svelte';
+	import RoleBadge from 'components/roles/RoleBadge.svelte';
 
 	export let item: Item;
-
-	import RoleBadge from 'components/roles/RoleBadge.svelte';
 
 	const dispatch = createEventDispatcher();
 </script>

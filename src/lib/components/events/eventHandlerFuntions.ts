@@ -1,11 +1,11 @@
-import type { Event } from '$lib/types/event';
+import type { Event, EventRequestType } from '$lib/types/event';
+
 import type { Item } from '$lib/types/item';
 import { LocalApiEvents } from '$lib/apiClient/events';
 
-export const handleCreateNewEvent = async (event: Event, item: Item) => {
+export const handleCreateNewEvent = async (event: EventRequestType, item: Item) => {
 	const payload = {
 		item: item._id,
-		people: event.people,
 		startDate: event.startDate,
 		endDate: event.endDate,
 		participants: event.participants
@@ -13,14 +13,14 @@ export const handleCreateNewEvent = async (event: Event, item: Item) => {
 	return await LocalApiEvents.createEvent(payload);
 };
 
-export const handleUpdateEvent = async (event: Event) => {
-	return await LocalApiEvents.updateEvent(event._id, {
-		item: event.item._id,
-		people: event.people,
-		startDate: event.startDate,
-		endDate: event.endDate,
-		participants: event.participants
-	});
+export const handleUpdateEvent = async (event: EventRequestType) => {
+	if (event._id) {
+		return await LocalApiEvents.updateEvent(event._id, {
+			startDate: event.startDate,
+			endDate: event.endDate,
+			participants: event.participants
+		});
+	}
 };
 
 export const handleDeleteEvent = async (event: Event) => {

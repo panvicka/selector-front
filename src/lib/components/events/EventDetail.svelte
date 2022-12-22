@@ -1,6 +1,4 @@
-<script>
-	// @ts-nocheck
-
+<script lang="ts">
 	import { formatDate, getRemainingTime } from 'utils/date';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
@@ -8,18 +6,45 @@
 	import PersonLink from 'components/people/PersonLink.svelte';
 	import Counter from 'components/general/Counter.svelte';
 	import ItemLink from 'components/items/ItemLink.svelte';
+	import type { Event } from '$lib/types/event';
+	import type { TimeStruct } from '$lib/types/utils';
+	import type { Participant } from '$lib/types/participant';
 
-	export let event = {};
-	// export let item = null;
+	export let event: Event = {
+		_id: '',
+		item: {
+			_id: '',
+			description: '',
+			isLongerThenOneDay: false,
+			name: '',
+			groupes: [],
+			roles: []
+		},
+		participants: [],
+		startDate: '',
+		endDate: ''
+	};
+
+	event.participants = event.participants as Participant[];
 	export let runningEvent = false;
 	export let futureEvent = false;
-	export let highlightPersonId = null;
+	export let highlightPersonId: Event['_id'] = '';
 	export let showItemDetails = false;
-	// console.log(highlightPersonId);
 
 	dayjs.extend(relativeTime);
 
-	const timeToEnd = getRemainingTime(new Date(event.endDate));
+	let timeToEnd: TimeStruct = {};
+	// some old events may not have enddate set up but now events should have one (one day events is start date and end date identical)
+	if (event.item.isLongerThenOneDay === true) {
+		timeToEnd = getRemainingTime(new Date(event.endDate));
+	} else {
+		if (event.endDate) {
+			timeToEnd = getRemainingTime(new Date(event.endDate));
+		} else {
+			timeToEnd = getRemainingTime(new Date(event.startDate));
+		}
+	}
+
 	const timeToStart = getRemainingTime(new Date(event.startDate));
 </script>
 
@@ -43,7 +68,9 @@
 		: `on ${formatDate(event.startDate)}`}
 	<br />
 
-	{#each event.participants || [] as participant}
+	{#each event.participants as participant}
+		<!-- {#if 'person' in participant && '_id' in participant.person} -->
+		<!-- {#if  typeof participant == Participant} -->
 		<div>
 			<RoleBadge
 				type={highlightPersonId === participant.person._id ? 'primary' : 'ghost'}

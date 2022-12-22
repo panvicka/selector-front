@@ -1,12 +1,12 @@
-<script>
+<script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ cancel: void; ok: void }>();
 
-	export let subject;
-	export let expectedConfirmationText;
+	export let subject: string;
+	export let expectedConfirmationText: string;
 
-	let confirmationTextValue;
+	let confirmationTextValue: string;
 	$: confirmationButtonIsDisabled =
 		expectedConfirmationText === undefined || expectedConfirmationText !== confirmationTextValue;
 
@@ -18,7 +18,7 @@
 		dispatch('ok');
 	}
 
-	let confirmationInputField;
+	let confirmationInputField: HTMLInputElement;
 	onMount(() => {
 		confirmationInputField.focus();
 	});
