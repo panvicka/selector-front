@@ -1,7 +1,7 @@
 import type { Item } from './item';
+import type { dbInfo } from './utils';
 
-export interface Role {
-	_id: string;
+export interface Role extends dbInfo {
 	name: string;
 	description: string;
 	icon: string;

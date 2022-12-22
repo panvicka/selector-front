@@ -1,11 +1,11 @@
 import type { Group } from './group';
 import type { Role } from './role';
+import type { dbInfo } from './utils';
 
-export interface Item {
-	_id: string;
+export interface Item extends dbInfo {
 	name: string;
-	roles?: Array<Role>;
+	roles?: Array<Role> | Array<string>;
 	description: string;
 	isLongerThenOneDay: boolean;
-	groupes?: Array<Group>;
+	groupes?: Array<Group> | Array<string>;
 }

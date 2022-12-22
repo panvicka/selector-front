@@ -1,10 +1,10 @@
 import type { Item } from './item';
 import type { Participant } from './participant';
+import type { dbInfo } from './utils';
 
-export interface Event {
-	_id: string;
-	item: Item;
-	startDate: Date;
-	endDate?: Date;
-	participants: Array<Participant>;
+export interface Event extends dbInfo {
+ 	item: Item;
+	startDate: string;
+	endDate?: string | null;
+	participants: Array<Participant> | Array<string>;
 }
