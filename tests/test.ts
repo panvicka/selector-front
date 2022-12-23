@@ -20,7 +20,7 @@ const mockedItemsRoute = (page: Page) => {
 };
 
 const mockedGroupsRoute = (page: Page) => {
-	return page.route('http://localhost:9090/groups/get/', (route) => {
+	return page.route('http://localhost:4173/api/groups', (route) => {
 		route.fulfill({
 			status: 200,
 			contentType: 'application/json',
@@ -30,7 +30,7 @@ const mockedGroupsRoute = (page: Page) => {
 };
 
 const mockedRolesRoute = (page: Page) => {
-	return page.route('http://localhost:9090/roles/get/', (route) => {
+	return page.route('http://localhost:4173/api/roles', (route) => {
 		route.fulfill({
 			status: 200,
 			contentType: 'application/json',
@@ -60,10 +60,9 @@ test.beforeAll(async ({ browser }) => {
 
 test('item page renders items', async () => {
 	await page.goto('/');
-	page.on('request', (request) => console.log('>>', request.method(), request.url()));
+	// page.on('request', (request) => console.log('>>', request.method(), request.url()));
 
 	const divs = page.getByTestId('ItemCard');
-	console.log(divs);
 	await expect(divs).toHaveCount(3);
 	const firstCard = page.getByTestId('ItemCard').first();
 	await expect(firstCard).toBeVisible();
@@ -89,7 +88,7 @@ test('item page, edit button, request is called with edited data', async () => {
 	await page.locator('.badge').locator('div', { hasText: 'The curious one' }).isVisible();
 	// await page.locator('.badge >> [text=The curious one]').isVisible()
 	await page.locator('.badge').locator('div', { hasText: 'The curious one' }).isVisible();
-	page.locator('.badge > .s-0YI824LWSDAg').first().click();
+	await page.locator('#DeleteIcon').first().click();
 	const [request] = await Promise.all([
 		page.waitForRequest((resp) => resp.url().includes('api/item') && resp.method() === 'PATCH'),
 		page.getByRole('button', { name: 'Save' }).click()
@@ -97,7 +96,7 @@ test('item page, edit button, request is called with edited data', async () => {
 
 	expect(request.method()).toBe('PATCH');
 
-	expect(request.postData()).toBe({
+	expect(await JSON.parse(request.postData() as string)).toMatchObject({
 		_id: '636b4b8d01f350e3c2177972',
 		name: 'Telling Secrets Change',
 		roles: [

@@ -35,23 +35,33 @@
 	export let allRoles = [];
 	export let title = '';
 
-	let rolesForSelect = allRoles.map((role) => {
-		return {
-			value: role._id,
-			label: role.name
-		};
-	});
+	let rolesForSelect = [];
+
+	if (allRoles.length > 0) {
+		rolesForSelect = allRoles.map((role) => {
+			return {
+				value: role._id,
+				label: role.name
+			};
+		});
+	}
 
 	let selectedRoles = item.roles || [];
 
 	$: item.roles = selectedRoles;
 
-	let groupesForSelect = allGroupes.map((group) => {
-		return {
-			value: group._id,
-			label: group.name
-		};
-	});
+	let groupesForSelect = [];
+
+	console.log(allRoles);
+	console.log(allGroupes);
+	if (allGroupes.length > 0) {
+		groupesForSelect = allGroupes.map((group) => {
+			return {
+				value: group._id,
+				label: group.name
+			};
+		});
+	}
 
 	$: item.groupes = [selectedRadioGroup];
 	let selectedRadioGroup = item.groupes[0]?._id || null;
@@ -111,7 +121,7 @@
 					<div class="badge badge-ghost">
 						<Fa size="lg" class="role-icon" icon={role.icon} />
 						{role.name}
-						<button
+						<button id="DeleteIcon"
 							on:click={() => {
 								deleteTrigger(role._id);
 							}}><Fa size="xs" id="delete" icon={faXmark} /></button
