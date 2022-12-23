@@ -5,7 +5,8 @@ const config: UserConfig = {
 	plugins: [sveltekit()],
 	test: {
 		globals: true,
-		environment: 'jsdom'
+		environment: 'jsdom',
+		setupFiles: ['./setupTest.js']
 	}
 };
 
