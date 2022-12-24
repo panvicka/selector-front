@@ -1,15 +1,32 @@
 <script lang="ts">
-	import * as Icons from '@fortawesome/free-solid-svg-icons';
-	import Fa from 'svelte-fa';
+	import { createEventDispatcher } from 'svelte';
 	import type { Role } from '$lib/types/role';
+	import Icon from 'components/general/Icon.svelte';
 
 	export let role: Role;
 	export let type = 'ghost';
+	export let deleteButton = false;
+
+	const dispatch = createEventDispatcher<{ delete: void }>();
 </script>
 
-<div class="tooltip tooltip-info" data-tip={role.description}>
-	<div class={`badge badge-${type}`}>
-		<Fa size="s" class="role-icon" icon={Icons[role.icon]} />{role.name}
+<div class="tooltip tooltip-info" data-testid="RoleBadge" data-tip={role.description}>
+	<div class={`badge badge-${type} p-2`}>
+		<span class="mr-1">
+			<Icon testId="RoleIcon" icon={role.icon} />
+		</span>
+		{role.name}
+		{#if deleteButton}
+			<button
+				class="ml-1 text-error"
+				data-testid="DeleteIcon"
+				on:click={() => {
+					dispatch('delete');
+				}}
+			>
+				<Icon size="xs" icon="faXmark" />
+			</button>
+		{/if}
 	</div>
 </div>
 

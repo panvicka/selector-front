@@ -11,6 +11,7 @@
 	} from 'utils/arrayUtils';
 	import SelectDropdown from 'components/general/SelectDropdown.svelte';
 	import TextField from 'components/general/TextField.svelte';
+	import RoleBadge from 'components/roles/RoleBadge.svelte';
 	const dispatch = createEventDispatcher();
 
 	function close() {
@@ -118,15 +119,13 @@
 			Selected roles:
 			<div>
 				{#each selectedRoles || [] as role}
-					<div class="badge badge-ghost">
-						<Fa size="lg" class="role-icon" icon={role.icon} />
-						{role.name}
-						<button id="DeleteIcon"
-							on:click={() => {
-								deleteTrigger(role._id);
-							}}><Fa size="xs" id="delete" icon={faXmark} /></button
-						>
-					</div>
+					<RoleBadge
+						{role}
+						deleteButton={true}
+						on:delete={() => {
+							deleteTrigger(role._id);
+						}}
+					/>
 				{/each}
 			</div>
 		</div>
