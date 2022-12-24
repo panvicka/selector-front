@@ -107,10 +107,10 @@
 		return person;
 	};
 
-	function handleSelect(event, roleId: Role['_id']) {
+	function handleSelect(event: CustomEvent<SvelteSelectableItem>, roleId: Role['_id']) {
 		replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipantsIds, 'role', {
 			role: roleId,
-			person: event.detail.selected.value
+			person: event.detail.value
 		});
 	}
 </script>

@@ -9,6 +9,7 @@
 	import SelectDropdown from 'components/general/SelectDropdown.svelte';
 	import type { Role } from '$lib/types/role';
 	import type { Icon } from '$lib/types/icon';
+	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
 
 	const dispatch = createEventDispatcher<{ submit: Role; close: void }>();
 
@@ -46,8 +47,8 @@
 	console.log(selectableIcons);
 
 	let selectedIcon = role.icon || '';
-	const handleSelect = (event) => {
-		selectedIcon = event.detail.selected.value;
+	const handleSelect = (event: CustomEvent<SvelteSelectableItem>) => {
+		selectedIcon = event.detail.value;
 	};
 </script>
 
