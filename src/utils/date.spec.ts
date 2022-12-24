@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { formatDate, getActiveEvents, getLastEvent, getRemainingTime } from './date';
-import { mockedIntervalEvents, mockedOneDayEvents } from 'tests/mocks/mockedEvents.ts';
+import { mockedIntervalEvents, mockedOneDayEvents } from 'tests/mocks/mockedEvents.js';
 
 beforeEach(() => {
 	vi.useFakeTimers();

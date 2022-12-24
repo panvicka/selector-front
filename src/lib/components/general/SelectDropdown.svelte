@@ -37,7 +37,7 @@
 </script>
 
 <div class="themed-select-{colorStyle}">
-	<Select {items} {placeholder} {value} on:select={(e) => handleSelect(e)} />
+	<Select id="dropdown" {items} {placeholder} {value} on:select={(e) => handleSelect(e)} />
 </div>
 
 <style>

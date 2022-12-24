@@ -8,8 +8,8 @@
 	import Fa from 'svelte-fa';
 	import SelectDropdown from 'components/general/SelectDropdown.svelte';
 	import type { Role } from '$lib/types/role';
-	import type { Icon } from '$lib/types/icon';
 	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
+	import Icon from 'components/general/Icon.svelte';
 
 	const dispatch = createEventDispatcher<{ submit: Role; close: void }>();
 
@@ -35,17 +35,16 @@
 
 	export let title = '';
 
-	let selectableIcons: Array<Icon> = [];
+	let selectableIcons: Array<SvelteSelectableItem> = [];
 
 	for (const key of Object.entries(Icons)) {
-		console.log(key);
+		const anyKey = key as any; // TODO fix this type somehow 
 		selectableIcons.push({
-			value: key[0],
-			label: key[1].iconName
+			value: anyKey[0],
+			label: anyKey[1].iconName
 		});
 	}
-	console.log(selectableIcons);
-
+ 
 	let selectedIcon = role.icon || '';
 	const handleSelect = (event: CustomEvent<SvelteSelectableItem>) => {
 		selectedIcon = event.detail.value;
@@ -67,7 +66,7 @@
 
 <div class="themed-select item">
 	Icon (https://fontawesome.com/search?o=r&m=free)
-	<Fa size="lg" class="role-icon" icon={Icons[selectedIcon]} />
+	<Icon size="lg" icon={selectedIcon} testId="RoleFormIcon" />
 
 	<SelectDropdown
 		items={selectableIcons}

@@ -3,11 +3,11 @@ import { LocalApiItems } from '$lib/apiClient/items';
 
 export const handleCreateNew = async (event) => {
 	return await LocalApiItems.createItem({
-		name: event.detail.item.name,
-		roles: event.detail.item.roles,
-		description: event.detail.item.description,
-		isLongerThenOneDay: event.detail.item.isLongerThenOneDay,
-		groupes: event.detail.item.groupes
+		name: event.detail.name,
+		roles: event.detail.roles,
+		description: event.detail.description,
+		isLongerThenOneDay: event.detail.isLongerThenOneDay,
+		groupes: event.detail.groupes
 	});
 };
 

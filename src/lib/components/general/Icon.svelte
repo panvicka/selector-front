@@ -1,5 +1,4 @@
 <script lang="ts">
-	// @ts-nocheck
 	import * as Icons from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 
@@ -8,4 +7,5 @@
 	export let testId = 'icon';
 </script>
 
+<!-- TODO fix this typing problem somehow -->
 <Fa {size} id={testId} icon={Icons[icon]} />

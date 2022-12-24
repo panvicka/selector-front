@@ -1,6 +1,4 @@
-import type { Event } from "$lib/types/event";
-
-export const mockedOneDayEvents: Event[] = [
+export const mockedOneDayEvents = [
 	{
 		_id: '636d4b6a40dd6cecf759e428',
 		item: {

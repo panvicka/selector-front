@@ -21,6 +21,7 @@
 	}
 
 	function onSubmit() {
+		console.log(formItem);
 		dispatch('submit', {
 			...formItem
 		});

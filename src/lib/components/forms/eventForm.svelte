@@ -32,6 +32,7 @@
 	export let item: Item = {
 		_id: '',
 		roles: [],
+		groupes: [],
 		isLongerThenOneDay: false,
 		name: '',
 		description: ''

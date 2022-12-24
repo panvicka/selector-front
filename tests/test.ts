@@ -1,8 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 import * as dotenv from 'dotenv';
-import { mockedGroups } from './mocks/mockedGroups.ts';
-import { mockedItems } from './mocks/mockedItems.ts';
-import { mockedRoles } from './mocks/mockedRoles.ts';
+import { mockedGroups } from './mocks/mockedGroups.js';
+import { mockedItems } from './mocks/mockedItems.js';
+import { mockedRoles } from './mocks/mockedRoles.js';
 
 dotenv.config();
 

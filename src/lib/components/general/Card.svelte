@@ -10,7 +10,7 @@
 	export let titleTextColor = 'accent';
 	export let testId = 'Card';
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ deleteTrigger: void; settingsTrigger: void }>();
 
 	function deleteTrigger() {
 		dispatch('deleteTrigger');
