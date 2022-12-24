@@ -4,11 +4,11 @@ import type { dbInfo } from './utils';
 
 export interface Item extends dbInfo {
 	name: string;
-	roles: Array<Role> | [];
+	roles: Array<Role>;
 	description: string;
 	isLongerThenOneDay: boolean;
 	// item can only be in one group, it is still an array because of legacy i guess
-	groupes: Array<Group> | [];
+	groupes: Array<Group>;
 }
 
 export interface ItemRequestType extends Omit<Item, 'roles' | 'groupes' | '_id'> {

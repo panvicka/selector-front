@@ -1,8 +1,9 @@
-import { afterEach, beforeEach, describe, expect, it, trigger, vi } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/svelte';
+import { describe, expect, it } from 'vitest';
+import { render, screen } from '@testing-library/svelte';
 
 import ItemForm from './ItemForm.svelte';
 import { mockedGroups } from 'tests/mocks/mockedGroups.js';
+import { mockedItems } from 'tests/mocks/mockedItems.js';
 import { mockedRoles } from 'tests/mocks/mockedRoles.js';
 import userEvent from '@testing-library/user-event';
 
@@ -23,12 +24,17 @@ describe('Test ItemForm.svelte', async () => {
 		const intervalToggle = screen.getByRole('checkbox', { name: 'Interval tracking?' });
 		intervalToggle.click();
 
+		// TODO I can not select a radio button :(
 		expect(screen.getByRole('radio', { name: 'KSB' })).toBeInTheDocument();
 		expect(screen.getByRole('radio', { name: 'Bitgrip' })).toBeInTheDocument();
 
-		const dropdown = document.getElementById('dropdown');
-		console.log(dropdown);
-		dropdown?.click();
+		// TODO i can not click on this dropdown either
+		// const inputNode = screen.getByPlaceholderText('Select..')
+		// const dropdown = document.getElementById('dropdown');
+		// console.log(inputNode);
+		// dropdown?.click();
+		// inputNode.click();
+		// user.click(inputNode);
 		// await expect(screen.getByText('Moderator')).toBeInTheDocument();
 
 		expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();
@@ -49,20 +55,49 @@ describe('Test ItemForm.svelte', async () => {
 			groupes: [],
 			roles: []
 		});
+	});
 
-		// render(RoleBadge, { role: testRole });
-		// expect(screen.getByTestId('RoleBadge')).toBeInTheDocument();
-		// expect(screen.getByText('Moderator')).toBeInTheDocument();
-		// expect(screen.queryByTestId('DeleteIcon')).not.toBeInTheDocument();
+	it('Renders prefilled form correctly and sends changed data', async () => {
+		const { component } = render(ItemForm, {
+			props: {
+				item: mockedItems[0],
+				title: 'Create new item',
+				allGroupes: mockedGroups,
+				allRoles: mockedRoles
+			}
+		});
+		const user = userEvent.setup();
+		let calledWith = {};
 
-		// const { getByTestId, component } = render(ItemForm, {
-		//     props: { id: 'khjb23' },
-		// });
+		const nameInput = screen.getByRole('textbox', { name: 'Name' });
+		await user.type(nameInput, ' Changed');
 
-		// const link = getByTestId('khjb23');
+		const descriptionInput = screen.getByRole('textbox', { name: 'Description' });
+		await user.type(descriptionInput, ' Changed');
 
-		// component.$on('navigation', e => {
-		//     console.log(e.detail); // Dispatched value
-		// });
+		const intervalToggle = screen.getByRole('checkbox', { name: 'Interval tracking?' });
+		intervalToggle.click();
+
+		// TODO still can not interract with the other 2 clicable elemenents :(
+		//screen.getByRole('radio', { name: 'KSB' }).click();
+
+		expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();
+		expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
+		expect(document.getElementById('dropdown')).toBeInTheDocument();
+
+		component.$on('submit', (e) => {
+			calledWith = e.detail;
+		});
+
+		screen.getByRole('button', { name: 'Save' }).click();
+
+		expect(calledWith).toMatchObject({
+			_id: '636b4b8d01f350e3c2177972',
+			isLongerThenOneDay: true,
+			description: 'Every Friday the deepest secrets are revealed.  Changed',
+			name: 'Telling Secrets Changed',
+			groupes: ['6371224a40d8a5954f19b1aa'],
+			roles: ['636b4baa01f350e3c2177978', '636b4bfb01f350e3c217797c']
+		});
 	});
 });
