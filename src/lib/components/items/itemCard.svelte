@@ -26,16 +26,18 @@
 >
 	<a slot="title" href={`items/${item._id}`}>{item.name}</a>
 
-	<div slot="content">
-		<p>{item.description}</p>
+	<div slot="content" class="prose">
+		<p data-testid="ItemDescription">{item.description}</p>
 
-		<br />
-		Roles
-		{#each item.roles || [] as role}
-			<RoleBadge {role} />
-		{/each}
-		<br />
-		Group
+		<span class="font-semibold mt-3">Roles </span>
+		<div class="">
+			{#each item.roles || [] as role}
+				<RoleBadge {role} />
+			{/each}
+		</div>
+
+		<span class="font-semibold mt-3">Group </span>
+
 		{#each item.groupes || [] as group}
 			<div class="tooltip tooltip-info" data-tip={group.description}>
 				<div class="badge badge-ghost">

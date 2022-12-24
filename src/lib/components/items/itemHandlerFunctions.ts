@@ -1,3 +1,4 @@
+import type { ItemRequestType } from '$lib/types/item';
 import { LocalApiItems } from '$lib/apiClient/items';
 
 export const handleCreateNew = async (event) => {
@@ -14,8 +15,9 @@ export const handleDeleteItem = async (itemId) => {
 	return await LocalApiItems.deleteItem(itemId);
 };
 
-export const handleEditItem = async (event, itemId) => {
-	return await LocalApiItems.updateItem(itemId, event.detail.item);
+export const handleEditItem = async (event, itemId: Item['_id']) => {
+	const editedItem: ItemRequestType = event.detail;
+	return await LocalApiItems.updateItem(itemId, editedItem);
 };
 
 export const getAllPeopleAndRoleCount = async (itemId) => {

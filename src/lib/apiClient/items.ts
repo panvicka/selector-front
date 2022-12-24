@@ -1,6 +1,7 @@
+import type { Item, ItemRequestType } from '$lib/types/item';
+
 import ClientAPI from '$lib/apiClient/ClientAPI.js';
 import type { Event } from '$lib/types/event';
-import type { Item } from '$lib/types/item';
 
 export const LocalApiItems = {
 	getAllEvents: async (itemId: string): Promise<Event[]> => {
@@ -31,7 +32,7 @@ export const LocalApiItems = {
 	},
 
 	/* TODO types for payloads and return */
-	updateItem: async (itemId: string, payload: unknown): Promise<unknown> => {
+	updateItem: async (itemId: string, payload: ItemRequestType): Promise<unknown> => {
 		return await ClientAPI.patch(`/items/${itemId}`, payload);
 	}
 };

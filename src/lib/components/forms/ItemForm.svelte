@@ -1,18 +1,20 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
 	import TextInput from 'components/general/TextInput.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import Fa from 'svelte-fa';
-	import { faXmark } from '@fortawesome/free-solid-svg-icons';
 	import {
-		addToArrayIfKeyValueDoesntExist,
+		addItemToArrayIfNotAlreadyThere,
 		findByKeyInArray,
-		removeFromArrayBasedOnKey
+		removeItemFromArray
 	} from 'utils/arrayUtils';
 	import SelectDropdown from 'components/general/SelectDropdown.svelte';
 	import TextField from 'components/general/TextField.svelte';
 	import RoleBadge from 'components/roles/RoleBadge.svelte';
-	const dispatch = createEventDispatcher();
+	import type { Item, ItemRequestType } from '$lib/types/item';
+	import type { Group } from '$lib/types/group';
+	import type { Role } from '$lib/types/role';
+	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
+
+	const dispatch = createEventDispatcher<{ submit: ItemRequestType; close: void }>();
 
 	function close() {
 		dispatch('close');
@@ -20,11 +22,12 @@
 
 	function onSubmit() {
 		dispatch('submit', {
-			item
+			...formItem
 		});
 	}
 
-	export let item = {
+	export let item: Item = {
+		_id: '',
 		name: '',
 		description: '',
 		roles: [],
@@ -32,11 +35,32 @@
 		groupes: []
 	};
 
-	export let allGroupes = [];
-	export let allRoles = [];
 	export let title = '';
+	export let allGroupes: Array<Group> = [];
+	export let allRoles: Array<Role> = [];
+	let selectedRolesIds: Array<string> = [];
 
-	let rolesForSelect = [];
+	// item can only be in one group, it is still an array because of legacy i guess
+	let selectedRadioGroup = item.groupes[0]?._id || '';
+
+	let rolesForSelect: Array<{
+		value: Role['_id'];
+		label: Role['name'];
+	}> = [];
+
+	let groupesForSelect: Array<{
+		value: Group['_id'];
+		label: Group['name'];
+	}> = [];
+
+	const formItem: ItemRequestType = {
+		_id: item._id,
+		isLongerThenOneDay: item.isLongerThenOneDay || false,
+		description: item.description || '',
+		name: item.name || '',
+		groupes: [],
+		roles: []
+	};
 
 	if (allRoles.length > 0) {
 		rolesForSelect = allRoles.map((role) => {
@@ -47,14 +71,6 @@
 		});
 	}
 
-	let selectedRoles = item.roles || [];
-
-	$: item.roles = selectedRoles;
-
-	let groupesForSelect = [];
-
-	console.log(allRoles);
-	console.log(allGroupes);
 	if (allGroupes.length > 0) {
 		groupesForSelect = allGroupes.map((group) => {
 			return {
@@ -64,20 +80,24 @@
 		});
 	}
 
-	$: item.groupes = [selectedRadioGroup];
-	let selectedRadioGroup = item.groupes[0]?._id || null;
+	item.roles.forEach((role) => {
+		selectedRolesIds.push(role._id);
+	});
 
-	const handleSelect = (event) => {
-		let role = findByKeyInArray('_id', event.detail.selected.value, allRoles);
-		selectedRoles = addToArrayIfKeyValueDoesntExist(selectedRoles, '_id', role);
+	$: if (selectedRadioGroup) formItem.groupes = [selectedRadioGroup];
+	$: formItem.roles = selectedRolesIds;
+
+	const handleSelect = (event: CustomEvent<SvelteSelectableItem>) => {
+		selectedRolesIds = addItemToArrayIfNotAlreadyThere(selectedRolesIds, event.detail.value);
 	};
 
-	const deleteTrigger = (roleId) => {
-		selectedRoles = removeFromArrayBasedOnKey('_id', roleId, selectedRoles);
+	const deleteTrigger = (roleId: Role['_id']) => {
+		selectedRolesIds = removeItemFromArray(selectedRolesIds, roleId);
 	};
 
-	function onRadioChange(event) {
-		selectedRadioGroup = event.currentTarget.value;
+	function onRadioChange(event: any) {
+		// TODO what is the correct event type?!
+		selectedRadioGroup = event?.currentTarget?.value;
 	}
 </script>
 
@@ -88,18 +108,22 @@
 			inputLabel={'Name'}
 			class="input-info"
 			inputPlaceholder="Name of the item"
-			bind:textValue={item.name}
+			bind:textValue={formItem.name}
 		/>
 
 		<TextField
 			inputLabel={'Description'}
 			inputPlaceholder="Write the description here"
-			bind:textValue={item.description}
+			bind:textValue={formItem.description}
 		/>
 
 		<label class="cursor-pointer label">
 			<span class="label-text">Interval tracking?</span>
-			<input type="checkbox" class="toggle toggle-primary" bind:checked={item.isLongerThenOneDay} />
+			<input
+				type="checkbox"
+				class="toggle toggle-primary"
+				bind:checked={formItem.isLongerThenOneDay}
+			/>
 		</label>
 	</div>
 	<div class="divider divider-horizontal" />
@@ -111,19 +135,19 @@
 				<SelectDropdown
 					items={rolesForSelect}
 					placeholder={'Select..'}
-					value={null}
+					value={undefined}
 					on:dropdownSelect={(event) => handleSelect(event)}
 				/>
 			</div>
 
 			Selected roles:
 			<div>
-				{#each selectedRoles || [] as role}
+				{#each selectedRolesIds || [] as roleId}
 					<RoleBadge
-						{role}
+						role={findByKeyInArray('_id', roleId, allRoles)}
 						deleteButton={true}
 						on:delete={() => {
-							deleteTrigger(role._id);
+							deleteTrigger(roleId);
 						}}
 					/>
 				{/each}

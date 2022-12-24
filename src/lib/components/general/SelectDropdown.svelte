@@ -10,7 +10,7 @@
 	export let value = '';
 	export let colorStyle = 'primary';
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ dropdownSelect: SvelteSelectableItem }>();
 
 	let selected: SvelteSelectableItem = {
 		value: '',
@@ -30,7 +30,7 @@
 	function onSelect() {
 		if (selected.value && selected.label) {
 			dispatch('dropdownSelect', {
-				selected
+				...selected
 			});
 		}
 	}
