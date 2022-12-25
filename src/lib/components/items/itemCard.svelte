@@ -6,7 +6,8 @@
 
 	export let item: Item;
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ delete: Item; edit: Item }>();
+
 </script>
 
 <Card
@@ -14,13 +15,13 @@
 	height={300}
 	testId="ItemCard"
 	on:deleteTrigger={() => {
-		dispatch('onDelete', {
-			item
+		dispatch('delete', {
+			...item
 		});
 	}}
 	on:settingsTrigger={() => {
-		dispatch('onEdit', {
-			item
+		dispatch('edit', {
+			...item
 		});
 	}}
 >

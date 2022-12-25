@@ -20,13 +20,13 @@
 	import { LocalApiItems } from '$lib/apiClient/items';
 	import type { Item } from '$lib/types/item';
 	import type { Event } from '$lib/types/event';
-	import type { Person } from '$lib/types/person';
 	import { LocalApiEvents } from '$lib/apiClient/events.js';
+	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
 
 	export let item: Item;
 
 	let itemEvents: Array<Event> = [];
-	let selectablePeople: Array<Person> = [];
+	let selectablePeople: Array<SvelteSelectableItem> = [];
 	let workingEventReference: Event;
 
 	let showCreateEventModalOpened = false;
@@ -138,13 +138,15 @@
 	<div class="prose">
 		<h2>People</h2>
 	</div>
-	{#await getAllPeopleAndRoleCount(item._id)}
-		<p>loading</p>
-	{:then peopleAttendance}
-		<PeopleTable data={peopleAttendance} {item} />
-	{:catch error}
-		<p style="color: red">{error.message}</p>
-	{/await}
+	{#if item._id}
+		{#await getAllPeopleAndRoleCount(item._id)}
+			<p>loading</p>
+		{:then peopleAttendance}
+			<PeopleTable data={peopleAttendance} {item} />
+		{:catch error}
+			<p style="color: red">{error.message}</p>
+		{/await}
+	{/if}
 
 	<div class="prose">
 		<h2>Event List</h2>

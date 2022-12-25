@@ -1,23 +1,34 @@
-<script lang="typescript">
-	// @ts-nocheck
+<script lang="ts">
 	import ItemCard from './itemCard.svelte';
 	import { onMount } from 'svelte';
 	import Modal from 'components/general/Modal.svelte';
 	import ItemForm from 'components/forms/ItemForm.svelte';
 	import DangerZoneConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
-	import { handleCreateNew, handleDeleteItem, handleEditItem } from './itemHandlerFunctions';
+	import { handleCreateNewItem, handleDeleteItem, handleEditItem } from './itemHandlerFunctions';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import Loader from 'components/general/Loader.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
 	import { LocalApiGroups } from '$lib/apiClient/groups';
 	import { LocalApiRoles } from '$lib/apiClient/roles';
+	import type { Item } from '$lib/types/item';
+	import type { Group } from '$lib/types/group';
+	import type { Role } from '$lib/types/role';
+	import Icon from 'components/general/Icon.svelte';
 
-	let items = [];
-	let allRoles = [];
-	let allGroupes = [];
-	let workingItemReference = {};
+	let items: Array<Item> = [];
+	let allRoles: Array<Role> = [];
+	let allGroupes: Array<Group> = [];
+	let workingItemReference: Item = {
+		_id: '',
+		description: '',
+		groupes: [],
+		isLongerThenOneDay: false,
+		name: '',
+		roles: []
+	};
 	let isLoading = true;
+
 	onMount(async () => {
 		await fetchEverything();
 		isLoading = false;
@@ -25,7 +36,6 @@
 
 	const fetchEverything = async () => {
 		items = await LocalApiItems.getAllItems();
-		console.log(items);
 		allRoles = await LocalApiRoles.getAllRoles();
 		allGroupes = await LocalApiGroups.getAllGroups();
 	};
@@ -36,7 +46,7 @@
 </script>
 
 <svelte:head>
-	<title>Index page</title>
+	<title>Tracked Items</title>
 </svelte:head>
 
 <div class="top prose">
@@ -45,8 +55,11 @@
 		class="btn btn-accent"
 		on:click={() => {
 			showCreateItemModal = true;
-		}}><Fa size="lg" class="add-new-tracking-icon" icon={faPlus} /> Add new tracking</button
+		}}
 	>
+		<Icon size="lg" cssClass="add-new-tracking-icon" icon="faPlus" />
+		Add new tracking
+	</button>
 </div>
 {#if isLoading}
 	<Loader />
@@ -56,13 +69,13 @@
 			<div>
 				<ItemCard
 					{item}
-					on:onDelete={(event) => {
-						workingItemReference = event.detail.item;
+					on:delete={(event) => {
+						workingItemReference = event.detail;
 						showDeleteItemModal = true;
 					}}
-					on:onEdit={(event) => {
+					on:edit={(event) => {
 						showEditItemModal = true;
-						workingItemReference = event.detail.item;
+						workingItemReference = event.detail;
 					}}
 				/>
 			</div>
@@ -77,7 +90,7 @@
 			{allRoles}
 			{allGroupes}
 			on:submit={(event) => {
-				handleCreateNew(event).then(() => {
+				handleCreateNewItem(event).then(() => {
 					showCreateItemModal = false;
 					fetchEverything();
 				});

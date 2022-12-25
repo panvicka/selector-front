@@ -1,11 +1,11 @@
-<script>
-	// @ts-nocheck
-
+<script lang="ts">
 	import EventGroupOverview from '$lib/components/events/EventGroupOverview.svelte';
+	import type { Event } from '$lib/types/event';
+	import type { Person } from '$lib/types/person';
 
-	export let person;
-	export let futureEvents = [];
-	export let runningEvents = [];
+	export let person: Person;
+	export let futureEvents: Array<Event> = [];
+	export let runningEvents: Array<Event> = [];
 </script>
 
 <div class="top prose">

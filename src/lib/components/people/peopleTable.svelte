@@ -1,24 +1,39 @@
-<script>
-	// @ts-nocheck
+<script lang="ts">
 	import Grid from 'gridjs-svelte';
 	import { html } from 'gridjs';
 	import 'gridjs/dist/theme/mermaid.css';
-	import dayjs from 'dayjs';
 	import { camelize } from 'utils/stringUtils';
+	import type { Attendance } from '$lib/types/attendance';
+	import type { Item } from '$lib/types/item';
+	import { findKeyPositionInArray } from 'utils/arrayUtils';
+	import { compareDates, formatDate } from 'utils/date';
 
-	export let data = {};
-	export let item = {};
+	export let data: Attendance = {};
+	export let item: Item = {
+		_id: '',
+		description: '',
+		groupes: [],
+		isLongerThenOneDay: false,
+		name: '',
+		roles: []
+	};
 
-	let grid;
-	let mappedTableData;
-	let columns;
+	let grid: any; // TODO fix this type somehow
 
-	console.log(data);
+	let mappedTableData: Array<{
+		name: string;
+		active: string;
+		[prop: string]: any;
+	}>;
+
+	// TODO Solve the problem with sorting function when columns is Array<TColumn>
+	// let columns: Array<TColumn>;
+	let columns: any;
 
 	let showInactivePeople = false;
 
-	let mapColumns = (item) => {
-		let dateColumns = [];
+	let mapColumns = (item: Item) => {
+		let dateColumns: Array<string> = [];
 
 		item.roles.forEach((role) => {
 			dateColumns.push(role.name);
@@ -31,18 +46,8 @@
 					id: camelize(i),
 					name: i,
 					sort: {
-						compare: (a, b) => {
-							if (!a) return -1;
-							const distantFuture = dayjs('02/10/2060');
-							const dateA = a ? dayjs(a, 'DD.MM.YYYY') : distantFuture;
-							const dateB = b ? dayjs(b, 'DD.MM.YYYY') : distantFuture;
-							if (dateA.isBefore(dateB)) {
-								return 1;
-							} else if (dateB.isBefore(dateA)) {
-								return -1;
-							} else {
-								return 0;
-							}
+						compare: (a: Date, b: Date): number => {
+							return compareDates<Date>(a, b);
 						}
 					}
 				};
@@ -59,7 +64,7 @@
 			{
 				id: 'name',
 				name: 'name',
-				formatter: (cell, row) =>
+				formatter: (cell: any, row: any) =>
 					html(`<span class="${row.cells[1].data === 'no' && 'text-error'} ">${cell} </span>`)
 			},
 			{ id: 'active', name: 'active', width: '6%', hidden: true },
@@ -67,35 +72,18 @@
 		];
 	};
 
-	const findKeyPositionInArray = (arr, key, value) => {
-		return arr.findIndex((element) => {
-			if (element[key] == value) {
-				return true;
-			}
-		});
-	};
-
-	function formatDate(date) {
-		var d = new Date(date),
-			month = '' + (d.getMonth() + 1),
-			day = '' + d.getDate(),
-			year = d.getFullYear();
-
-		if (month.length < 2) month = '0' + month;
-		if (day.length < 2) day = '0' + day;
-
-		return [year, month, day].join('-');
-	}
-
-	let mapData = (data) => {
-		let tableData = [];
+	let mapData = (data: Attendance) => {
+		let tableData: Array<{
+			name: string;
+			active: string;
+			[prop: string]: any;
+		}> = [];
 
 		for (const key in data) {
 			data[key].forEach((roleAttendance) => {
+				console.log(roleAttendance);
 				const position = findKeyPositionInArray([...tableData], 'name', roleAttendance.name);
-				const allDates = roleAttendance.dates.map((date) => {
-					return formatDate(date);
-				});
+
 				if (position !== -1) {
 					tableData[position][camelize(key)] = roleAttendance.attended;
 					tableData[position][camelize(`last Time In ${key}`)] = roleAttendance.latestDate
@@ -123,7 +111,7 @@
 	};
 
 	mappedTableData = mapData(data);
-	columns = mapColumns(item);
+	columns = mapColumns(item); // TODO Solve the problem with sorting function when columns is Array<TColumn>
 
 	const className = {
 		container: 'people-table'
@@ -132,7 +120,7 @@
 	$: {
 		if (grid) {
 			mappedTableData = mapData(data);
-			columns = mapColumns(item);
+			columns = mapColumns(item); // TODO Solve the problem with sorting function when columns is Array<TColumn>
 			grid.updateConfig({ data: mappedTableData, columns: columns }).forceRender();
 		}
 	}
@@ -146,7 +134,7 @@
 		bind:checked={showInactivePeople}
 		on:change={() => {
 			mappedTableData = mapData(data);
-			columns = mapColumns(item);
+			columns = mapColumns(item); // TODO Solve the problem with sorting function when columns is Array<TColumn>
 			grid.updateConfig({ data: mappedTableData, columns: columns }).forceRender();
 		}}
 	/>

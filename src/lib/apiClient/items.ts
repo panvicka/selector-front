@@ -1,5 +1,6 @@
 import type { Item, ItemRequestType } from '$lib/types/item';
 
+import type { Attendance } from '$lib/types/attendance';
 import ClientAPI from '$lib/apiClient/ClientAPI.js';
 import type { Event } from '$lib/types/event';
 
@@ -17,7 +18,7 @@ export const LocalApiItems = {
 	},
 
 	/* TODO types for return */
-	getItemPeopleAttendance: async (itemId: string): Promise<unknown> => {
+	getItemPeopleAttendance: async (itemId: string): Promise<Attendance> => {
 		return await ClientAPI.get(`/items/${itemId}/attendance`);
 	},
 

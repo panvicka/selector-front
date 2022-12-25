@@ -5,7 +5,8 @@
 	export let icon = '';
 	export let size = 's';
 	export let testId = 'icon';
+	export let cssClass = '';
 </script>
 
 <!-- TODO fix this typing problem somehow -->
-<Fa {size} id={testId} icon={Icons[icon]} />
+<Fa {size} id={testId} class={cssClass} icon={Icons[icon]} />

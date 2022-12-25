@@ -1,20 +1,20 @@
-
 import { LocalApiPeople } from '$lib/apiClient/people';
+import type { Person } from '$lib/types/person';
+import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
 
-export const getAllSelectablePeople = async (itemId) => {
-	console.log("get all selectable people")
+export const getAllSelectablePeople = async (itemId: Person['_id']) => {
 	const res = await LocalApiPeople.getAllPeopleByItem(itemId);
-	const people = [];
+	const selectablePeople: Array<SvelteSelectableItem> = [];
 
 	res.map((person) => {
 		if (person.active) {
-			people.push({ value: person._id, label: person.name });
+			selectablePeople.push({ value: person._id, label: person.name });
 		}
 	});
 
-	return people;
+	return selectablePeople;
 };
 
-export const getAllEventsForPerson = async (personId) => {
+export const getAllEventsForPerson = async (personId: Person['_id']) => {
 	return await LocalApiPeople.getAllPersonEvents(personId);
 };

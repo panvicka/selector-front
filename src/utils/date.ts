@@ -84,3 +84,17 @@ export const getRemainingTime = (countDownDate: Date) => {
 	remaining.seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
 	return remaining;
 };
+
+export const compareDates = <T>(a: T, b: T) => {
+	if (!a) return -1;
+	const distantFuture = dayjs('02/10/2060');
+	const dateA = a ? dayjs(a, 'DD.MM.YYYY') : distantFuture;
+	const dateB = b ? dayjs(b, 'DD.MM.YYYY') : distantFuture;
+	if (dateA.isBefore(dateB)) {
+		return 1;
+	} else if (dateB.isBefore(dateA)) {
+		return -1;
+	} else {
+		return 0;
+	}
+};
