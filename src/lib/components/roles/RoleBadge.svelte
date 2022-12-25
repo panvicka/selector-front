@@ -2,9 +2,10 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Role } from '$lib/types/role';
 	import Icon from 'components/general/Icon.svelte';
+	import { TypeStyle } from '$lib/types/styles';
 
 	export let role: Role;
-	export let type = 'ghost';
+	export let type: TypeStyle | null = TypeStyle.ghost;
 	export let deleteButton = false;
 
 	const dispatch = createEventDispatcher<{ delete: void }>();

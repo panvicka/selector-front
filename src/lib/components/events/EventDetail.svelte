@@ -9,6 +9,7 @@
 	import type { Event } from '$lib/types/event';
 	import type { TimeStruct } from '$lib/types/utils';
 	import type { Participant } from '$lib/types/participant';
+	import { ColorStyle, TypeStyle } from '$lib/types/styles';
 
 	export let event: Event = {
 		_id: '',
@@ -69,15 +70,15 @@
 	<br />
 
 	{#each event.participants as participant}
-		<!-- {#if 'person' in participant && '_id' in participant.person} -->
-		<!-- {#if  typeof participant == Participant} -->
 		<div>
 			<RoleBadge
-				type={highlightPersonId === participant.person._id ? 'primary' : 'ghost'}
+				type={highlightPersonId === participant.person._id ? TypeStyle.primary : TypeStyle.ghost}
 				role={participant.role}
 			/>:<PersonLink
 				person={participant.person}
-				type={highlightPersonId === participant.person._id && 'primary'}
+				type={highlightPersonId === participant.person._id
+					? ColorStyle.primary
+					: ColorStyle.neutral}
 			/>
 		</div>
 	{/each}

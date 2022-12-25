@@ -63,7 +63,6 @@
 		"gridjs": "^5.1.0",
 		"gridjs-svelte": "^2.1.1",
 		"svelte-fa": "^3.0.3",
-		"svelte-loading-spinners": "^0.3.4",
 		"svelte-select": "^4.4.7",
 		"theme-change": "^2.2.0"
 	}

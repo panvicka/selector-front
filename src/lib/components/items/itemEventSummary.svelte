@@ -1,20 +1,14 @@
-<script>
-	// @ts-nocheck
-
-	import { createEventDispatcher } from 'svelte';
+<script lang="ts">
 	import { onMount } from 'svelte';
- 	import { getActiveEvents, getEventsWithFutureDates, getLastEvent } from 'utils/date';
+	import { getActiveEvents, getEventsWithFutureDates, getLastEvent } from 'utils/date';
 	import EventGroupOverview from 'components/events/EventGroupOverview.svelte';
+	import type { Event } from '$lib/types/event';
 
-	const dispatch = createEventDispatcher();
-
-	export let item = {};
-	export let lastFewEvents = [];
+	export let lastFewEvents: Array<Event> = [];
 	console.log(lastFewEvents);
 
-	let lastEvent = getLastEvent(lastFewEvents);
-	let runningEvents = [];
-	let futureEvents = [];
+	let runningEvents: Array<Event> = [];
+	let futureEvents: Array<Event> = [];
 
 	onMount(async () => {
 		futureEvents = getEventsWithFutureDates(lastFewEvents);

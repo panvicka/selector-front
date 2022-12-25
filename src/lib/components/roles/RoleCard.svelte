@@ -1,10 +1,8 @@
 <script lang="ts">
-	import * as Icons from '@fortawesome/free-solid-svg-icons';
-	import Fa from 'svelte-fa';
-
 	import { createEventDispatcher } from 'svelte';
 	import Card from 'components/general/Card.svelte';
 	import type { Role } from '$lib/types/role';
+	import Icon from 'components/general/Icon.svelte';
 
 	export let role: Role;
 
@@ -25,8 +23,8 @@
 		});
 	}}
 >
-	<svelte:fragment slot="title"
-		><Fa size="lg" class="role-icon" icon={Icons[role.icon]} />
+	<svelte:fragment slot="title">
+		<Icon size="lg" icon={role.icon} />
 		<span>{role.name}</span></svelte:fragment
 	>
 
