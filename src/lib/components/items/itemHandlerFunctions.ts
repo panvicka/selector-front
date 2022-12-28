@@ -17,3 +17,11 @@ export const handleEditItem = async (event: CustomEvent<ItemRequestType>, itemId
 export const getAllPeopleAndRoleCount = async (itemId: Item['_id']) => {
 	return await LocalApiItems.getItemPeopleAttendance(itemId);
 };
+
+export const getItemEvents = async (
+	itemId: Item['_id'],
+	timeRange?: string | undefined,
+	limit?: string | undefined
+) => {
+	return await LocalApiItems.getItemEvents(itemId, timeRange, limit);
+};

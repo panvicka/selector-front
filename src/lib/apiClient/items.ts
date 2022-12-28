@@ -17,6 +17,22 @@ export const LocalApiItems = {
 		return await ClientAPI.get(`/items/${itemId}`);
 	},
 
+	getItemEvents: async (itemId: string, timeRange?: string, limit?: string): Promise<Event[]> => {
+		const urlSearchParams = new URLSearchParams();
+
+		if (timeRange) {
+			urlSearchParams.append('timeRange', timeRange);
+		}
+		if (limit) {
+			urlSearchParams.append('limit', limit.toString());
+		}
+
+		console.log(urlSearchParams.toString());
+		return await ClientAPI.get(
+			`/items/${itemId}/events${urlSearchParams && `?${urlSearchParams}`}`
+		);
+	},
+
 	/* TODO types for return */
 	getItemPeopleAttendance: async (itemId: string): Promise<Attendance> => {
 		return await ClientAPI.get(`/items/${itemId}/attendance`);

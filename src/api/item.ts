@@ -23,7 +23,7 @@ export const RemoteApiItems = {
 
 	updateItem: async (itemId?: string, payload?: Item): Promise<void> => {
 		try {
-			const response = await Api.patch(`/rotationItems/update/${itemId}`, payload)
+			const response = await Api.patch(`/rotationItems/update/${itemId}`, payload);
 			return response.rotationItem;
 		} catch (error) {
 			console.error(error);
@@ -45,6 +45,30 @@ export const RemoteApiItems = {
 		try {
 			const response = await Api.get(`/rotationItems/get/${itemId}`);
 			return response.rotationItemId;
+		} catch (error) {
+			console.error(error);
+		}
+	},
+
+	getItemEvents: async (itemId?: string, timeRange?: string | null, limit?: string | null) => {
+		const params = new URLSearchParams();
+
+		if (timeRange) {
+			params.append('timeRange', timeRange);
+		}
+		if (limit) {
+			params.append('limit', limit.toString());
+		}
+
+		console.log('remoteAPI');
+		console.log('getItemEvents');
+		console.log(params.toString());
+
+		try {
+			const response = await Api.get(
+				`/rotationItems/get/${itemId}/events${params && `?${params}`}`
+			);
+			return response.events;
 		} catch (error) {
 			console.error(error);
 		}

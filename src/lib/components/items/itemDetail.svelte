@@ -11,7 +11,7 @@
 		handleDeleteEvent
 	} from '$lib/components/events/eventHandlerFuntions';
 	import ConfirmDeleteAction from 'components/general/ConfirmDeleteAction.svelte';
-	import { getAllPeopleAndRoleCount } from './itemHandlerFunctions';
+	import { getAllPeopleAndRoleCount, getItemEvents } from './itemHandlerFunctions';
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import ItemEventSummary from './itemEventSummary.svelte';
@@ -37,6 +37,8 @@
 
 	let nonExistingItem = false;
 
+	let selected = '10';
+
 	onMount(async () => {
 		if (item._id) {
 			selectablePeople = await getAllSelectablePeople(item._id);
@@ -51,7 +53,8 @@
 	});
 
 	const fetchAllItemEvents = async () => {
-		itemEvents = await LocalApiItems.getAllEvents(item._id);
+		// itemEvents = await LocalApiItems.getAllEvents(item._id);
+		itemEvents = await LocalApiItems.getItemEvents(item._id, 'all', '10');
 	};
 </script>
 
@@ -151,6 +154,47 @@
 	<div class="prose">
 		<h2>Event List</h2>
 	</div>
+
+	<!-- TODO refactor this to own component with nicer code -->
+	<div class="btn-group">
+		<input
+			checked={selected === '10'}
+			type="radio"
+			name="options"
+			data-title="10"
+			class="btn"
+			on:change={async () => {
+				selected = '10';
+				console.log('fetch only 10 events');
+				itemEvents = await LocalApiItems.getItemEvents(item._id, 'all', '10');
+			}}
+		/>
+		<input
+			checked={selected === '50'}
+			type="radio"
+			name="options"
+			data-title="50"
+			class="btn"
+			on:change={async () => {
+				selected = '50';
+				console.log('fetch only 50 events');
+				itemEvents = await LocalApiItems.getItemEvents(item._id, 'all', '50');
+			}}
+		/>
+		<input
+			checked={selected === 'all'}
+			type="radio"
+			name="options"
+			data-title="all"
+			class="btn"
+			on:change={async () => {
+				selected = 'all';
+				console.log('fetch all events');
+				itemEvents = await LocalApiItems.getItemEvents(item._id, 'all');
+			}}
+		/>
+	</div>
+
 	{#if itemEvents.length > 0}
 		<EventTable
 			itemHasIntervalTracking={item.isLongerThenOneDay}
