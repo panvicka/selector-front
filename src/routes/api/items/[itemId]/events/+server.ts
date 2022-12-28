@@ -6,8 +6,5 @@ export const GET: RequestHandler = async ({ params: { itemId }, url }) => {
 	const timeRange = url.searchParams.get('timeRange');
 	const limit = url.searchParams.get('limit');
 
-	console.log(url);
-	console.log(timeRange);
-	console.log(limit);
 	return json(await RemoteApiItems.getItemEvents(itemId, timeRange, limit));
 };

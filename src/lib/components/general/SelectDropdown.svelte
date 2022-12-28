@@ -18,8 +18,6 @@
 	};
 
 	const handleSelect = (e: SvelteSelectEvent) => {
-		console.log('handle select');
-		console.log(e);
 		selected = {
 			value: e.detail.value,
 			label: e.detail.label

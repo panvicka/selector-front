@@ -6,7 +6,6 @@ import { mockedRoles } from './mocks/mockedRoles.js';
 
 dotenv.config();
 
-console.log(process.env.VITE_ADMIN_LOGIN_NAME);
 let page: Page;
 
 const mockedItemsRoute = (page: Page) => {
@@ -59,10 +58,8 @@ test.beforeAll(async ({ browser }) => {
 });
 
 test('item page renders items', async () => {
-	
 	// will be integration test
 	// await page.goto('/');
-
 	// const divs = page.getByTestId('ItemCard');
 	// await expect(divs).toHaveCount(3);
 	// const firstCard = page.getByTestId('ItemCard').first();
@@ -74,11 +71,8 @@ test('item page renders items', async () => {
 	// );
 	// const badges = firstCard.getByTestId('RoleBadge');
 	// expect(badges).toHaveCount(4);
-	 
 	// expect(firstCard.getByText('Moderators')).toBeVisible();
 	// expect(firstCard.getByText('Recorder')).toBeVisible();
-
-
 });
 
 test('item page, edit button, request is called with edited data', async () => {

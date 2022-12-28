@@ -37,8 +37,7 @@ export const RemoteApiGroups = {
 	getGroupById: async (groupId: Group['_id']) => {
 		try {
 			const response = await RemoteApi.get(`/groups/get/${groupId}`);
-			console.log(response);
-			return response.group;
+ 			return response.group;
 		} catch (error) {
 			console.error(error);
 		}

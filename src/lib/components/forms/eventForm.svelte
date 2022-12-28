@@ -50,8 +50,6 @@
 				person: participant.person._id
 			});
 		});
-
-		console.log(selectedParticipantsIds);
 	});
 
 	let startDate = event.startDate || new Date().toDateString();
@@ -88,9 +86,6 @@
 			.toISOString();
 		formEvent.participants = selectedParticipantsIds;
 		formEvent._id = event._id || undefined;
-
-		console.log('dispatchinf');
-		console.log(formEvent);
 
 		dispatch('submit', {
 			...formEvent

@@ -16,8 +16,6 @@
 
 	let invalidPerson = false;
 
-	console.log(data);
-
 	onMount(async () => {
 		if (data._id) {
 			allAttendedEvents = await LocalApiPeople.getAllPersonEvents(data._id);

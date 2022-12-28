@@ -27,7 +27,6 @@ export const LocalApiItems = {
 			urlSearchParams.append('limit', limit.toString());
 		}
 
-		console.log(urlSearchParams.toString());
 		return await ClientAPI.get(
 			`/items/${itemId}/events${urlSearchParams && `?${urlSearchParams}`}`
 		);

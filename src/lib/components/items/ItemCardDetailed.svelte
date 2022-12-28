@@ -26,8 +26,6 @@
 		lastFewEvents = await LocalApiItems.getItemEvents(item._id, 'all', '10');
 		futureEvents = getEventsWithFutureDates(lastFewEvents);
 		runningEvents = getActiveEvents(lastFewEvents);
-		console.log(futureEvents);
-		console.log(runningEvents);
 	};
 </script>
 

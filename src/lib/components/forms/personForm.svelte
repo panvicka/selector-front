@@ -45,7 +45,6 @@
 		}
 
 		let group = findByKeyInArray('_id', groupId, allGroupes);
-		console.log(person);
 		const mappedGroupData = group.items.map((item: any) => {
 			if (person?.itemsCanBeAttended?.includes(item._id)) {
 				return {
@@ -112,7 +111,6 @@
 
 			return itemSummary;
 		});
-		console.log(itemCheckStates);
 	});
 
 	function close() {
@@ -132,13 +130,12 @@
 	const handleToggleChange = (event: CustomEvent<mappedDataType>, id: string) => {
 		const index = findIndexByKeyInArray('_id', id, mappedData);
 
-		console.log(mappedData);
 		mappedData[index].activeInGroup = event.detail.activeInGroup;
 		if (mappedData[index].activeInGroup == true) {
 			mappedData[index].items = mappedData[index].items.map((item) => {
 				return {
 					...item,
-					groupActive: true 
+					groupActive: true
 				};
 			});
 		}

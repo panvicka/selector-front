@@ -87,7 +87,6 @@
 					on:edit={(event) => {
 						letShowEditModal = true;
 						roleToBeEdited = event.detail;
-						console.log(roleToBeEdited);
 					}}
 				/>
 			</div>

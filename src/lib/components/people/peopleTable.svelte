@@ -81,7 +81,6 @@
 
 		for (const key in data) {
 			data[key].forEach((roleAttendance) => {
-				console.log(roleAttendance);
 				const position = findKeyPositionInArray([...tableData], 'name', roleAttendance.name);
 
 				if (position !== -1) {

@@ -42,9 +42,6 @@
 	onMount(async () => {
 		if (item._id) {
 			selectablePeople = await getAllSelectablePeople(item._id);
-			console.log('selecteable people');
-			console.log(item._id);
-			console.log(selectablePeople);
 			await fetchAllItemEvents();
 			isLoading = false;
 		} else {
@@ -165,7 +162,6 @@
 			class="btn"
 			on:change={async () => {
 				selected = '10';
-				console.log('fetch only 10 events');
 				itemEvents = await LocalApiItems.getItemEvents(item._id, 'all', '10');
 			}}
 		/>
@@ -177,7 +173,6 @@
 			class="btn"
 			on:change={async () => {
 				selected = '50';
-				console.log('fetch only 50 events');
 				itemEvents = await LocalApiItems.getItemEvents(item._id, 'all', '50');
 			}}
 		/>
@@ -189,7 +184,6 @@
 			class="btn"
 			on:change={async () => {
 				selected = 'all';
-				console.log('fetch all events');
 				itemEvents = await LocalApiItems.getItemEvents(item._id, 'all');
 			}}
 		/>

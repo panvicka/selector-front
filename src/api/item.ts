@@ -33,7 +33,6 @@ export const RemoteApiItems = {
 	createItem: async (payload: Item) => {
 		try {
 			// to do trimm trailing spaces
-			console.log(payload);
 			const response = await Api.post(`/rotationItems/create/`, payload);
 			return response.rotationItem;
 		} catch (error) {
@@ -59,10 +58,6 @@ export const RemoteApiItems = {
 		if (limit) {
 			params.append('limit', limit.toString());
 		}
-
-		console.log('remoteAPI');
-		console.log('getItemEvents');
-		console.log(params.toString());
 
 		try {
 			const response = await Api.get(

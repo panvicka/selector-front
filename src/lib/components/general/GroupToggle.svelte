@@ -22,7 +22,6 @@
 		_id: ''
 	};
 
-	console.log(data);
 	function onChange() {
 		dispatch('change', {
 			...data

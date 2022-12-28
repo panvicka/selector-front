@@ -5,7 +5,6 @@
 	import type { Event } from '$lib/types/event';
 
 	export let lastFewEvents: Array<Event> = [];
-	console.log(lastFewEvents);
 
 	let runningEvents: Array<Event> = [];
 	let futureEvents: Array<Event> = [];

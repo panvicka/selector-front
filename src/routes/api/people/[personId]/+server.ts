@@ -3,7 +3,6 @@ import type { RequestHandler } from './$types';
 import { json } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ params: { personId } }) => {
-	console.log(personId)
 	return json(await RemoteApiPeople.getPersonById(personId));
 };
 
