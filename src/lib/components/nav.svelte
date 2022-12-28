@@ -9,6 +9,7 @@
 </script>
 
 <header class="header-area">
+
 	<div class="navbar fixed top-0 left-0 right-0 z-50 bg-neutral-focus shadow-lg border-none">
 		<div class="navbar-start">
 			<div class="dropdown">

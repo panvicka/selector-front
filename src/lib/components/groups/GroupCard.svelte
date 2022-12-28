@@ -10,7 +10,6 @@
 
 <Card
 	width={400}
-	height={500}
 	on:deleteTrigger={() => {
 		dispatch('delete', {
 			...group
@@ -22,9 +21,7 @@
 		});
 	}}
 >
-	<svelte:fragment slot="title">
-		<Link href={`groups/${group._id}`} text={group.name} />
-	</svelte:fragment>
+	<a slot="title" href={`groups/${group._id}`}>{group.name}</a>
 
 	<div slot="content">
 		<div>{group.description}</div>
@@ -33,7 +30,7 @@
 		<ul>
 			{#each group.items as item}
 				<div>
-					<li><a class="link link-primary" href={`items/${item._id}`}>{item.name}</a></li>
+					<li><a class="link link-accent" href={`items/${item._id}`}>{item.name}</a></li>
 				</div>
 			{/each}
 		</ul>

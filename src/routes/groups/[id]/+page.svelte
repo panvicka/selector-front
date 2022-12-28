@@ -1,20 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Loader from 'components/general/Loader.svelte';
+	import Load from 'components/general/Load.svelte';
 	import Error from 'components/general/Error.svelte';
-
-	import type { Group, GroupWithItemDetails } from '$lib/types/group';
-	import type { Item } from '$lib/types/item';
+	import type { GroupWithItemDetails } from '$lib/types/group';
 	import GroupDetail from 'components/groups/GroupDetail.svelte';
 
 	export let data: GroupWithItemDetails;
 	let isLoading = true;
 
-	let allItems: Array<Item> = [];
-
 	let invalidGroup = false;
-
-	// console.log(data);
 
 	onMount(async () => {
 		if (data?.group?._id) {
@@ -27,11 +21,11 @@
 </script>
 
 {#if isLoading}
-	<Loader />
+	<Load />
 {:else if invalidGroup}
 	<Error
 		>Uh no. This Group doesnt exist.
-		<a class="link" href="/groupes">Check all groupes here.</a>
+		<a class="link" href="/groups">Check all groups here.</a>
 	</Error>
 {:else}
 	<GroupDetail groupWithItems={data} />

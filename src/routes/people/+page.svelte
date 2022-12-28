@@ -5,7 +5,7 @@
 	import PersonCard from 'components/people/personCard.svelte';
 	import PersonForm from 'components/forms/personForm.svelte';
 	import ConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
-	import Loader from 'components/general/Loader.svelte';
+	import Load from 'components/general/Load.svelte';
 	import Modal from 'components/general/Modal.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
 	import { LocalApiPeople } from '$lib/apiClient/people';
@@ -101,7 +101,7 @@
 	>
 </div>
 {#if isLoading}
-	<Loader />
+	<Load />
 {:else}
 	<div class="flex flex-wrap gap-9 ">
 		{#each people as person}

@@ -1,12 +1,11 @@
-import type { Item, ItemRequestType } from './item';
-
+import type { Item } from './item';
 import type { dbInfo } from './utils';
 
 export interface Group extends dbInfo {
 	_id: string;
 	name: string;
 	description?: string;
-	items?: Array<ItemRequestType>;
+	items: Array<Item>;
 }
 
 export interface GroupWithItemDetails extends Group {

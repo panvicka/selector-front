@@ -5,7 +5,6 @@
 	import { faGear } from '@fortawesome/free-solid-svg-icons';
 
 	export let width = 300;
-	export let height = 250;
 	export let backgroundColor = 'bg-neutral';
 	export let titleTextColor = 'accent';
 	export let testId = 'Card';
@@ -23,7 +22,7 @@
 
 <div
 	class="card w-96 {backgroundColor} shadow-xl overflow-visible p-2 h-fit"
-	style="width: {width}px; height: {height}px"
+	style="width: {width}px"
 	data-testid={testId}
 >
 	<div class="card-body">

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatDate, getRemainingTime } from 'utils/date';
+	import { getRemainingTime } from 'utils/date';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
 	import RoleBadge from 'components/roles/RoleBadge.svelte';
@@ -29,7 +29,6 @@
 	event.participants = event.participants as Participant[];
 	export let runningEvent = false;
 	export let futureEvent = false;
-	export let highlightPersonId: Event['_id'] = '';
 	export let showItemDetails = false;
 
 	dayjs.extend(relativeTime);
@@ -65,26 +64,12 @@
 				Starts in
 				<Counter days={timeToStart.days} hours={timeToStart.hours} textSize="2lx" />
 			{/if}
-			<!-- <br />
-			{event.endDate && event.endDate
-				? `from ${formatDate(event.startDate)} to ${formatDate(event.endDate)}`
-				: `on ${formatDate(event.startDate)}`}
-			<br /> -->
 		</div>
 		<div>
 			{#each event.participants as participant}
 				<div>
-					<RoleBadge
-						type={highlightPersonId === participant.person._id
-							? TypeStyle.primary
-							: TypeStyle.ghost}
-						role={participant.role}
-					/>:<PersonLink
-						person={participant.person}
-						type={highlightPersonId === participant.person._id
-							? ColorStyle.primary
-							: ColorStyle.neutral}
-					/>
+					<RoleBadge type={TypeStyle.ghost} role={participant.role} />:
+					<PersonLink person={participant.person} type={ColorStyle.neutral} />
 				</div>
 			{/each}
 		</div>

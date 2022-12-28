@@ -5,9 +5,7 @@
 	import ItemForm from 'components/forms/ItemForm.svelte';
 	import DangerZoneConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
 	import { handleCreateNewItem, handleDeleteItem, handleEditItem } from './itemHandlerFunctions';
-	import { faPlus } from '@fortawesome/free-solid-svg-icons';
-	import Fa from 'svelte-fa';
-	import Loader from 'components/general/Loader.svelte';
+	import Load from 'components/general/Load.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
 	import { LocalApiGroups } from '$lib/apiClient/groups';
 	import { LocalApiRoles } from '$lib/apiClient/roles';
@@ -62,7 +60,7 @@
 	</button>
 </div>
 {#if isLoading}
-	<Loader />
+	<Load />
 {:else}
 	<div class="flex flex-wrap gap-9 ">
 		{#each items as item}

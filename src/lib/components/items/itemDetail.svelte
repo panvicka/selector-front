@@ -15,7 +15,7 @@
 	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import ItemEventSummary from './itemEventSummary.svelte';
-	import Loader from 'components/general/Loader.svelte';
+	import Load from 'components/general/Load.svelte';
 	import Error from 'components/general/Error.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
 	import type { Item } from '$lib/types/item';
@@ -64,7 +64,7 @@
 			<h1 class="">Detail of <span class="text-accent">{item.name}</span></h1>
 
 			{#if isLoading}
-				<Loader />
+				<Load />
 			{:else}
 				{#if itemEvents.length > 0}
 					<ItemEventSummary lastFewEvents={itemEvents.slice(-10)} />

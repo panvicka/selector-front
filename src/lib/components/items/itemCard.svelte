@@ -3,16 +3,16 @@
 	import type { Item } from '$lib/types/item';
 	import Card from 'components/general/Card.svelte';
 	import RoleBadge from 'components/roles/RoleBadge.svelte';
+	import Link from 'components/general/Link.svelte';
+	import { ColorStyle } from '$lib/types/styles';
 
 	export let item: Item;
 
 	const dispatch = createEventDispatcher<{ delete: Item; edit: Item }>();
-
 </script>
 
 <Card
 	width={400}
-	height={300}
 	testId="ItemCard"
 	on:deleteTrigger={() => {
 		dispatch('delete', {
@@ -27,7 +27,7 @@
 >
 	<a slot="title" href={`items/${item._id}`}>{item.name}</a>
 
-	<div slot="content" class="prose">
+	<div slot="content" class="prose flex flex-col">
 		<p data-testid="ItemDescription">{item.description}</p>
 
 		<span class="font-semibold mt-3">Roles </span>
@@ -37,20 +37,16 @@
 			{/each}
 		</div>
 
-		<span class="font-semibold mt-3">Group </span>
-
-		{#each item.groupes || [] as group}
-			<div class="tooltip tooltip-info" data-tip={group.description}>
-				<div class="badge badge-ghost">
-					{group.name}
-				</div>
-			</div>
-		{/each}
+		<!-- item can be only in one group, this is due to historical reason -->
+		{#if item.groupes[0]}
+			<span>
+				<span class="font-semibold mt-3">Group: </span>
+				<Link
+					text={item.groupes[0].name}
+					href={`/groups/${item.groupes[0]._id}`}
+					type={ColorStyle.accent}
+				/>
+			</span>
+		{/if}
 	</div>
 </Card>
-
-<style>
-	.badge {
-		margin: 0 1em 0 0;
-	}
-</style>

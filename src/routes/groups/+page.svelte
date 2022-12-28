@@ -6,7 +6,7 @@
 	import GroupCard from 'components/groups/GroupCard.svelte';
 	import GroupForm from 'components/forms/groupForm.svelte';
 	import DangerZoneConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
-	import Loader from 'components/general/Loader.svelte';
+	import Load from 'components/general/Load.svelte';
 	import { LocalApiGroups } from '$lib/apiClient/groups';
 	import type { Group } from '$lib/types/group';
 
@@ -16,12 +16,14 @@
 	let groupToBeDeleted: Group = {
 		_id: '',
 		name: '',
-		description: ''
+		description: '',
+		items: []
 	};
 	let groupToBeEdited: Group = {
 		_id: '',
 		name: '',
-		description: ''
+		description: '',
+		items: []
 	};
 
 	onMount(async () => {
@@ -77,7 +79,7 @@
 </div>
 
 {#if isLoading}
-	<Loader />
+	<Load />
 {:else}
 	<div class="flex flex-wrap gap-9 ">
 		{#each groups as group}

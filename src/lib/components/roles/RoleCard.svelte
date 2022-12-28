@@ -11,7 +11,6 @@
 
 <Card
 	width={400}
-	height={200}
 	on:deleteTrigger={() => {
 		dispatch('delete', {
 			...role

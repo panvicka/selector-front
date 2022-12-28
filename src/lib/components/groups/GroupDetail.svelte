@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Group, GroupWithItemDetails } from '$lib/types/group';
+	import type { GroupWithItemDetails } from '$lib/types/group';
 	import ItemCardDetailed from 'components/items/ItemCardDetailed.svelte';
 
 	export let groupWithItems: GroupWithItemDetails;

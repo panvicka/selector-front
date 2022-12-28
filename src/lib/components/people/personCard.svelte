@@ -10,7 +10,6 @@
 
 <Card
 	width={250}
-	height={100}
 	backgroundColor={person.active ? 'bg-neutral' : 'bg-neutral-focus'}
 	titleTextColor={person.active ? 'accent' : 'error'}
 	on:deleteTrigger={() => {

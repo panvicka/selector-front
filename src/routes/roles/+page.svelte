@@ -6,7 +6,7 @@
 	import Fa from 'svelte-fa';
 	import RoleCard from 'components/roles/RoleCard.svelte';
 	import DangerZoneConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
-	import Loader from 'components/general/Loader.svelte';
+	import Load from 'components/general/Load.svelte';
 	import { LocalApiRoles } from '$lib/apiClient/roles';
 	import type { Role } from '$lib/types/role';
 
@@ -76,7 +76,7 @@
 </div>
 
 {#if isLoading}
-	<Loader />
+	<Load />
 {:else}
 	<div class="grid grid-cols-3 gap-5">
 		{#each roles as role}
