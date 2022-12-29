@@ -20,7 +20,7 @@
 	type="text"
 	id={`${inputLabel}-ID`}
 	placeholder={inputPlaceholder}
-	class={`input input-bordered w-full max-w-xs focus:ring-0 focus:ring-offset-0 ${classesFromTheParent}`}
+	class={`input input-bordered w-full max-w-xs focus:ring-0 focus:ring-offset-0 placeholder-opacity-75 placeholder-gray-500 ${classesFromTheParent}`}
 />
 
 <style>

@@ -18,8 +18,6 @@
 
 	let nameInputIsMissing = false;
 
-	$: nameInputClass = nameInputIsMissing ? 'input-error' : 'input-primary';
-
 	function close() {
 		dispatch('close');
 	}
@@ -28,8 +26,6 @@
 		if (!formItem.name) {
 			nameInputIsMissing = true;
 		}
-		console.log('submit');
-		console.log(nameInputClass);
 
 		if (nameInputIsMissing) {
 			return;
@@ -204,7 +200,7 @@
 		</div>
 	</div>
 
-	<div class="buttons">
+	<div class="mt-4 flex justify-between">
 		<button
 			class="btn btn-outline btn-error"
 			type="button"
@@ -215,11 +211,3 @@
 		<button type="button" class="btn btn-outline btn-info" on:click={onSubmit}>Save</button>
 	</div>
 </div>
-
-<style>
-	.buttons {
-		margin-top: 3em;
-		display: flex;
-		justify-content: space-between;
-	}
-</style>
