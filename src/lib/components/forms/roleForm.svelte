@@ -27,9 +27,13 @@
 	}
 
 	function onSubmit() {
-		nameInputIsMissing = setInputState(role.name);
-		descriptionInputIsMissing = setInputState(role.description);
-		if (nameInputIsMissing | descriptionInputIsMissing) return;
+		if (!role.name) {
+			nameInputIsMissing = true;
+		}
+		if (!role.description) {
+			descriptionInputIsMissing = true;
+		}
+		if (nameInputIsMissing || descriptionInputIsMissing) return;
 		dispatch('submit', {
 			_id: role._id || '',
 			name: role.name,
@@ -40,12 +44,6 @@
 
 	let nameInputIsMissing = false;
 	let descriptionInputIsMissing = false;
-	let iconInputIsMissing = false;
-
-	let setInputState = (text: string) => {
-		if (!text) return true;
-		return false;
-	};
 
 	let selectableIcons: Array<SvelteSelectableItem> = [];
 
@@ -67,22 +65,24 @@
 	<slot name="title" />
 
 	<TextInput
-		onChangeHandle={() => (nameInputIsMissing = setInputState(role.name))}
-		onInputHandle={() => (nameInputIsMissing = setInputState(role.name))}
-		onBlurHandle={() => (nameInputIsMissing = setInputState(role.name))}
-		inputLabel={'Name *'}
+		isRequired={true}
+		inputLabel={'Name'}
 		inputPlaceholder="role name"
 		bind:textValue={role.name}
 		class={`${nameInputIsMissing ? 'input-error' : 'input-primary'}`}
+		on:onUserInteraction={() => {
+			nameInputIsMissing = false;
+		}}
 	/>
 	<TextField
-		onChangeHandle={() => (descriptionInputIsMissing = setInputState(role.description))}
-		onInputHandle={() => (descriptionInputIsMissing = setInputState(role.description))}
-		onBlurHandle={() => (descriptionInputIsMissing = setInputState(role.description))}
-		inputLabel={'Description *'}
+		isRequired={true}
+		inputLabel={'Description'}
 		inputPlaceholder="role description"
 		bind:textValue={role.description}
 		class={`${descriptionInputIsMissing ? 'textarea-error' : 'textarea-primary'}`}
+		on:onUserInteraction={() => {
+			descriptionInputIsMissing = false;
+		}}
 	/>
 
 	<div class="themed-select item">

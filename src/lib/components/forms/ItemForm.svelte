@@ -25,11 +25,9 @@
 	function onSubmit() {
 		if (!formItem.name) {
 			nameInputIsMissing = true;
-		}
-
-		if (nameInputIsMissing) {
 			return;
 		}
+
 		dispatch('submit', {
 			...formItem
 		});
@@ -107,14 +105,6 @@
 		// TODO what is the correct event type?!
 		selectedRadioGroup = event?.currentTarget?.value;
 	}
-
-	const checkNameInputValue = () => {
-		if (!formItem.name) {
-			nameInputIsMissing = true;
-		} else {
-			nameInputIsMissing = false;
-		}
-	};
 </script>
 
 <div class="p-4">
@@ -123,13 +113,14 @@
 	<div class="flex flex-col w-full lg:flex-row mt-2">
 		<div class="w-80 p-4 grid flex-grow  card bg-base-300 rounded-box">
 			<TextInput
-				onChangeHandle={checkNameInputValue}
-				onInputHandle={checkNameInputValue}
-				onBlurHandle={checkNameInputValue}
-				inputLabel={'Name *'}
+				isRequired={true}
+				inputLabel={'Name'}
 				class={`${nameInputIsMissing ? 'input-error' : 'input-primary'}`}
 				inputPlaceholder="Name of the item"
 				bind:textValue={formItem.name}
+				on:onUserInteraction={() => {
+					nameInputIsMissing = false;
+				}}
 			/>
 
 			<TextField
