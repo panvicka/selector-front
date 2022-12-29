@@ -1,9 +1,12 @@
 <script lang="ts">
 	export let inputLabel: string;
-	export let inputPlaceholder: string = "Type here";
+	export let inputPlaceholder: string = 'Type here';
 	export let textValue: string;
+	export let onInputHandle: (e) => void | null;
+	export let onChangeHandle: (e) => void | null;
+	export let onBlurHandle: (e) => void | null;
 
-	const classesFromTheParent = $$props.class;
+	$: classesFromTheParent = $$props.class;
 </script>
 
 <label class="label" for={`${inputLabel}-ID`}>
@@ -11,6 +14,9 @@
 </label>
 <input
 	bind:value={textValue}
+	on:input={onInputHandle}
+	on:change={onChangeHandle}
+	on:blur={onBlurHandle}
 	type="text"
 	id={`${inputLabel}-ID`}
 	placeholder={inputPlaceholder}

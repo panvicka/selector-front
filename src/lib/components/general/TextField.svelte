@@ -2,6 +2,8 @@
 	export let inputLabel: string;
 	export let inputPlaceholder: string = 'Type here';
 	export let textValue: string = '';
+
+	const classesFromTheParent = $$props.class;
 </script>
 
 <label class="label" for={`${inputLabel}-ID`}>
@@ -9,7 +11,7 @@
 </label>
 
 <textarea
-	class="textarea textarea-accent w-full max-w-xs focus:ring-0 focus:ring-offset-0 focus:border-none"
+	class={`textarea w-full max-w-xs focus:ring-0 focus:ring-offset-0 focus:border-none ${classesFromTheParent}`}
 	placeholder={inputPlaceholder}
 	id={`${inputLabel}-ID`}
 	bind:value={textValue}

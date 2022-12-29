@@ -84,7 +84,6 @@
 {#if showCreateItemModal}
 	<Modal>
 		<ItemForm
-			title={'create new item'}
 			{allRoles}
 			{allGroupes}
 			on:submit={(event) => {
@@ -96,7 +95,9 @@
 			on:close={() => {
 				showCreateItemModal = false;
 			}}
-		/>
+		>
+			<h1 slot="title">create new item</h1>
+		</ItemForm>
 	</Modal>
 {/if}
 
@@ -126,7 +127,6 @@
 {#if showEditItemModal}
 	<Modal>
 		<ItemForm
-			title={'edit Item'}
 			item={workingItemReference}
 			{allRoles}
 			{allGroupes}
@@ -139,7 +139,11 @@
 			on:close={() => {
 				showEditItemModal = false;
 			}}
-		/>
+		>
+			<h1 slot="title">
+				edit <span class="text-primary">{workingItemReference.name}</span>'s details
+			</h1>
+		</ItemForm>
 	</Modal>
 {/if}
 
