@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let format = 'YYYY-MM-DD';
-	export let date = new Date();
+	export let date: Date | string = new Date();
 	export let isRequired = false;
 
 	const dispatch = createEventDispatcher<{ onUserInteraction: void }>();
@@ -11,7 +11,7 @@
 	let isMissingValue = false;
 	let internal: string;
 
-	const input = (x: Date) => (internal = dayjs(x).format(format));
+	const input = (x: Date | string) => (internal = dayjs(x).format(format));
 	const output = (x: string) => (date = dayjs(x, format).toDate());
 
 	$: input(date);
