@@ -110,95 +110,97 @@
 <div class="p-4">
 	<slot name="title" />
 
-	<div class="flex flex-col w-full lg:flex-row mt-2">
-		<div class="w-80 p-4 grid flex-grow  card bg-base-300 rounded-box">
-			<TextInput
-				isRequired={true}
-				inputLabel={'Name'}
-				class={`${nameInputIsMissing ? 'input-error' : 'input-primary'}`}
-				inputPlaceholder="Name of the item"
-				bind:textValue={formItem.name}
-				on:onUserInteraction={() => {
-					nameInputIsMissing = false;
-				}}
-			/>
+	<form id="surveyForm" class="mt-4" on:submit|preventDefault={onSubmit}>
+		<div class="flex flex-col w-full lg:flex-row mt-2">
+			<div class="w-80 p-4 grid flex-grow  card bg-base-300 rounded-box">
+				<TextInput
+					isRequired={true}
+					inputLabel={'Name'}
+					class={`${nameInputIsMissing ? 'input-error' : 'input-primary'}`}
+					inputPlaceholder="Name of the item"
+					bind:textValue={formItem.name}
+					on:onUserInteraction={() => {
+						nameInputIsMissing = false;
+					}}
+				/>
 
-			<TextField
-				inputLabel={'Description'}
-				class="textarea-primary"
-				inputPlaceholder="Write the description here"
-				bind:textValue={formItem.description}
-			/>
-		</div>
-		<div class="divider lg:divider-horizontal" />
+				<TextField
+					inputLabel={'Description'}
+					class="textarea-primary"
+					inputPlaceholder="Write the description here"
+					bind:textValue={formItem.description}
+				/>
+			</div>
+			<div class="divider lg:divider-horizontal" />
 
-		<div class="w-80 p-4  grid flex-grow  card bg-base-300 rounded-box">
-			<div>
-				<label class="cursor-pointer label">
-					<span class="label-text">Interval tracking?</span>
-					<input
-						type="checkbox"
-						class="toggle toggle-primary"
-						bind:checked={formItem.isLongerThenOneDay}
-					/>
-				</label>
-
-				<div class="item">
-					<span class="label-text">Roles</span>
-					<SelectDropdown
-						items={rolesForSelect}
-						placeholder={'Select..'}
-						value={undefined}
-						on:dropdownSelect={(event) => handleSelect(event)}
-					/>
-				</div>
-
-				<span class="label-text">Selected roles:</span>
+			<div class="w-80 p-4  grid flex-grow  card bg-base-300 rounded-box">
 				<div>
-					{#each selectedRolesIds || [] as roleId}
-						<RoleBadge
-							role={findByKeyInArray('_id', roleId, allRoles)}
-							deleteButton={true}
-							on:delete={() => {
-								deleteTrigger(roleId);
-							}}
+					<label class="cursor-pointer label">
+						<span class="label-text">Interval tracking?</span>
+						<input
+							type="checkbox"
+							class="toggle toggle-primary"
+							bind:checked={formItem.isLongerThenOneDay}
 						/>
+					</label>
+
+					<div class="item">
+						<span class="label-text">Roles</span>
+						<SelectDropdown
+							items={rolesForSelect}
+							placeholder={'Select..'}
+							value={undefined}
+							on:dropdownSelect={(event) => handleSelect(event)}
+						/>
+					</div>
+
+					<span class="label-text">Selected roles:</span>
+					<div>
+						{#each selectedRolesIds || [] as roleId}
+							<RoleBadge
+								role={findByKeyInArray('_id', roleId, allRoles)}
+								deleteButton={true}
+								on:delete={() => {
+									deleteTrigger(roleId);
+								}}
+							/>
+						{/each}
+					</div>
+				</div>
+			</div>
+
+			<div class="divider lg:divider-horizontal" />
+
+			<div class="w-40 p-4  grid flex-grow  card bg-base-300 rounded-box">
+				<span class="label-text">Group</span>
+
+				<div class="flex flex-col">
+					{#each groupesForSelect || [] as group}
+						<label class="label cursor-pointer">
+							<span class="label-text">{group.label}</span>
+							<input
+								on:change={onRadioChange}
+								type="radio"
+								bind:group={selectedRadioGroup}
+								name="groupes"
+								class="radio radio-primary"
+								value={group.value}
+							/>
+						</label>
 					{/each}
 				</div>
 			</div>
 		</div>
 
-		<div class="divider lg:divider-horizontal" />
-
-		<div class="w-40 p-4  grid flex-grow  card bg-base-300 rounded-box">
-			<span class="label-text">Group</span>
-
-			<div class="flex flex-col">
-				{#each groupesForSelect || [] as group}
-					<label class="label cursor-pointer">
-						<span class="label-text">{group.label}</span>
-						<input
-							on:change={onRadioChange}
-							type="radio"
-							bind:group={selectedRadioGroup}
-							name="groupes"
-							class="radio radio-primary"
-							value={group.value}
-						/>
-					</label>
-				{/each}
-			</div>
+		<div class="mt-4 flex justify-between">
+			<button
+				class="btn btn-outline btn-error"
+				type="button"
+				on:click={() => {
+					close();
+				}}>Close</button
+			>
+			<button type="submit" class="btn btn-outline btn-info">Save</button>
 		</div>
-	</div>
-
-	<div class="mt-4 flex justify-between">
-		<button
-			class="btn btn-outline btn-error"
-			type="button"
-			on:click={() => {
-				close();
-			}}>Close</button
-		>
-		<button type="button" class="btn btn-outline btn-info" on:click={onSubmit}>Save</button>
-	</div>
+	</form>
 </div>
