@@ -65,6 +65,9 @@
 		participants: selectedParticipantsIds
 	};
 
+	let startDateMissing = false;
+	let endDateMissing = false;
+
 	const dispatch = createEventDispatcher<{ submit: EventRequestType; close: void }>();
 
 	function close() {
@@ -72,6 +75,21 @@
 	}
 
 	function submit() {
+		console.log(startDate);
+		console.log(endDate);
+
+		if (!startDate || startDate == 'Invalid Date') {
+			startDateMissing = true;
+		}
+
+		if (!endDate && item.isLongerThenOneDay == true) {
+			endDateMissing = true;
+		}
+
+		if (startDateMissing || endDateMissing) {
+			return;
+		}
+
 		formEvent.startDate = dayjs(startDate)
 			.set('hour', 7)
 			.set('minute', 0)
@@ -115,13 +133,27 @@
 
 <div class="item">
 	Start Date
-	<DateInput bind:date={startDate} />
+	<DateInput
+		isRequired={true}
+		class={`${startDateMissing ? 'input-error' : 'input-primary'}`}
+		bind:date={startDate}
+		on:onUserInteraction={() => {
+			startDateMissing = false;
+		}}
+	/>
 </div>
 
 {#if item.isLongerThenOneDay}
 	<div class="item">
 		End Date
-		<DateInput bind:date={endDate} />
+		<DateInput
+			isRequired={true}
+			class={`${endDateMissing ? 'input-error' : 'input-primary'}`}
+			bind:date={endDate}
+			on:onUserInteraction={() => {
+				endDateMissing = false;
+			}}
+		/>
 	</div>
 {/if}
 
