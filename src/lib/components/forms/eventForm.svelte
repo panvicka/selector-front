@@ -75,7 +75,7 @@
 		dispatch('close');
 	}
 
-	function submit() {
+	function onSubmit() {
 		console.log(startDate);
 		console.log(endDate);
 
@@ -135,49 +135,51 @@
 <div class="p-4">
 	<h1>{title}</h1>
 
-	<DateInput
-		isRequired={true}
-		inputLabel="Start date"
-		class={`${startDateMissing ? 'input-error' : 'input-primary'}`}
-		bind:date={startDate}
-		on:onUserInteraction={() => {
-			startDateMissing = false;
-		}}
-	/>
-
-	{#if item.isLongerThenOneDay}
+	<form id="itemForm" class="mt-4" on:submit|preventDefault={onSubmit}>
 		<DateInput
 			isRequired={true}
-			inputLabel="End date"
-			class={`${endDateMissing ? 'input-error' : 'input-primary'}`}
-			bind:date={endDate}
+			inputLabel="Start date"
+			class={`${startDateMissing ? 'input-error' : 'input-primary'}`}
+			bind:date={startDate}
 			on:onUserInteraction={() => {
-				endDateMissing = false;
+				startDateMissing = false;
 			}}
 		/>
-	{/if}
 
-	{#if item.roles}
-		{#each item.roles as role, i}
-			<div class="m-1">
-				<span class="label-text"> {role.name}</span>
-				<SelectDropdown
-					items={peopleToSelectFrom}
-					placeholder={`Select ${role.name.toLowerCase()}`}
-					value={getNameForRoleId(role._id)}
-					on:dropdownSelect={(e) => handleSelect(e, role._id)}
-				/>
-			</div>
-		{/each}
-	{/if}
-	<div class="mt-4 flex justify-between">
-		<button
-			class="btn btn-outline btn-error"
-			type="button"
-			on:click={() => {
-				close();
-			}}>Close</button
-		>
-		<button type="button" class="btn btn-outline btn-accent" on:click={submit}>Save</button>
-	</div>
+		{#if item.isLongerThenOneDay}
+			<DateInput
+				isRequired={true}
+				inputLabel="End date"
+				class={`${endDateMissing ? 'input-error' : 'input-primary'}`}
+				bind:date={endDate}
+				on:onUserInteraction={() => {
+					endDateMissing = false;
+				}}
+			/>
+		{/if}
+
+		{#if item.roles}
+			{#each item.roles as role, i}
+				<div class="m-1">
+					<span class="label-text"> {role.name}</span>
+					<SelectDropdown
+						items={peopleToSelectFrom}
+						placeholder={`Select ${role.name.toLowerCase()}`}
+						value={getNameForRoleId(role._id)}
+						on:dropdownSelect={(e) => handleSelect(e, role._id)}
+					/>
+				</div>
+			{/each}
+		{/if}
+		<div class="mt-4 flex justify-between">
+			<button
+				class="btn btn-outline btn-error"
+				type="button"
+				on:click={() => {
+					close();
+				}}>Close</button
+			>
+			<button type="submit" class="btn btn-outline btn-accent">Save</button>
+		</div>
+	</form>
 </div>

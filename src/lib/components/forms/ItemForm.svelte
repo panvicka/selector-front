@@ -110,7 +110,7 @@
 <div class="p-4">
 	<slot name="title" />
 
-	<form id="surveyForm" class="mt-4" on:submit|preventDefault={onSubmit}>
+	<form id="itemForm" class="mt-4" on:submit|preventDefault={onSubmit}>
 		<div class="flex flex-col w-full lg:flex-row mt-2">
 			<div class="w-80 p-4 grid flex-grow  card bg-base-300 rounded-box">
 				<TextInput
