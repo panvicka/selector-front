@@ -38,6 +38,7 @@
 		description: ''
 	};
 
+	console.log(peopleToSelectFrom);
 	let selectedParticipantsIds: Array<{
 		role: string;
 		person: string;
@@ -105,7 +106,7 @@
 				.toISOString();
 		}
 		formEvent.participants = selectedParticipantsIds;
-		formEvent._id = event._id || undefined;
+		formEvent._id = event._id || '';
 
 		dispatch('submit', {
 			...formEvent
@@ -134,39 +135,35 @@
 <div class="p-4">
 	<h1>{title}</h1>
 
-	<div class="item">
-		Start Date
-		<DateInput
-			isRequired={true}
-			class={`${startDateMissing ? 'input-error' : 'input-primary'}`}
-			bind:date={startDate}
-			on:onUserInteraction={() => {
-				startDateMissing = false;
-			}}
-		/>
-	</div>
+	<DateInput
+		isRequired={true}
+		inputLabel="Start date"
+		class={`${startDateMissing ? 'input-error' : 'input-primary'}`}
+		bind:date={startDate}
+		on:onUserInteraction={() => {
+			startDateMissing = false;
+		}}
+	/>
 
 	{#if item.isLongerThenOneDay}
-		<div class="item">
-			End Date
-			<DateInput
-				isRequired={true}
-				class={`${endDateMissing ? 'input-error' : 'input-primary'}`}
-				bind:date={endDate}
-				on:onUserInteraction={() => {
-					endDateMissing = false;
-				}}
-			/>
-		</div>
+		<DateInput
+			isRequired={true}
+			inputLabel="End date"
+			class={`${endDateMissing ? 'input-error' : 'input-primary'}`}
+			bind:date={endDate}
+			on:onUserInteraction={() => {
+				endDateMissing = false;
+			}}
+		/>
 	{/if}
 
 	{#if item.roles}
 		{#each item.roles as role, i}
-			<div class="p-1">
-				{role.name}
+			<div class="m-1">
+				<span class="label-text"> {role.name}</span>
 				<SelectDropdown
 					items={peopleToSelectFrom}
-					placeholder={'Select..'}
+					placeholder={`Select ${role.name.toLowerCase()}`}
 					value={getNameForRoleId(role._id)}
 					on:dropdownSelect={(e) => handleSelect(e, role._id)}
 				/>

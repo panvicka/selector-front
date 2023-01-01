@@ -5,6 +5,7 @@
 	export let format = 'YYYY-MM-DD';
 	export let date: Date | string = new Date();
 	export let isRequired = false;
+	export let inputLabel: string;
 
 	const dispatch = createEventDispatcher<{ onUserInteraction: void }>();
 
@@ -32,8 +33,12 @@
 	};
 </script>
 
+<label class="label" for={`${inputLabel}-ID`}>
+	<span class="label-text">{inputLabel}{isRequired ? '*' : ''}</span>
+</label>
 <input
 	type="date"
+	id={`${inputLabel}-ID`}
 	class={`input input-bordered input-primary w-full focus:ring-0 focus:ring-offset-0 ${classesFromTheParent}`}
 	bind:value={internal}
 	on:input={checkInput}
