@@ -29,7 +29,22 @@
 
 	<div slot="content">
 		<div>{role.description}</div>
-		<div>{role.icon}</div>
+
+		{#if role.canHaveMultipleParticipants}
+			<div class="tooltip tooltip-info" data-tip="Multiple persons can take this role in one event">
+				<div class="flex">
+					<Icon icon={'faMale'} />
+					<Icon icon={'faMale'} />
+					<Icon icon={'faMale'} />
+				</div>
+			</div>
+		{:else}
+			<div class="tooltip tooltip-info" data-tip="Only one persons can take this role in one event">
+				<div class="flex">
+					<Icon icon={'faMale'} />
+				</div>
+			</div>
+		{/if}
 	</div>
 </Card>
 

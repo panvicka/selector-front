@@ -19,6 +19,7 @@
 		_id: '',
 		name: '',
 		description: '',
+		canHaveMultipleParticipants: false,
 		icon: ''
 	};
 
@@ -38,6 +39,7 @@
 			_id: role._id || '',
 			name: role.name,
 			description: role.description,
+			canHaveMultipleParticipants: role.canHaveMultipleParticipants || false,
 			icon: selectedIcon
 		});
 	}
@@ -101,6 +103,15 @@
 			</div>
 		</div>
 	</div>
+
+	<label class="cursor-pointer label w-2/3 mt-4">
+		<input
+			type="checkbox"
+			class="toggle toggle-primary"
+			bind:checked={role.canHaveMultipleParticipants}
+		/>
+		<span class="label-text">Can have multiple participants?</span>
+	</label>
 
 	<div class="mt-4 flex justify-between">
 		<button
