@@ -61,11 +61,12 @@
 	<div class="info">
 		<div class="prose max-w-none">
 			<h1 class="">Detail of <span class="text-accent">{item.name}</span></h1>
-
-			<div class="md">
-				{@html longInfoParsed}
-			</div>
-
+			<button
+				class="btn btn-accent"
+				on:click={() => {
+					showCreateEventModalOpened = true;
+				}}><Fa size="lg" class="add-new-tracking-icon" icon={faPlus} /> Add new event</button
+			>
 			{#if isLoading}
 				<Load />
 			{:else}
@@ -73,12 +74,9 @@
 					<ItemEventSummary lastFewEvents={itemEvents.slice(-10)} />
 				{/if}
 
-				<button
-					class="btn btn-accent"
-					on:click={() => {
-						showCreateEventModalOpened = true;
-					}}><Fa size="lg" class="add-new-tracking-icon" icon={faPlus} /> Add new event</button
-				>
+				<div class="md mt-10 prose">
+					{@html longInfoParsed}
+				</div>
 			{/if}
 		</div>
 	</div>
@@ -141,7 +139,7 @@
 		</Modal>
 	{/if}
 
-	<div class="prose">
+	<div class="prose mt-10">
 		<h2>People</h2>
 	</div>
 	{#if item._id}
@@ -228,6 +226,10 @@
 
 	:global(.md a) {
 		color: hsl(var(--a));
+	}
+
+	:global(.md) {
+		line-height: 1.2rem;
 	}
 	:global(.md a:hover) {
 		color: hsl(var(--af));
