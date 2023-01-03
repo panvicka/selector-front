@@ -40,7 +40,7 @@
 
 	let selected = '10';
 
-	let longInfoParsed = marked.parse(item.longDescription);
+	let longInfoParsed = item.longDescription && marked.parse(item.longDescription);
 
 	onMount(async () => {
 		if (item._id) {
@@ -74,9 +74,11 @@
 					<ItemEventSummary lastFewEvents={itemEvents.slice(-10)} />
 				{/if}
 
-				<div class="md mt-10 prose">
-					{@html longInfoParsed}
-				</div>
+				{#if longInfoParsed}
+					<div class="md mt-10 prose">
+						{@html longInfoParsed}
+					</div>
+				{/if}
 			{/if}
 		</div>
 	</div>
