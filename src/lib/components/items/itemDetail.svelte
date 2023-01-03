@@ -22,6 +22,7 @@
 	import type { Event } from '$lib/types/event';
 	import { LocalApiEvents } from '$lib/apiClient/events.js';
 	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
+	import { marked } from 'marked';
 
 	export let item: Item;
 
@@ -39,6 +40,8 @@
 
 	let selected = '10';
 
+	let longInfoParsed = marked.parse(item.longDescription);
+
 	onMount(async () => {
 		if (item._id) {
 			selectablePeople = await getAllSelectablePeople(item._id);
@@ -50,7 +53,6 @@
 	});
 
 	const fetchAllItemEvents = async () => {
-		// itemEvents = await LocalApiItems.getAllEvents(item._id);
 		itemEvents = await LocalApiItems.getItemEvents(item._id, 'all', '10');
 	};
 </script>
@@ -59,6 +61,10 @@
 	<div class="info">
 		<div class="prose max-w-none">
 			<h1 class="">Detail of <span class="text-accent">{item.name}</span></h1>
+
+			<div class="md">
+				{@html longInfoParsed}
+			</div>
 
 			{#if isLoading}
 				<Load />
@@ -218,5 +224,12 @@
 	button {
 		margin: 2em;
 		margin-left: 0em;
+	}
+
+	:global(.md a) {
+		color: hsl(var(--a));
+	}
+	:global(.md a:hover) {
+		color: hsl(var(--af));
 	}
 </style>

@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
+	import Icon from './Icon.svelte';
 
 	export let inputLabel: string;
+	export let inputLabelHelp: string = '';
 	export let inputPlaceholder: string = 'Type here';
 	export let textValue: string = '';
 
@@ -27,6 +29,11 @@
 
 <label class="label" for={`${inputLabel}-ID`}>
 	<span class="label-text">{inputLabel}{isRequired ? '*' : ''}</span>
+	{#if inputLabelHelp}
+		<span class="z-40 tooltip tooltip-info" data-tip={inputLabelHelp}
+			><Icon icon={'faCircleInfo'} /></span
+		>
+	{/if}
 </label>
 
 <textarea

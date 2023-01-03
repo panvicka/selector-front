@@ -37,6 +37,7 @@
 		_id: '',
 		name: '',
 		description: '',
+		longDescription: '',
 		roles: [],
 		isLongerThenOneDay: false,
 		groupes: []
@@ -63,6 +64,7 @@
 		_id: item._id,
 		isLongerThenOneDay: item.isLongerThenOneDay || false,
 		description: item.description || '',
+		longDescription: item.longDescription || '',
 		name: item.name || '',
 		groupes: [],
 		roles: []
@@ -117,7 +119,7 @@
 					isRequired={true}
 					inputLabel={'Name'}
 					class={`${nameInputIsMissing ? 'input-error' : 'input-primary'}`}
-					inputPlaceholder="Name of the item"
+					inputPlaceholder="name of the item"
 					bind:textValue={formItem.name}
 					on:onUserInteraction={() => {
 						nameInputIsMissing = false;
@@ -125,24 +127,24 @@
 				/>
 
 				<TextField
-					inputLabel={'Description'}
-					class="textarea-primary"
-					inputPlaceholder="Write the description here"
-					bind:textValue={formItem.description}
+					inputLabel={'Long description'}
+					inputLabelHelp={'supports Markdown, shown on the Detail page'}
+					class="textarea-primary leading-tight h-44"
+					inputPlaceholder="long description"
+					bind:textValue={formItem.longDescription}
 				/>
 			</div>
 			<div class="divider lg:divider-horizontal" />
 
 			<div class="w-80 p-4  grid flex-grow  card bg-base-300 rounded-box">
 				<div>
-					<label class="cursor-pointer label">
-						<span class="label-text">Interval tracking?</span>
-						<input
-							type="checkbox"
-							class="toggle toggle-primary"
-							bind:checked={formItem.isLongerThenOneDay}
-						/>
-					</label>
+					<TextField
+						inputLabel={'Short description'}
+						inputLabelHelp={'shown on the overview page'}
+						class="textarea-primary leading-tight"
+						inputPlaceholder="short description"
+						bind:textValue={formItem.description}
+					/>
 
 					<div class="item">
 						<span class="label-text">Roles</span>
@@ -166,6 +168,15 @@
 							/>
 						{/each}
 					</div>
+
+					<label class="cursor-pointer label">
+						<span class="label-text">Interval tracking?</span>
+						<input
+							type="checkbox"
+							class="toggle toggle-primary"
+							bind:checked={formItem.isLongerThenOneDay}
+						/>
+					</label>
 				</div>
 			</div>
 
