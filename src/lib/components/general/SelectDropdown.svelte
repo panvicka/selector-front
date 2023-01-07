@@ -3,16 +3,22 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { SvelteSelectEvent } from '$lib/types/svelte-select/event';
 	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
+	import { removeFromArrayBasedOnKey } from 'utils/arrayUtils';
 
 	export let items: Array<SvelteSelectableItem> = [];
 
 	export let placeholder = '';
 	export let value = '';
 	export let colorStyle = 'primary';
+	export let multiSelect = false;
 
 	$: classesFromTheParent = $$props.class;
 
-	const dispatch = createEventDispatcher<{ dropdownSelect: SvelteSelectableItem }>();
+	let selectedItems: Array<SvelteSelectableItem> = [];
+
+	const dispatch = createEventDispatcher<{
+		dropdownSelect: { [key: number]: SvelteSelectableItem };
+	}>();
 
 	let selected: SvelteSelectableItem = {
 		value: '',
@@ -20,38 +26,73 @@
 	};
 
 	const handleSelect = (e: SvelteSelectEvent) => {
-		selected = {
-			value: e.detail.value,
-			label: e.detail.label
-		};
-		onSelect();
+		// console.log(e.detail);
+		if (e.detail instanceof Array) {
+			selectedItems = e.detail;
+		} else {
+			selectedItems = [
+				{
+					value: e.detail.value,
+					label: e.detail.label
+				}
+			];
+		}
+
+		dispatch('dropdownSelect', {
+			...selectedItems
+		});
+		// console.log('in handle select');
+		// console.log(selectedItems);
 	};
 
-	function onSelect() {
-		if (selected.value && selected.label) {
-			dispatch('dropdownSelect', {
-				...selected
-			});
-		}
-	}
+	const handleClear = (e) => {
+		// console.log('in handle clear before');
+
+		// console.log(e.detail.value);
+		// console.log(selectedItems);
+		removeFromArrayBasedOnKey('value', e.detail.value, selectedItems);
+		// console.log('in handle clear after');
+
+		// console.log(selectedItems);
+
+		dispatch('dropdownSelect', {
+			...selectedItems
+		});
+		// console.log(e.detail);
+		// selected = {
+		// 	value: e.detail.value,
+		// 	label: e.detail.label
+		// };
+		// onSelect();
+	};
 </script>
 
 <div class="themed-select-{colorStyle} {classesFromTheParent}">
-	<Select id="dropdown" {items} {placeholder} {value} on:select={(e) => handleSelect(e)} />
+	<Select
+		id="dropdown"
+		{items}
+		multiple={multiSelect}
+		{value}
+		on:change={(e) => handleSelect(e)}
+		on:clear={(e) => handleClear(e)}
+	/>
 </div>
 
 <style>
 	.themed-select-primary {
 		--tw-ring-color: transparent;
-		--padding: 1em;
 		--border: 0.1em solid #641ae6;
-		--borderFocusColor: #641ae6;
-		--borderRadius: 10px;
+		--border-focus-color: #641ae6;
+		--border-radius: 10px;
 		--background: #2a303c;
 		--listBackground: #2a303c;
-		--itemIsActiveBG: #641ae6;
-		--itemHoverBG: #171a20;
+		--item-is-active-BG: #641ae6;
+		--item-hover-BG: #171a20;
 		--height: 50px;
-		--listMaxHeight: 200px;
+		--list-max-height: 200px;
+		--multi-max-width: 150px;
+		--multi-item-bg: #c43766;
+		--multi-item-active-outline: #9fe61a;
+		--list-background: rgb(66, 17, 42);
 	}
 </style>
