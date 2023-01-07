@@ -1,16 +1,18 @@
-<script>
+<script lang="ts">
 	// @ts-nocheck
 
 	import Grid from 'gridjs-svelte';
 	import { h } from 'gridjs';
 	import 'gridjs/dist/theme/mermaid.css';
 	import { onMount } from 'svelte';
+	import { SvelteWrapper } from 'gridjs-svelte/plugins';
 
 	import { createEventDispatcher } from 'svelte';
 	import { camelize } from 'utils/stringUtils';
 	import { addToArrayIfKeyValueDoesntExist } from 'utils/arrayUtils';
 	import dayjs from 'dayjs';
 	import { formatDate } from 'utils/date';
+	import EventTableButton from './EventTableButton.svelte';
 	const dispatch = createEventDispatcher();
 
 	export let eventsToShow = [];
@@ -42,11 +44,19 @@
 	});
 
 	let mapDataNew = (events) => {
+		console.log(events);
 		let auxObject = {};
 		return events.map((event) => {
-			auxObject = {}
+			auxObject = {};
+			// let personNames: string = '';
 			event.participants.forEach((participant) => {
-				auxObject = { ...auxObject, [camelize(participant.role.name)]: participant.person.name };
+				if (auxObject[camelize(participant.role.name)]) {
+					auxObject[camelize(participant.role.name)] = `${
+						auxObject[camelize(participant.role.name)]
+					}, ${participant.person.name} `;
+				} else {
+					auxObject = { ...auxObject, [camelize(participant.role.name)]: participant.person.name };
+				}
 			});
 
 			return {
@@ -107,30 +117,30 @@
 			...participantTableHeaderTitles,
 			{
 				name: 'Edit',
-				formatter: (cell, row) => {
-					return h(
-						'button',
-						{
-							onClick: () => {
-								submitEdit(row.cells[0].data);
-							}
-						},
-						'Edit'
-					);
+				sort: false,
+				width: '5%',
+				data: (row) => {
+					return { row, submitFce: submitEdit, icon: 'faPen' };
+				},
+				plugin: {
+					component: SvelteWrapper,
+					props: {
+						component: EventTableButton
+					}
 				}
 			},
 			{
 				name: 'Delete',
-				formatter: (cell, row) => {
-					return h(
-						'button',
-						{
-							onClick: () => {
-								submitDelete(row.cells[0].data);
-							}
-						},
-						'Delete'
-					);
+				sort: false,
+				width: '5%',
+				data: (row) => {
+					return { row, submitFce: submitDelete, icon: 'faTrash' };
+				},
+				plugin: {
+					component: SvelteWrapper,
+					props: {
+						component: EventTableButton
+					}
 				}
 			}
 		];
@@ -141,6 +151,7 @@
 	$: {
 		if (grid) {
 			mappedTableData = mapDataNew(eventsToShow);
+			console.log(mappedTableData);
 			columns = mapColumns(eventsToShow);
 			grid.updateConfig({ data: mappedTableData, columns: columns }).forceRender();
 		}
@@ -176,6 +187,18 @@
 
 	.event-table tr:hover td {
 		background: hsl(var(--nf));
+	}
+
+	[data-column-id='edit'] div {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	[data-column-id='delete'] div {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.event-table {
