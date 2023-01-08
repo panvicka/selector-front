@@ -1,6 +1,6 @@
 <script lang="ts">
 	import EventTable from 'components/events/EventTable.svelte';
-	import EventForm from 'components/forms/EventForm.svelte';
+	import EventForm from 'components/forms/eventForm.svelte';
 	import Modal from 'components/general/Modal.svelte';
 	import { onMount } from 'svelte';
 	import PeopleTable from 'components/people/peopleTable.svelte';
