@@ -2,18 +2,13 @@
 	import { createEventDispatcher } from 'svelte';
 	import DateInput from 'components/general/DateInput.svelte';
 	import { onMount } from 'svelte';
-	import {
-		removeFromArrayBasedOnKey,
-		replaceKeyValueInToArrayIfKeyExistOrAdd
-	} from 'utils/arrayUtils';
+	import { replaceKeyValueInToArrayIfKeyExistOrAdd } from 'utils/arrayUtils';
 	import SelectDropdown from 'components/general/SelectDropdown.svelte';
 	import dayjs from 'dayjs';
-	import type { Person } from '$lib/types/person';
 	import type { Event, EventRequestType } from '$lib/types/event';
 	import type { Role } from '$lib/types/role';
 	import type { Item } from '$lib/types/item';
 	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
-	import RoleSelector from 'components/roles/RoleSelector.svelte';
 
 	export let peopleToSelectFrom: Array<SvelteSelectableItem> = [];
 	export let title = '';
@@ -83,7 +78,7 @@
 	function onSubmit() {
 		console.log(startDate);
 		console.log(endDate);
-		console.log(selectedParticipantsIds)
+		console.log(selectedParticipantsIds);
 
 		if (!startDate || startDate == 'Invalid Date') {
 			startDateMissing = true;
@@ -202,10 +197,6 @@
 				</div>
 			{/each}
 		{/if}
-
-		<!-- <SelectDropdown items={peopleToSelectFrom} on:dropdownSelect={(e) => handleSelect(e, 2)} /> -->
-
-		<!-- <RoleSelector {peopleToSelectFrom} role={item.roles[0]} /> -->
 
 		<div class="mt-4 flex justify-between">
 			<button

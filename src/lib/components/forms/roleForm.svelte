@@ -58,8 +58,8 @@
 	}
 
 	let selectedIcon = role.icon || 'faQuestion';
-	const handleSelect = (event: CustomEvent<SvelteSelectableItem>) => {
-		selectedIcon = event.detail.value;
+	const handleSelect = (event: CustomEvent<{ [key: number]: SvelteSelectableItem }>) => {
+		selectedIcon = event.detail[0].value;
 	};
 </script>
 
