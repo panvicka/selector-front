@@ -1,12 +1,17 @@
-<script>
+<script lang="ts">
 	import Icon from 'components/general/Icon.svelte';
+	import type { TableDataType } from './EventTable.svelte';
 
-	// 	FIXME: cell not receive the data this probably bug on Grid.js
-	// https://github.com/grid-js/gridjs/issues/904
+	export let cell: {
+		data: {
+			icon: string;
+			iconStyles: string;
+			row: TableDataType;
+			submitFce: (id: string) => {};
+		};
 
-	export let cell;
-	console.log(cell);
-	// export let row;
+		id: string;
+	};
 </script>
 
 <button
@@ -14,6 +19,5 @@
 		cell.data.submitFce(cell.data.row.id);
 	}}
 >
-	<Icon icon={cell.data.icon} />
+	<Icon icon={cell.data.icon} cssClass={cell.data.iconStyles} />
 </button>
-<!-- <a href={`mailto:${cell.data}`}>Contact</a> -->

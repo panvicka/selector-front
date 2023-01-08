@@ -83,6 +83,7 @@
 	function onSubmit() {
 		console.log(startDate);
 		console.log(endDate);
+		console.log(selectedParticipantsIds)
 
 		if (!startDate || startDate == 'Invalid Date') {
 			startDateMissing = true;
@@ -118,15 +119,24 @@
 		});
 	}
 
-	const getNameForRoleId = (roleId: Role['_id']): string => {
-		console.log(roleId);
+	const getNamesForRole = (role: Role): string | string[] => {
 		let person = '';
-		event.participants.forEach((participant) => {
-			if ((participant.role as Role)._id == roleId) {
-				person = participant.person.name;
-				return person;
-			}
-		});
+		let personNameArray: string[] = [];
+		if (role.canHaveMultipleParticipants) {
+			event.participants.forEach((participant) => {
+				if (participant.role._id == role._id) {
+					personNameArray.push(participant.person._id);
+				}
+			});
+			return personNameArray;
+		} else {
+			event.participants.forEach((participant) => {
+				if (participant.role._id == role._id) {
+					person = participant.person.name;
+					return person;
+				}
+			});
+		}
 		return person;
 	};
 
@@ -186,7 +196,7 @@
 						items={peopleToSelectFrom}
 						placeholder={`Select ${role.name.toLowerCase()}`}
 						multiSelect={role.canHaveMultipleParticipants}
-						value={getNameForRoleId(role._id)}
+						value={getNamesForRole(role)}
 						on:dropdownSelect={(e) => handleSelect(e, role._id, role.canHaveMultipleParticipants)}
 					/>
 				</div>
