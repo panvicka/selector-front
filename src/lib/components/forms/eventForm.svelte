@@ -9,6 +9,7 @@
 	import type { Role } from '$lib/types/role';
 	import type { Item } from '$lib/types/item';
 	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
+	import RoleParticipantNumber from 'components/roles/RoleParticipantNumber.svelte';
 
 	export let peopleToSelectFrom: Array<SvelteSelectableItem> = [];
 	export let title = '';
@@ -186,7 +187,10 @@
 		{#if item.roles}
 			{#each item.roles as role, i}
 				<div class="m-1">
-					<span class="label-text"> {role.name}</span>
+					<div class="flex flex-row justify-between">
+						<span class="label-text"> {role.name}</span>
+						<RoleParticipantNumber canHaveMultipleParticipants={role.canHaveMultipleParticipants} />
+					</div>
 					<SelectDropdown
 						items={peopleToSelectFrom}
 						placeholder={`Select ${role.name.toLowerCase()}`}
