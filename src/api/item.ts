@@ -12,13 +12,8 @@ export const RemoteApiItems = {
 		}
 	},
 
-	deleteItem: async (itemId?: string) => {
-		try {
-			const response = await Api.delete(`/rotationItems/delete/${itemId}`);
-			return response.message;
-		} catch (error) {
-			console.error(error);
-		}
+	deleteItem: (itemId?: string) => {
+		return Api.delete(`/rotationItems/delete/${itemId}`);
 	},
 
 	updateItem: async (itemId?: string, payload?: Item): Promise<void> => {

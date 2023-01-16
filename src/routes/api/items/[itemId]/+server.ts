@@ -7,7 +7,12 @@ export const GET: RequestHandler = async ({ params: { itemId } }) => {
 };
 
 export const DELETE: RequestHandler = async ({ params: { itemId } }) => {
-	return json(await RemoteApiItems.deleteItem(itemId));
+	const mongoBackendResponse = await RemoteApiItems.deleteItem(itemId);
+	return new Response(await mongoBackendResponse.json(), {
+		status: mongoBackendResponse.status,
+		statusText: mongoBackendResponse.statusText,
+		headers: { 'Content-Type': 'application/json' }
+	});
 };
 
 export const PATCH: RequestHandler = async ({ request, params: { itemId } }) => {
