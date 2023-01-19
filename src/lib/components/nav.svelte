@@ -9,7 +9,6 @@
 	});
 
 	let showOcd = env.PUBLIC_OCD_SHOW === 'true';
-	console.log(env.PUBLIC_OCD_SHOW);
 </script>
 
 <header class="header-area">

@@ -4,8 +4,6 @@
 	import { onMount } from 'svelte';
 	import type { OpsGenieResponse } from './types';
 
-	console.log('hier');
-
 	let opsGenieResponse: OpsGenieResponse;
 	let isLoading = true;
 
