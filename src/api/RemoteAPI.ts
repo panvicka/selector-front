@@ -2,6 +2,7 @@
 import { env } from '$env/dynamic/public';
 
 const apiRequest = async (method: RequestInit['method'], path: string, payload?: unknown) => {
+	console.log(env.PUBLIC_BASE_URL);
 	const baseUrl = env.PUBLIC_BASE_URL?.replace(/\/+$/, '') || '';
 	const url = `${baseUrl}${path}`;
 	const response = await fetch(url, {
