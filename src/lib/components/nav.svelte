@@ -1,14 +1,14 @@
 <script>
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
-	import { env } from '$env/dynamic/public';
+	import { env } from '$env/dynamic/private';
 
 	onMount(() => {
 		themeChange(false);
 		// 👆 false parameter is required for svelte
 	});
 
-	let showOcd = env.PUBLIC_OCD_SHOW === 'true';
+	let showOcd = env.PRIVATE_OCD_SHOW === 'true';
 </script>
 
 <header class="header-area">
