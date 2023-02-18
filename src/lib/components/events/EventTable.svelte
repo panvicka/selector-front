@@ -29,6 +29,12 @@
 
 	let mappedTableData: TableDataType[] = [];
 
+	$: eventsToShow.sort((a, b) => {
+		const dateA = new Date(a.startDate);
+		const dateB = new Date(b.startDate);
+		return new Date(dateB).valueOf() - new Date(dateA).valueOf();
+	});
+
 	// TODO fix this so the columns can be type of TColumn[]?
 	// let columns: TColumn[] = [];
 	let columns: any = [];

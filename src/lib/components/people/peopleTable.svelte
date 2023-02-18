@@ -65,6 +65,7 @@
 			{
 				id: 'name',
 				name: 'name',
+				width: '15%',
 				formatter: (cell: any, row: any) =>
 					html(`<span class="${row.cells[1].data === 'no' && 'text-error'} ">${cell} </span>`)
 			},
@@ -143,10 +144,6 @@
 
 <style global>
 	/* @import 'https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css'; */
-
-	td.gridjs-td {
-		word-break: break-word;
-	}
 
 	.people-table {
 		line-height: 1;
