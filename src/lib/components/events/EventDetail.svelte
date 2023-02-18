@@ -59,8 +59,15 @@
 	{/if}
 
 	{#if runningEvent}
-		Ends in
-		<Counter days={timeToEnd.days} hours={timeToEnd.hours} textSize={'text-4xl'} />
+		{#if event.item.isLongerThenOneDay === true}
+			Ends in
+			<Counter days={timeToEnd.days} hours={timeToEnd.hours} textSize={'text-4xl'} />
+		{:else}
+			Ends
+			<div class="flex flex-col p-2 bg-neutral rounded-box text-neutral-content">
+				<span class={`countdown font-mono text-4xl`}> Today </span>
+			</div>
+		{/if}
 	{:else if futureEvent}
 		Starts in
 		<Counter days={timeToStart.days} hours={timeToStart.hours} textSize={'text-4xl'} />
