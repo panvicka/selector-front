@@ -85,7 +85,7 @@
 		});
 	};
 
-	let mapColumns = (showNotes:boolean) => {
+	let mapColumns = (showNotes: boolean) => {
 		return [
 			{
 				name: 'id',
@@ -247,9 +247,14 @@
 	.gridjs-table {
 		border: none !important;
 		width: 100%;
+		word-wrap: break-word !important;
 	}
 	.gridjs-wrapper {
 		border: none;
 		margin: 0 auto;
+	}
+
+	td.gridjs-td {
+		word-break: break-word !important;
 	}
 </style>
