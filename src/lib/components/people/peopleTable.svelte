@@ -15,7 +15,8 @@
 		groupes: [],
 		isLongerThenOneDay: false,
 		name: '',
-		roles: []
+		roles: [],
+		longDescription: ''
 	};
 
 	let grid: any; // TODO fix this type somehow
@@ -144,7 +145,7 @@
 	/* @import 'https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css'; */
 
 	td.gridjs-td {
-		word-break: break-all;
+		word-break: break-word;
 	}
 
 	.people-table {
@@ -178,8 +179,6 @@
 	}
 	.gridjs-wrapper {
 		border: none;
-		/* width: 80%;
-		max-width: 900px; */
 		margin: 0 auto;
 	}
 </style>

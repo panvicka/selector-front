@@ -23,6 +23,8 @@
 	import { LocalApiEvents } from '$lib/apiClient/events.js';
 	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
 	import { marked } from 'marked';
+	import { LocalApiPeople } from '$lib/apiClient/people';
+	import type { Attendance } from '$lib/types/attendance';
 
 	export let item: Item;
 
@@ -48,6 +50,7 @@
 		if (item._id) {
 			selectablePeople = await getAllSelectablePeople(item._id);
 			await fetchAllItemEvents();
+			await fetchPeopleAttendance();
 			isLoading = false;
 		} else {
 			nonExistingItem = true;
@@ -56,6 +59,12 @@
 
 	const fetchAllItemEvents = async () => {
 		itemEvents = await LocalApiItems.getItemEvents(item._id, 'all', '10');
+	};
+
+	let peopleAttendance: Attendance = {};
+
+	const fetchPeopleAttendance = async () => {
+		peopleAttendance = await LocalApiItems.getItemPeopleAttendance(item._id);
 	};
 </script>
 
@@ -98,6 +107,7 @@
 					handleCreateNewEvent(event.detail, item).then(() => {
 						showCreateEventModalOpened = false;
 						fetchAllItemEvents();
+						fetchPeopleAttendance();
 					});
 				}}
 			/>
@@ -118,6 +128,7 @@
 					handleUpdateEvent(event.detail).then(() => {
 						showEditModalOpened = false;
 						fetchAllItemEvents();
+						fetchPeopleAttendance();
 					});
 				}}
 			/>
@@ -131,7 +142,10 @@
 					showDeleteEventModal = false;
 				}}
 				on:ok={() => {
-					handleDeleteEvent(workingEventReference).then(() => fetchAllItemEvents());
+					handleDeleteEvent(workingEventReference).then(() => {
+						fetchAllItemEvents();
+						fetchPeopleAttendance();
+					});
 					showDeleteEventModal = false;
 				}}
 			>
@@ -146,14 +160,8 @@
 	<div class="prose mt-10">
 		<h2>People</h2>
 	</div>
-	{#if item._id}
-		{#await getAllPeopleAndRoleCount(item._id)}
-			<p>loading</p>
-		{:then peopleAttendance}
-			<PeopleTable data={peopleAttendance} {item} />
-		{:catch error}
-			<p style="color: red">{error.message}</p>
-		{/await}
+	{#if item && isLoading == false}
+		<PeopleTable data={peopleAttendance} {item} />
 	{/if}
 
 	<div class="prose">

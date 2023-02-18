@@ -9,10 +9,8 @@
 	let runningEvents: Array<Event> = [];
 	let futureEvents: Array<Event> = [];
 
-	onMount(async () => {
-		futureEvents = getEventsWithFutureDates(lastFewEvents);
-		runningEvents = getActiveEvents(lastFewEvents);
-	});
+	$: futureEvents = getEventsWithFutureDates(lastFewEvents);
+	$: runningEvents = getActiveEvents(lastFewEvents);
 </script>
 
 <div class="flex flex-wrap ">
