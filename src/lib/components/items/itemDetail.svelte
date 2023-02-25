@@ -86,7 +86,7 @@
 				{/if}
 
 				{#if longInfoParsed}
-					<div class="md mt-10 prose">
+					<div class="md mt-10">
 						{@html longInfoParsed}
 					</div>
 				{/if}
@@ -157,16 +157,13 @@
 		</Modal>
 	{/if}
 
-	<div class="prose mt-10">
-		<h2>People</h2>
-	</div>
+	<h2>People</h2>
+
 	{#if item && isLoading == false}
 		<PeopleTable data={peopleAttendance} {item} />
 	{/if}
 
-	<div class="prose">
-		<h2>Event List</h2>
-	</div>
+	<h2>Event List</h2>
 
 	<!-- TODO refactor this to own component with nicer code -->
 	<div class="btn-group">

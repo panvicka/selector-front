@@ -56,7 +56,7 @@
 	<title>Tracked Items</title>
 </svelte:head>
 
-<div class="top prose">
+<div class="top">
 	<h1>Tracked items</h1>
 	<button
 		class="btn btn-accent"
