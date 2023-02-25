@@ -82,7 +82,17 @@
 				<Load />
 			{:else}
 				{#if itemEvents.length > 0}
-					<ItemEventSummary lastFewEvents={itemEvents.slice(-10)} />
+					<ItemEventSummary
+						on:delete={(event) => {
+							showDeleteEventModal = true;
+							workingEventReference = event.detail;
+						}}
+						on:edit={(event) => {
+							showEditModalOpened = true;
+							workingEventReference = event.detail;
+						}}
+						lastFewEvents={itemEvents.slice(-10)}
+					/>
 				{/if}
 
 				{#if longInfoParsed}
@@ -157,13 +167,13 @@
 		</Modal>
 	{/if}
 
-	<h2>People</h2>
+	<h2 class="pt-5">People</h2>
 
 	{#if item && isLoading == false}
 		<PeopleTable data={peopleAttendance} {item} />
 	{/if}
 
-	<h2>Event List</h2>
+	<h2 class="pt-5">Event List</h2>
 
 	<!-- TODO refactor this to own component with nicer code -->
 	<div class="btn-group">

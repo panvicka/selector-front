@@ -14,11 +14,11 @@
 </script>
 
 <div class="flex flex-wrap ">
-	<EventGroupOverview runningEvent={true} eventArray={runningEvents}>
+	<EventGroupOverview runningEvent={true} eventArray={runningEvents} on:delete on:edit>
 		<svelte:fragment slot="title">Events running</svelte:fragment>
 	</EventGroupOverview>
 
-	<EventGroupOverview futureEvent={true} eventArray={futureEvents}>
+	<EventGroupOverview futureEvent={true} eventArray={futureEvents} on:delete on:edit>
 		<svelte:fragment slot="title">Comming up...</svelte:fragment>
 	</EventGroupOverview>
 </div>
