@@ -7,7 +7,7 @@ import {
 	within
 } from '@testing-library/svelte';
 
-import ItemForm from './ItemForm.svelte';
+import ItemForm from './ItemFormFields.svelte';
 import { mockedGroups } from 'tests/mocks/mockedGroups.js';
 import { mockedItems } from 'tests/mocks/mockedItems.js';
 import { mockedRoles } from 'tests/mocks/mockedRoles.js';

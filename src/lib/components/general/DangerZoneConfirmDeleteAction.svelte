@@ -25,10 +25,6 @@
 </script>
 
 <div>
-	<div>
-		<h1><slot name="title" /></h1>
-		<slot name="content" />
-	</div>
 	<div class="flex flex-col gap-2">
 		<label for="confirmationText"
 			>Please type <span class="font-bold">{expectedConfirmationText}</span> to confirm.</label

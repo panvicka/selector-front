@@ -2,7 +2,7 @@
 	import ItemCard from './itemCard.svelte';
 	import { onMount } from 'svelte';
 	import Modal from 'components/general/Modal.svelte';
-	import ItemForm from 'components/forms/ItemForm.svelte';
+	import ItemForm from 'components/forms/ItemFormFields.svelte';
 	import DangerZoneConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
 	import { handleCreateNewItem, handleDeleteItem, handleEditItem } from './itemHandlerFunctions';
 	import Load from 'components/general/Load.svelte';
@@ -15,6 +15,9 @@
 	import Icon from 'components/general/Icon.svelte';
 	import Alert from 'components/general/Alert.svelte';
 	import type { AlertInfo } from '$lib/types/alert';
+	import ItemFormModal from 'components/forms/ItemFormModal.svelte';
+
+	let disabledScroll = true;
 
 	let items: Array<Item> = [];
 	let allRoles: Array<Role> = [];
@@ -54,6 +57,13 @@
 
 <svelte:head>
 	<title>Tracked Items</title>
+	{#if showCreateItemModal || showDeleteItemModal || showEditItemModal}
+		<style>
+			body {
+				overflow-y: hidden;
+			}
+		</style>
+	{/if}
 </svelte:head>
 
 <div class="top">
@@ -83,6 +93,8 @@
 					on:edit={(event) => {
 						showEditItemModal = true;
 						workingItemReference = event.detail;
+						console.log(workingItemReference);
+						console.log(event.detail);
 					}}
 				/>
 			</div>
@@ -91,79 +103,81 @@
 {/if}
 
 {#if showCreateItemModal}
-	<Modal>
-		<ItemForm
-			{allRoles}
-			{allGroupes}
-			on:submit={(event) => {
-				handleCreateNewItem(event).then(() => {
-					showCreateItemModal = false;
-					fetchEverything();
-				});
-			}}
-			on:close={() => {
+	<ItemFormModal
+		{allGroupes}
+		{allRoles}
+		class="w-5/6"
+		on:submit={(event) => {
+			handleCreateNewItem(event).then(() => {
 				showCreateItemModal = false;
-			}}
-		>
-			<h1 slot="title">create new item</h1>
-		</ItemForm>
-	</Modal>
+				fetchEverything();
+			});
+		}}
+		on:close={() => {
+			showCreateItemModal = false;
+		}}
+	>
+		<h1 slot="title">Create new item</h1>
+	</ItemFormModal>
 {/if}
 
 {#if showDeleteItemModal}
-	<Modal>
-		<DangerZoneConfirmDeleteAction
-			subject="item"
-			expectedConfirmationText={workingItemReference.name}
-			on:cancel={() => {
-				showDeleteItemModal = false;
-			}}
-			on:ok={() => {
-				handleDeleteItem(workingItemReference._id)
-					.then(() => {
-						showDeleteItemModal = false;
-						alertInfo.text = 'Item deleted.';
-						alertInfo.type = 'success';
-						showAlert = true;
-						fetchEverything();
-					})
-					.catch((e) => {
-						showDeleteItemModal = false;
-						alertInfo.text = `Error when deleting item: <${e}>`;
-						alertInfo.type = 'error';
-						showAlert = true;
-					});
-			}}
-		>
-			<svelte:fragment slot="title">Confirmation</svelte:fragment>
-			<span slot="content"
-				>Do you really want to delete {workingItemReference.name}? You can not reverse this action.
-			</span>
-		</DangerZoneConfirmDeleteAction>
+	<Modal class="w-10/12">
+		<h1 slot="modal-title">Confirmation</h1>
+
+		<svelte:fragment slot="modal-content">
+			<DangerZoneConfirmDeleteAction
+				subject="item"
+				expectedConfirmationText={workingItemReference.name}
+				on:cancel={() => {
+					showDeleteItemModal = false;
+				}}
+				on:ok={() => {
+					handleDeleteItem(workingItemReference._id)
+						.then(() => {
+							showDeleteItemModal = false;
+							alertInfo.text = 'Item deleted.';
+							alertInfo.type = 'success';
+							showAlert = true;
+							fetchEverything();
+						})
+						.catch((e) => {
+							showDeleteItemModal = false;
+							alertInfo.text = `Error when deleting item: <${e}>`;
+							alertInfo.type = 'error';
+							showAlert = true;
+						});
+				}}
+			>
+				<span slot="content"
+					>Do you really want to delete {workingItemReference.name}? You can not reverse this
+					action.
+				</span>
+			</DangerZoneConfirmDeleteAction>
+		</svelte:fragment>
 	</Modal>
 {/if}
 
 {#if showEditItemModal}
-	<Modal>
-		<ItemForm
-			item={workingItemReference}
-			{allRoles}
-			{allGroupes}
-			on:submit={(event) => {
-				handleEditItem(event, workingItemReference._id).then(() => {
-					showEditItemModal = false;
-					fetchEverything();
-				});
-			}}
-			on:close={() => {
+	<ItemFormModal
+		{allGroupes}
+		{allRoles}
+		item={workingItemReference}
+		class="w-5/6"
+		on:submit={(event) => {
+			handleEditItem(event, workingItemReference._id).then(() => {
 				showEditItemModal = false;
-			}}
-		>
-			<h1 slot="title">
-				edit <span class="text-primary">{workingItemReference.name}</span>'s details
-			</h1>
-		</ItemForm>
-	</Modal>
+				fetchEverything();
+			});
+		}}
+		on:close={() => {
+			showEditItemModal = false;
+		}}
+	>
+		<h1 slot="title">
+			edit <span class="text-primary">{workingItemReference.name}</span>'s details
+		</h1>
+	</ItemFormModal>
 {/if}
 
 {#if showAlert}

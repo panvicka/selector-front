@@ -1,6 +1,5 @@
 <script lang="ts">
 	import TextInput from 'components/general/TextInput.svelte';
-	import { createEventDispatcher } from 'svelte';
 	import {
 		addItemToArrayIfNotAlreadyThere,
 		findByKeyInArray,
@@ -14,24 +13,9 @@
 	import type { Role } from '$lib/types/role';
 	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
 
-	const dispatch = createEventDispatcher<{ submit: ItemRequestType; close: void }>();
-
-	let nameInputIsMissing = false;
-
-	function close() {
-		dispatch('close');
-	}
-
-	function onSubmit() {
-		if (!formItem.name) {
-			nameInputIsMissing = true;
-			return;
-		}
-
-		dispatch('submit', {
-			...formItem
-		});
-	}
+	export let formValidation = {
+		nameInputIsMissing: false
+	};
 
 	export let item: Item = {
 		_id: '',
@@ -60,7 +44,7 @@
 		label: Group['name'];
 	}> = [];
 
-	const formItem: ItemRequestType = {
+	export let formItem: ItemRequestType = {
 		_id: item._id,
 		isLongerThenOneDay: item.isLongerThenOneDay || false,
 		description: item.description || '',
@@ -69,6 +53,8 @@
 		groupes: [],
 		roles: []
 	};
+
+	console.log(formItem);
 
 	if (allRoles.length > 0) {
 		rolesForSelect = allRoles.map((role) => {
@@ -110,19 +96,17 @@
 </script>
 
 <div class="p-4">
-	<slot name="title" />
-
 	<form id="itemForm" class="mt-4">
 		<div class="flex flex-col w-full lg:flex-row mt-2">
 			<div class="w-80 p-4 grid flex-grow  card bg-base-300 rounded-box">
 				<TextInput
 					isRequired={true}
 					inputLabel={'Name'}
-					class={`${nameInputIsMissing ? 'input-error' : 'input-primary'}`}
+					class={`${formValidation.nameInputIsMissing ? 'input-error' : 'input-primary'}`}
 					inputPlaceholder="name of the item"
 					bind:textValue={formItem.name}
 					on:onUserInteraction={() => {
-						nameInputIsMissing = false;
+						formValidation.nameInputIsMissing = false;
 					}}
 				/>
 
@@ -201,17 +185,6 @@
 					{/each}
 				</div>
 			</div>
-		</div>
-
-		<div class="mt-4 flex justify-between">
-			<button
-				class="btn btn-outline btn-error"
-				type="button"
-				on:click={() => {
-					close();
-				}}>Close</button
-			>
-			<button type="button" class="btn btn-outline btn-info" on:click={onSubmit}>Save</button>
 		</div>
 	</form>
 </div>
