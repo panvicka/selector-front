@@ -68,6 +68,11 @@
 	};
 </script>
 
+<svelte:head>
+	<title>{`${item.name} tracking | Selector`}</title>
+	<meta name="description" content="Tracking of {item.name}: {item.description}" />
+</svelte:head>
+
 {#if !nonExistingItem}
 	<div class="info">
 		<div class="prose max-w-none">
