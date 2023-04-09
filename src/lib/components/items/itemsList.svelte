@@ -16,6 +16,7 @@
 	import Alert from 'components/general/Alert.svelte';
 	import type { AlertInfo } from '$lib/types/alert';
 	import ItemFormModal from 'components/forms/ItemFormModal.svelte';
+	import DangerZoneConfirmDeleteActionModal from 'components/general/DangerZoneConfirmDeleteActionModal.svelte';
 
 	let disabledScroll = true;
 
@@ -66,15 +67,15 @@
 	{/if}
 </svelte:head>
 
-<div class="top">
-	<h1>Tracked items</h1>
+<div class="mt-16 mb-8">
+	<h1 class="mb-5">Tracked items</h1>
 	<button
 		class="btn btn-accent"
 		on:click={() => {
 			showCreateItemModal = true;
 		}}
 	>
-		<Icon size="lg" cssClass="add-new-tracking-icon" icon="faPlus" />
+		<Icon size="lg" class="mr-4" icon="faPlus" />
 		Add new tracking
 	</button>
 </div>
@@ -106,7 +107,7 @@
 	<ItemFormModal
 		{allGroupes}
 		{allRoles}
-		class="w-5/6"
+		class="lg:w-fit w-full"
 		on:submit={(event) => {
 			handleCreateNewItem(event).then(() => {
 				showCreateItemModal = false;
@@ -122,40 +123,35 @@
 {/if}
 
 {#if showDeleteItemModal}
-	<Modal class="w-10/12">
-		<h1 slot="modal-title">Confirmation</h1>
-
-		<svelte:fragment slot="modal-content">
-			<DangerZoneConfirmDeleteAction
-				subject="item"
-				expectedConfirmationText={workingItemReference.name}
-				on:cancel={() => {
+	<DangerZoneConfirmDeleteActionModal
+		class="lg:w-1/2"
+		subject="Item"
+		expectedConfirmationText={workingItemReference.name}
+		on:cancel={() => {
+			showDeleteItemModal = false;
+		}}
+		on:ok={() => {
+			handleDeleteItem(workingItemReference._id)
+				.then(() => {
 					showDeleteItemModal = false;
-				}}
-				on:ok={() => {
-					handleDeleteItem(workingItemReference._id)
-						.then(() => {
-							showDeleteItemModal = false;
-							alertInfo.text = 'Item deleted.';
-							alertInfo.type = 'success';
-							showAlert = true;
-							fetchEverything();
-						})
-						.catch((e) => {
-							showDeleteItemModal = false;
-							alertInfo.text = `Error when deleting item: <${e}>`;
-							alertInfo.type = 'error';
-							showAlert = true;
-						});
-				}}
-			>
-				<span slot="content"
-					>Do you really want to delete {workingItemReference.name}? You can not reverse this
-					action.
-				</span>
-			</DangerZoneConfirmDeleteAction>
-		</svelte:fragment>
-	</Modal>
+					alertInfo.text = 'Item deleted.';
+					alertInfo.type = 'success';
+					showAlert = true;
+					fetchEverything();
+				})
+				.catch((e) => {
+					showDeleteItemModal = false;
+					alertInfo.text = `Error when deleting item: <${e}>`;
+					alertInfo.type = 'error';
+					showAlert = true;
+				});
+		}}
+	>
+		<h1 slot="title">Delete confirmation</h1>
+		<span slot="confirmation-content"
+			>Do you really want to delete {workingItemReference.name}? You can not reverse this action.
+		</span>
+	</DangerZoneConfirmDeleteActionModal>
 {/if}
 
 {#if showEditItemModal}
@@ -163,7 +159,7 @@
 		{allGroupes}
 		{allRoles}
 		item={workingItemReference}
-		class="w-5/6"
+		class="lg:w-fit w-full"
 		on:submit={(event) => {
 			handleEditItem(event, workingItemReference._id).then(() => {
 				showEditItemModal = false;
@@ -191,21 +187,3 @@
 		}}
 	/>
 {/if}
-
-<style>
-	button {
-		margin: 2em;
-		margin-left: 0em;
-	}
-
-	.top {
-		margin-top: 5em;
-	}
-	h1 {
-		margin-bottom: 0;
-	}
-
-	:global(.add-new-tracking-icon) {
-		margin-right: 1em;
-	}
-</style>

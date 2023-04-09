@@ -2,13 +2,12 @@
 	import { onMount } from 'svelte';
 	import Modal from 'components/general/Modal.svelte';
 	import RoleForm from 'components/forms/roleForm.svelte';
-	import { faPlus } from '@fortawesome/free-solid-svg-icons';
-	import Fa from 'svelte-fa';
 	import RoleCard from 'components/roles/RoleCard.svelte';
 	import DangerZoneConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
 	import Load from 'components/general/Load.svelte';
 	import { LocalApiRoles } from '$lib/apiClient/roles';
 	import type { Role } from '$lib/types/role';
+	import Icon from 'components/general/Icon.svelte';
 
 	let roles: Array<Role> = [];
 
@@ -71,7 +70,10 @@
 		class="btn btn-accent"
 		on:click={(e) => {
 			letShowCreateModal = true;
-		}}><Fa size="lg" class="add-new-role-icon" icon={faPlus} /> Add Role</button
+		}}
+	>
+		<Icon size="lg" class="mr-4" icon="faPlus" />
+		Add Role</button
 	>
 </div>
 

@@ -1,18 +1,16 @@
 <script lang="ts">
-	import Fa from 'svelte-fa';
-	import { faPlus } from '@fortawesome/free-solid-svg-icons';
 	import { onMount } from 'svelte';
 	import PersonCard from 'components/people/personCard.svelte';
-	import PersonForm from 'components/forms/personForm.svelte';
-	import ConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
 	import Load from 'components/general/Load.svelte';
-	import Modal from 'components/general/Modal.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
 	import { LocalApiPeople } from '$lib/apiClient/people';
 	import { LocalApiGroups } from '$lib/apiClient/groups';
 	import type { Person } from '$lib/types/person';
 	import type { Item } from '$lib/types/item';
 	import type { Group } from '$lib/types/group';
+	import PersonFormModal from 'components/forms/personFormModal.svelte';
+	import DangerZoneConfirmDeleteActionModal from 'components/general/DangerZoneConfirmDeleteActionModal.svelte';
+	import Icon from 'components/general/Icon.svelte';
 
 	let people: Array<Person> = [];
 	let allItems: Array<Item> = [];
@@ -70,34 +68,28 @@
 	};
 </script>
 
-{#if showDeleteModal}
-	<Modal>
-		<ConfirmDeleteAction
-			subject="Person"
-			expectedConfirmationText={personToBeDeleted.name}
-			on:cancel={() => {
-				showDeleteModal = false;
-			}}
-			on:ok={() => {
-				handleDeletePerson(personToBeDeleted._id);
-			}}
-		>
-			<svelte:fragment slot="title">Confirmation</svelte:fragment>
-			<span slot="content"
-				>Do you really want to delete {personToBeDeleted.name}? You can not reverse this action.
-			</span>
-		</ConfirmDeleteAction>
-	</Modal>
-{/if}
+<svelte:head>
+	<title>People</title>
+	{#if letShowCreateModal || letShowEditModal || showDeleteModal}
+		<style>
+			body {
+				overflow-y: hidden;
+			}
+		</style>
+	{/if}
+</svelte:head>
 
-<div class="header prose">
-	<h1>People</h1>
+<div class="mt-16 mb-8">
+	<h1 class="mb-5">People</h1>
 
 	<button
 		class="btn btn-accent"
 		on:click={() => {
 			letShowCreateModal = true;
-		}}><Fa size="lg" class="add-new-person-icon" icon={faPlus} /> Add person</button
+		}}
+	>
+		<Icon size="lg" class="mr-4" icon="faPlus" />
+		Add person</button
 	>
 </div>
 {#if isLoading}
@@ -119,38 +111,62 @@
 	</div>
 {/if}
 
+{#if showDeleteModal}
+	<DangerZoneConfirmDeleteActionModal
+		class="lg:w-1/2"
+		subject="Person"
+		expectedConfirmationText={personToBeDeleted.name}
+		on:cancel={() => {
+			showDeleteModal = false;
+		}}
+		on:ok={() => {
+			handleDeletePerson(personToBeDeleted._id);
+		}}
+	>
+		<h1 slot="title">Delete confirmation</h1>
+		<span slot="confirmation-content"
+			>Do you really want to delete {personToBeDeleted.name}? You can not reverse this action.
+		</span>
+	</DangerZoneConfirmDeleteActionModal>
+{/if}
+
 {#if letShowCreateModal}
-	<Modal>
-		<PersonForm
-			title={'create new person'}
-			{allItems}
-			{allGroupes}
-			on:submit={handleCreateNewPerson}
-			on:close={() => {
+	<PersonFormModal
+		{allGroupes}
+		{allItems}
+		class="lg:w-fit w-full"
+		on:submit={(event) => {
+			handleCreateNewPerson(event).then(() => {
 				letShowCreateModal = false;
-			}}
-		/>
-	</Modal>
+				fetchAllPeople();
+			});
+		}}
+		on:close={() => {
+			letShowCreateModal = false;
+		}}
+	>
+		<h1 slot="title">Create new person</h1>
+	</PersonFormModal>
 {/if}
 
 {#if letShowEditModal}
-	<Modal>
-		<PersonForm
-			title={'edit person'}
-			person={personToBeEdited}
-			{allItems}
-			{allGroupes}
-			on:submit={handleEditPerson}
-			on:close={() => {
-				letShowEditModal = false;
-			}}
-		/>
-	</Modal>
+	<PersonFormModal
+		{allGroupes}
+		{allItems}
+		person={personToBeEdited}
+		class="lg:w-2/3 w-full"
+		on:submit={(event) => {
+			handleEditPerson(event).then(() => {
+				letShowCreateModal = false;
+				fetchAllPeople();
+			});
+		}}
+		on:close={() => {
+			letShowEditModal = false;
+		}}
+	>
+		<h1 slot="title">
+			Edit <span class="text-primary">{personToBeEdited.name}</span>'s details
+		</h1>
+	</PersonFormModal>
 {/if}
-
-<style>
-	.header {
-		margin-top: 5em;
-		margin-bottom: 2em;
-	}
-</style>

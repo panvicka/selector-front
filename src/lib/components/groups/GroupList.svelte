@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Modal from 'components/general/Modal.svelte';
-	import { faPlus } from '@fortawesome/free-solid-svg-icons';
-	import Fa from 'svelte-fa';
 	import GroupCard from 'components/groups/GroupCard.svelte';
 	import GroupForm from 'components/forms/groupForm.svelte';
 	import DangerZoneConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
 	import Load from 'components/general/Load.svelte';
 	import { LocalApiGroups } from '$lib/apiClient/groups';
 	import type { Group } from '$lib/types/group';
+	import Icon from 'components/general/Icon.svelte';
 
 	let groups: Array<Group> = [];
 	let isLoading = true;
@@ -74,7 +73,10 @@
 		class="btn btn-accent"
 		on:click={(e) => {
 			letShowCreateModal = true;
-		}}><Fa size="lg" class="add-new-role-icon" icon={faPlus} /> Add Group</button
+		}}
+	>
+		<Icon size="lg" class="mr-4" icon="faPlus" />
+		Add Group</button
 	>
 </div>
 
