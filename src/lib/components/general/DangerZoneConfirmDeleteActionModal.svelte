@@ -7,11 +7,12 @@
 	$: classesFromTheParent = $$props.class;
 
 	export let subject: string;
-	export let expectedConfirmationText: string;
+	export let expectedConfirmationText: string | undefined;
 
 	let confirmationTextValue: string;
-	$: confirmationButtonIsDisabled =
-		expectedConfirmationText === undefined || expectedConfirmationText !== confirmationTextValue;
+	$: confirmationButtonIsDisabled = expectedConfirmationText
+		? expectedConfirmationText === undefined || expectedConfirmationText !== confirmationTextValue
+		: false;
 
 	function cancel() {
 		dispatch('cancel');

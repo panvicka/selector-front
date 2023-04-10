@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import DateInput from 'components/general/DateInput.svelte';
 	import { onMount } from 'svelte';
 	import { replaceKeyValueInToArrayIfKeyExistOrAdd } from 'utils/arrayUtils';
 	import SelectDropdown from 'components/general/SelectDropdown.svelte';
-	import dayjs from 'dayjs';
 	import type { Event, EventRequestType } from '$lib/types/event';
 	import type { Role } from '$lib/types/role';
 	import type { Item } from '$lib/types/item';
@@ -12,8 +10,12 @@
 	import RoleParticipantNumber from 'components/roles/RoleParticipantNumber.svelte';
 	import TextField from 'components/general/TextField.svelte';
 
+	export let formValidation = {
+		startDateMissing: false,
+		endDateMissing: false
+	};
+
 	export let peopleToSelectFrom: Array<SvelteSelectableItem> = [];
-	export let title = '';
 
 	export let event: Event = {
 		_id: '',
@@ -30,6 +32,23 @@
 		endDate: '',
 		eventNote: '',
 		participants: []
+	};
+
+	export let formEvent: Event = {
+		_id: event?._id || '',
+		item: event?.item || {
+			_id: '',
+			description: '',
+			isLongerThenOneDay: false,
+			longDescription: '',
+			name: '',
+			groupes: [],
+			roles: []
+		},
+		startDate: event?.startDate || '',
+		endDate: event?.endDate || '',
+		eventNote: event?.eventNote || '',
+		participants: event?.participants || []
 	};
 
 	export let item: Item = {
@@ -64,62 +83,11 @@
 		endDate = startDate;
 	}
 
-	const formEvent: EventRequestType = {
-		startDate: startDate,
-		endDate: endDate,
-		eventNote: event.eventNote,
-		participants: selectedParticipantsIds
-	};
+	$: formEvent.startDate = startDate;
+	$: formEvent.endDate = endDate;
+	$: formEvent.participants = selectedParticipantsIds;
+
 	formEvent.eventNote = event.eventNote || '';
-
-	let startDateMissing = false;
-	let endDateMissing = false;
-
-	const dispatch = createEventDispatcher<{ submit: EventRequestType; close: void }>();
-
-	function close() {
-		dispatch('close');
-	}
-
-	function onSubmit() {
-		console.log(startDate);
-		console.log(endDate);
-		console.log(selectedParticipantsIds);
-
-		if (!startDate || startDate == 'Invalid Date') {
-			startDateMissing = true;
-		}
-
-		if (!endDate && item.isLongerThenOneDay == true) {
-			endDateMissing = true;
-		}
-
-		if (startDateMissing || endDateMissing) {
-			return;
-		}
-
-		formEvent.startDate = dayjs(startDate)
-			.set('hour', 7)
-			.set('minute', 0)
-			.set('second', 0)
-			.toDate()
-			.toISOString();
-		if (item.isLongerThenOneDay) {
-			formEvent.endDate = dayjs(endDate)
-				.set('hour', 18)
-				.set('minute', 0)
-				.set('second', 0)
-				.toDate()
-				.toISOString();
-		}
-		formEvent.participants = selectedParticipantsIds;
-
-		formEvent._id = event._id || '';
-
-		dispatch('submit', {
-			...formEvent
-		});
-	}
 
 	const getNamesForRole = (role: Role): string | string[] => {
 		let person = '';
@@ -164,17 +132,15 @@
 	}
 </script>
 
-<div class="p-4 max-w-xs w-xs">
-	<h1>{title}</h1>
-
-	<form id="itemForm" class="mt-4" on:submit|preventDefault={onSubmit}>
+<div class="p-4">
+	<form id="eventForm" class="mt-4">
 		<DateInput
 			isRequired={true}
 			inputLabel="Start date"
-			class={`${startDateMissing ? 'input-error' : 'input-primary'}`}
+			class={`${formValidation.startDateMissing ? 'input-error' : 'input-primary'}`}
 			bind:date={startDate}
 			on:onUserInteraction={() => {
-				startDateMissing = false;
+				formValidation.startDateMissing = false;
 			}}
 		/>
 
@@ -182,10 +148,10 @@
 			<DateInput
 				isRequired={true}
 				inputLabel="End date"
-				class={`${endDateMissing ? 'input-error' : 'input-primary'}`}
+				class={`${formValidation.endDateMissing ? 'input-error' : 'input-primary'}`}
 				bind:date={endDate}
 				on:onUserInteraction={() => {
-					endDateMissing = false;
+					formValidation.endDateMissing = false;
 				}}
 			/>
 		{/if}
@@ -214,16 +180,5 @@
 			inputPlaceholder="Optional event note"
 			bind:textValue={formEvent.eventNote}
 		/>
-
-		<div class="mt-4 flex justify-between">
-			<button
-				class="btn btn-outline btn-error"
-				type="button"
-				on:click={() => {
-					close();
-				}}>Close</button
-			>
-			<button type="submit" class="btn btn-outline btn-accent">Save</button>
-		</div>
 	</form>
 </div>
