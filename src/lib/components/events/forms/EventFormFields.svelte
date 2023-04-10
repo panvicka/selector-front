@@ -68,12 +68,15 @@
 	}> = [];
 
 	onMount(async () => {
+		console.log('rerender');
+		console.log(event)
 		event.participants.forEach((participant) => {
 			selectedParticipantsIds.push({
 				role: participant.role._id,
 				person: participant.person._id
 			});
 		});
+		console.log(selectedParticipantsIds);
 	});
 
 	let startDate = event.startDate || new Date().toDateString();
@@ -87,17 +90,19 @@
 	$: formEvent.endDate = endDate;
 	$: formEvent.participants = selectedParticipantsIds;
 
-	formEvent.eventNote = event.eventNote || '';
-
 	const getNamesForRole = (role: Role): string | string[] => {
+		console.log('why is this called');
+		console.log(role);
 		let person = '';
 		let personNameArray: string[] = [];
 		if (role.canHaveMultipleParticipants) {
+			console.log(event.participants);
 			event.participants.forEach((participant) => {
 				if (participant.role._id == role._id) {
 					personNameArray.push(participant.person._id);
 				}
 			});
+			console.log(personNameArray);
 			return personNameArray;
 		} else {
 			event.participants.forEach((participant) => {
@@ -121,6 +126,7 @@
 				person: event.detail[0].value
 			});
 		} else {
+			console.log(selectedParticipantsIds);
 			selectedParticipantsIds = selectedParticipantsIds.filter((item) => item.role !== roleId);
 			for (const [_key, participantItem] of Object.entries(event.detail)) {
 				selectedParticipantsIds.push({
@@ -159,9 +165,9 @@
 		{#if item.roles}
 			{#each item.roles as role, i}
 				<div class="m-1">
-					<div class="flex flex-row justify-between">
-						<span class="label-text"> {role.name}</span>
+					<div class="flex flex-row items-center">
 						<RoleParticipantNumber canHaveMultipleParticipants={role.canHaveMultipleParticipants} />
+						<span class="label-text"> {role.name}</span>
 					</div>
 					<SelectDropdown
 						items={peopleToSelectFrom}

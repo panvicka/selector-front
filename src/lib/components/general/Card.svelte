@@ -10,6 +10,7 @@
 	export let testId = 'Card';
 
 	const dispatch = createEventDispatcher<{ deleteTrigger: void; settingsTrigger: void }>();
+	$: classesFromTheParent = $$props.class;
 
 	function deleteTrigger() {
 		dispatch('deleteTrigger');
@@ -21,7 +22,7 @@
 </script>
 
 <div
-	class="card w-96 {backgroundColor} shadow-xl overflow-visible p-2 h-fit"
+	class="card w-96 {backgroundColor} shadow-xl overflow-visible p-2 h-fit {classesFromTheParent}"
 	style="width: {width}px"
 	data-testid={testId}
 >

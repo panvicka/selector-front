@@ -110,7 +110,7 @@
 
 	{#if showCreateEventModalOpened}
 		<EventFormModal
-			class="lg:w-fit w-full"
+			class="lg:w-7/12 w-full"
 			peopleToSelectFrom={selectablePeople}
 			{item}
 			on:submit={(event) => {
@@ -130,7 +130,7 @@
 
 	{#if showEditModalOpened}
 		<EventFormModal
-			class="lg:w-fit w-full"
+			class="lg:w-7/12 w-full"
 			peopleToSelectFrom={selectablePeople}
 			{item}
 			event={workingEventReference}

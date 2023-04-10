@@ -16,7 +16,7 @@
 		</h4>
 	{/if}
 
-	<div class="flex flex-row gap-9 ">
+	<div class="lg:flex lg:flex-row lg:gap-9 ">
 		{#if eventArray.length > 0}
 			{#each eventArray as event}
 				<EventDetail

@@ -58,6 +58,7 @@
 <Card
 	width={400}
 	testId="EventCard"
+	class="mb-4 lg:mb-0"
 	on:deleteTrigger={() => {
 		dispatch('delete', {
 			...event

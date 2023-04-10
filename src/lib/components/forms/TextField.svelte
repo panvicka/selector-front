@@ -27,10 +27,10 @@
 	$: classesFromTheParent = $$props.class;
 </script>
 
-<label class="label" for={`${inputLabel}-ID`}>
+<label class="flex items-center pt-2 pb-2" for={`${inputLabel}-ID`}>
 	<span class="label-text">{inputLabel}{isRequired ? '*' : ''}</span>
 	{#if inputLabelHelp}
-		<span class="z-40 tooltip tooltip-info" data-tip={inputLabelHelp}
+		<span class="ml-2 z-40 tooltip tooltip-info" data-tip={inputLabelHelp}
 			><Icon icon={'faCircleInfo'} /></span
 		>
 	{/if}
