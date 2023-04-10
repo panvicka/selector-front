@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Modal from 'components/general/Modal.svelte';
 	import GroupCard from 'components/groups/GroupCard.svelte';
-	import GroupForm from 'components/forms/groupForm.svelte';
-	import DangerZoneConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
 	import Load from 'components/general/Load.svelte';
 	import { LocalApiGroups } from '$lib/apiClient/groups';
 	import type { Group } from '$lib/types/group';
 	import Icon from 'components/general/Icon.svelte';
+	import GroupFormModal from 'components/forms/groupFormModal.svelte';
+	import DangerZoneConfirmDeleteActionModal from 'components/general/DangerZoneConfirmDeleteActionModal.svelte';
 
 	let groups: Array<Group> = [];
 	let isLoading = true;
@@ -42,6 +41,7 @@
 	};
 
 	const handleCreateNewGroup = async (event: CustomEvent<Group>) => {
+		console.log(event);
 		const res = await LocalApiGroups.createGroup({
 			name: event.detail.name,
 			description: event.detail.description
@@ -51,6 +51,7 @@
 	};
 
 	const handleEditGroup = async (event: CustomEvent<Group>) => {
+		console.log(event);
 		const res = await LocalApiGroups.updateGroup(groupToBeEdited._id, event.detail);
 		fetchAllGroups();
 		letShowEditModal = false;
@@ -66,8 +67,18 @@
 	let letShowEditModal = false;
 </script>
 
-<div class="header prose">
-	<h1>Groups</h1>
+<svelte:head>
+	{#if letShowEditModal || letShowCreateModal || showDeleteModal}
+		<style>
+			body {
+				overflow-y: hidden;
+			}
+		</style>
+	{/if}
+</svelte:head>
+
+<div class="mt-16 mb-8">
+	<h1 class="mb-5">Groups</h1>
 
 	<button
 		class="btn btn-accent"
@@ -100,57 +111,47 @@
 {/if}
 
 {#if letShowCreateModal}
-	<Modal>
-		<GroupForm
-			on:submit={handleCreateNewGroup}
-			on:close={() => {
-				letShowCreateModal = false;
-			}}
-		>
-			<h1 slot="title">create new role</h1>
-		</GroupForm>
-	</Modal>
+	<GroupFormModal
+		class="lg:w-fit w-full"
+		on:submit={handleCreateNewGroup}
+		on:close={() => {
+			letShowCreateModal = false;
+		}}
+	>
+		<h1 slot="title">Create new group</h1>
+	</GroupFormModal>
 {/if}
 
 {#if letShowEditModal}
-	<Modal>
-		<GroupForm
-			group={groupToBeEdited}
-			on:submit={handleEditGroup}
-			on:close={() => {
-				letShowEditModal = false;
-			}}
-		>
-			<h1 slot="title">
-				edit <span class="text-primary">{groupToBeEdited.name}</span>'s details
-			</h1>
-		</GroupForm>
-	</Modal>
+	<GroupFormModal
+		group={groupToBeEdited}
+		class="lg:w-fit w-full"
+		on:submit={handleEditGroup}
+		on:close={() => {
+			letShowEditModal = false;
+		}}
+	>
+		<h1 slot="title">
+			Edit <span class="text-primary">{groupToBeEdited.name}</span>'s details
+		</h1>
+	</GroupFormModal>
 {/if}
 
 {#if showDeleteModal}
-	<Modal>
-		<DangerZoneConfirmDeleteAction
-			subject="group"
-			expectedConfirmationText={groupToBeDeleted.name}
-			on:cancel={() => {
-				showDeleteModal = false;
-			}}
-			on:ok={() => {
-				handleDeleteGroup(groupToBeDeleted._id);
-			}}
-		>
-			<svelte:fragment slot="title">Confirmation</svelte:fragment>
-			<span slot="content"
-				>Do you really want to delete {groupToBeDeleted.name}? You can not reverse this action.
-			</span>
-		</DangerZoneConfirmDeleteAction>
-	</Modal>
+	<DangerZoneConfirmDeleteActionModal
+		class="lg:w-1/2"
+		subject="Group"
+		expectedConfirmationText={groupToBeDeleted.name}
+		on:cancel={() => {
+			showDeleteModal = false;
+		}}
+		on:ok={() => {
+			handleDeleteGroup(groupToBeDeleted._id);
+		}}
+	>
+		<h1 slot="title">Delete confirmation</h1>
+		<span slot="confirmation-content"
+			>Do you really want to delete {groupToBeDeleted.name}? You can not reverse this action.
+		</span>
+	</DangerZoneConfirmDeleteActionModal>
 {/if}
-
-<style>
-	.header {
-		margin-top: 5em;
-		margin-bottom: 2em;
-	}
-</style>

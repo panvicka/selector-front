@@ -1,20 +1,7 @@
 <script lang="ts">
-	import TextInput from 'components/general/TextInput.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import { onMount } from 'svelte';
-
-	import {
-		addItemToArrayIfNotAlreadyThere,
-		findByKeyInArray,
-		findIndexByKeyInArray,
-		removeItemFromArray
-	} from 'utils/arrayUtils';
 	import Modal from 'components/general/Modal.svelte';
 	import ActionButtons from './ActionButtons.svelte';
-
-
-	import GroupToggle, { type mappedDataType } from 'components/general/GroupToggle.svelte';
-	import type { Item } from '$lib/types/item';
 	import type { Group } from '$lib/types/group';
 	import type { Person } from '$lib/types/person';
 	import PersonFormFields from './personFormFields.svelte';
@@ -25,11 +12,6 @@
 	let formValidation = {
 		nameInputIsMissing: false
 	};
-
-	let itemCheckStates = [];
-	export let allItems: Array<Item> = [];
-
-	export let title = '';
 
 	export let person: Person = {
 		_id: '',
