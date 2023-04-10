@@ -1,12 +1,12 @@
 <script lang="ts">
-	import TextInput from 'components/general/TextInput.svelte';
-	import TextField from 'components/general/TextField.svelte';
-	import * as Icons from '@fortawesome/free-solid-svg-icons';
-	import SelectDropdown from 'components/general/SelectDropdown.svelte';
-	import Link from 'components/general/Link.svelte';
 	import type { Role } from '$lib/types/role';
 	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
+	import * as Icons from '@fortawesome/free-solid-svg-icons';
+	import SelectDropdown from 'components/forms/SelectDropdown.svelte';
+	import TextField from 'components/forms/TextField.svelte';
+	import TextInput from 'components/forms/TextInput.svelte';
 	import Icon from 'components/general/Icon.svelte';
+	import Link from 'components/general/Link.svelte';
 
 	export let formValidation = {
 		nameInputIsMissing: false,

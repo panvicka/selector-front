@@ -1,13 +1,13 @@
 <script lang="ts">
-	import type { Item } from '$lib/types/item';
-	import { ColorStyle } from '$lib/types/styles';
 	import { LocalApiItems } from '$lib/apiClient/items';
 	import type { Event } from '$lib/types/event';
-	import { getActiveEvents, getEventsWithFutureDates } from 'utils/date';
+	import type { Item } from '$lib/types/item';
+	import { ColorStyle } from '$lib/types/styles';
 	import EventDetailCompact from 'components/events/EventDetailCompact.svelte';
 	import Icon from 'components/general/Icon.svelte';
-	import { onMount } from 'svelte';
 	import Link from 'components/general/Link.svelte';
+	import { onMount } from 'svelte';
+	import { getActiveEvents, getEventsWithFutureDates } from 'utils/date';
 
 	export let item: Item;
 	let colorStyle: ColorStyle = ColorStyle.primary;

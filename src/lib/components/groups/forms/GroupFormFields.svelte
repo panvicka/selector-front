@@ -1,7 +1,7 @@
 <script lang="ts">
-	import TextInput from 'components/general/TextInput.svelte';
-	import TextField from 'components/general/TextField.svelte';
 	import type { Group } from '$lib/types/group';
+	import TextField from 'components/forms/TextField.svelte';
+	import TextInput from 'components/forms/TextInput.svelte';
 
 	export let formValidation = {
 		nameInputIsMissing: false,

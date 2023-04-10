@@ -1,6 +1,6 @@
 <script lang="ts">
+	import Icon from 'components/general/Icon.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import Icon from './Icon.svelte';
 
 	export let inputLabel: string;
 	export let inputLabelHelp: string = '';

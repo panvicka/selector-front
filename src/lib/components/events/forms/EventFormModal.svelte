@@ -6,8 +6,8 @@
 	import type { Item } from '$lib/types/item';
 	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
 	import Modal from 'components/general/Modal.svelte';
-	import EventFormFields from './eventFormFields.svelte';
-	import ActionButtons from './ActionButtons.svelte';
+	import EventFormFields from './EventFormFields.svelte';
+	import ActionButtons from 'components/forms/ActionButtons.svelte';
 
 	const dispatch = createEventDispatcher<{ submit: EventRequestType; close: void }>();
 	$: classesFromTheParent = $$props.class;

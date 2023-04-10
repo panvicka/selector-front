@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import RoleCard from 'components/roles/RoleCard.svelte';
-	import Load from 'components/general/Load.svelte';
 	import { LocalApiRoles } from '$lib/apiClient/roles';
 	import type { Role } from '$lib/types/role';
-	import Icon from 'components/general/Icon.svelte';
-	import RoleFormModal from 'components/forms/roleFormModal.svelte';
 	import DangerZoneConfirmDeleteActionModal from 'components/general/DangerZoneConfirmDeleteActionModal.svelte';
+	import Load from 'components/general/Load.svelte';
+	import PageHeader from 'components/general/PageHeader.svelte';
+	import RoleCard from 'components/roles/RoleCard.svelte';
+	import { onMount } from 'svelte';
+	import RoleFormModal from './forms/RoleFormModal.svelte';
 
 	let roles: Array<Role> = [];
 
@@ -72,19 +72,9 @@
 	{/if}
 </svelte:head>
 
-<div class="mt-16 mb-8">
-	<h1 class="mb-5">Roles</h1>
-
-	<button
-		class="btn btn-accent"
-		on:click={(e) => {
-			letShowCreateModal = true;
-		}}
-	>
-		<Icon size="lg" class="mr-4" icon="faPlus" />
-		Add Role</button
-	>
-</div>
+<PageHeader buttonText="Add Role" on:buttonClick={() => (letShowCreateModal = true)}>
+	<svelte:fragment slot="title">Roles</svelte:fragment>
+</PageHeader>
 
 {#if isLoading}
 	<Load />

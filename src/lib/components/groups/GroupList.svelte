@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import GroupCard from 'components/groups/GroupCard.svelte';
-	import Load from 'components/general/Load.svelte';
 	import { LocalApiGroups } from '$lib/apiClient/groups';
 	import type { Group } from '$lib/types/group';
-	import Icon from 'components/general/Icon.svelte';
-	import GroupFormModal from 'components/forms/groupFormModal.svelte';
 	import DangerZoneConfirmDeleteActionModal from 'components/general/DangerZoneConfirmDeleteActionModal.svelte';
+	import Load from 'components/general/Load.svelte';
+	import PageHeader from 'components/general/PageHeader.svelte';
+	import GroupCard from 'components/groups/GroupCard.svelte';
+	import { onMount } from 'svelte';
+	import GroupFormModal from './forms/GroupFormModal.svelte';
 
 	let groups: Array<Group> = [];
 	let isLoading = true;
@@ -77,19 +77,9 @@
 	{/if}
 </svelte:head>
 
-<div class="mt-16 mb-8">
-	<h1 class="mb-5">Groups</h1>
-
-	<button
-		class="btn btn-accent"
-		on:click={(e) => {
-			letShowCreateModal = true;
-		}}
-	>
-		<Icon size="lg" class="mr-4" icon="faPlus" />
-		Add Group</button
-	>
-</div>
+<PageHeader buttonText="Add new group" on:buttonClick={() => (letShowCreateModal = true)}>
+	<svelte:fragment slot="title">Groups</svelte:fragment>
+</PageHeader>
 
 {#if isLoading}
 	<Load />

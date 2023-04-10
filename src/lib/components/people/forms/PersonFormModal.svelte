@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import Modal from 'components/general/Modal.svelte';
-	import ActionButtons from './ActionButtons.svelte';
 	import type { Group } from '$lib/types/group';
 	import type { Person } from '$lib/types/person';
-	import PersonFormFields from './personFormFields.svelte';
+	import ActionButtons from 'components/forms/ActionButtons.svelte';
+	import Modal from 'components/general/Modal.svelte';
+	import { createEventDispatcher } from 'svelte';
+	import PersonFormFields from './PersonFormFields.svelte';
 
 	const dispatch = createEventDispatcher<{ submit: Person; close: void }>();
 	$: classesFromTheParent = $$props.class;

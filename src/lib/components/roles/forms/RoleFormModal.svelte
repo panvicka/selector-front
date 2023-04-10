@@ -2,8 +2,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Role } from '$lib/types/role';
 	import Modal from 'components/general/Modal.svelte';
-	import RoleFormFields from './roleFormFields.svelte';
-	import ActionButtons from './ActionButtons.svelte';
+	import RoleFormFields from './RoleFormFields.svelte';
+	import ActionButtons from 'components/forms/ActionButtons.svelte';
 
 	const dispatch = createEventDispatcher<{ submit: Role; close: void }>();
 	$: classesFromTheParent = $$props.class;

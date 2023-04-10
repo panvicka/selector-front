@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Event } from '$lib/types/event';
-	import { createEventDispatcher } from 'svelte';
 	import EventDetail from './EventDetail.svelte';
 
 	export let eventArray: Event[] = [];

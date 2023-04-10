@@ -1,14 +1,14 @@
 <script lang="ts">
-	import DateInput from 'components/general/DateInput.svelte';
+	import type { Event, EventRequestType } from '$lib/types/event';
+	import type { Item } from '$lib/types/item';
+	import type { Role } from '$lib/types/role';
+	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
+	import DateInput from 'components/forms/DateInput.svelte';
+	import SelectDropdown from 'components/forms/SelectDropdown.svelte';
+	import TextField from 'components/forms/TextField.svelte';
+	import RoleParticipantNumber from 'components/roles/RoleParticipantNumber.svelte';
 	import { onMount } from 'svelte';
 	import { replaceKeyValueInToArrayIfKeyExistOrAdd } from 'utils/arrayUtils';
-	import SelectDropdown from 'components/general/SelectDropdown.svelte';
-	import type { Event, EventRequestType } from '$lib/types/event';
-	import type { Role } from '$lib/types/role';
-	import type { Item } from '$lib/types/item';
-	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
-	import RoleParticipantNumber from 'components/roles/RoleParticipantNumber.svelte';
-	import TextField from 'components/general/TextField.svelte';
 
 	export let formValidation = {
 		startDateMissing: false,

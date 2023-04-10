@@ -1,26 +1,26 @@
 <script lang="ts">
-	import EventTable from 'components/events/EventTable.svelte';
-	import { onMount } from 'svelte';
-	import PeopleTable from 'components/people/peopleTable.svelte';
-	import { getAllSelectablePeople } from 'components/people/peopleHandlerFunctions';
+	import { LocalApiEvents } from '$lib/apiClient/events.js';
+	import { LocalApiItems } from '$lib/apiClient/items';
 	import {
 		handleCreateNewEvent,
-		handleUpdateEvent,
-		handleDeleteEvent
+		handleDeleteEvent,
+		handleUpdateEvent
 	} from '$lib/components/events/eventHandlerFuntions';
-	import ItemEventSummary from './itemEventSummary.svelte';
-	import Load from 'components/general/Load.svelte';
-	import Error from 'components/general/Error.svelte';
-	import { LocalApiItems } from '$lib/apiClient/items';
-	import type { Item } from '$lib/types/item';
-	import type { Event } from '$lib/types/event';
-	import { LocalApiEvents } from '$lib/apiClient/events.js';
-	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
-	import { marked } from 'marked';
 	import type { Attendance } from '$lib/types/attendance';
-	import EventFormModal from 'components/forms/eventFormModal.svelte';
+	import type { Event } from '$lib/types/event';
+	import type { Item } from '$lib/types/item';
+	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
+	import EventTable from 'components/events/EventTable.svelte';
+	import EventFormModal from 'components/events/forms/EventFormModal.svelte';
 	import DangerZoneConfirmDeleteActionModal from 'components/general/DangerZoneConfirmDeleteActionModal.svelte';
-	import Icon from 'components/general/Icon.svelte';
+	import Error from 'components/general/Error.svelte';
+	import Load from 'components/general/Load.svelte';
+	import PageHeader from 'components/general/PageHeader.svelte';
+	import { getAllSelectablePeople } from 'components/people/peopleHandlerFunctions';
+	import PeopleTable from 'components/people/peopleTable.svelte';
+	import { marked } from 'marked';
+	import { onMount } from 'svelte';
+	import ItemEventSummary from './itemEventSummary.svelte';
 
 	export let item: Item;
 
@@ -76,17 +76,13 @@
 </svelte:head>
 
 {#if !nonExistingItem}
+	<PageHeader buttonText="Add new event" on:buttonClick={() => (showCreateEventModalOpened = true)}>
+		<svelte:fragment slot="title"
+			>Detail of <span class="text-accent">{item.name}</span></svelte:fragment
+		>
+	</PageHeader>
+
 	<div class="mt-16 mb-8">
-		<h1 class="mb-5">Detail of <span class="text-accent">{item.name}</span></h1>
-		<button
-			class="btn btn-accent"
-			on:click={(e) => {
-				showCreateEventModalOpened = true;
-			}}
-		>
-			<Icon size="lg" class="mr-4" icon="faPlus" />
-			Add new event</button
-		>
 		{#if isLoading}
 			<Load />
 		{:else}

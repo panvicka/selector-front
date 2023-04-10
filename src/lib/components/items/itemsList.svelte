@@ -1,24 +1,19 @@
 <script lang="ts">
-	import ItemCard from './itemCard.svelte';
-	import { onMount } from 'svelte';
-	import Modal from 'components/general/Modal.svelte';
-	import ItemForm from 'components/forms/ItemFormFields.svelte';
-	import DangerZoneConfirmDeleteAction from 'components/general/DangerZoneConfirmDeleteAction.svelte';
-	import { handleCreateNewItem, handleDeleteItem, handleEditItem } from './itemHandlerFunctions';
-	import Load from 'components/general/Load.svelte';
-	import { LocalApiItems } from '$lib/apiClient/items';
 	import { LocalApiGroups } from '$lib/apiClient/groups';
+	import { LocalApiItems } from '$lib/apiClient/items';
 	import { LocalApiRoles } from '$lib/apiClient/roles';
-	import type { Item } from '$lib/types/item';
-	import type { Group } from '$lib/types/group';
-	import type { Role } from '$lib/types/role';
-	import Icon from 'components/general/Icon.svelte';
-	import Alert from 'components/general/Alert.svelte';
 	import type { AlertInfo } from '$lib/types/alert';
-	import ItemFormModal from 'components/forms/ItemFormModal.svelte';
+	import type { Group } from '$lib/types/group';
+	import type { Item } from '$lib/types/item';
+	import type { Role } from '$lib/types/role';
+	import Alert from 'components/general/Alert.svelte';
 	import DangerZoneConfirmDeleteActionModal from 'components/general/DangerZoneConfirmDeleteActionModal.svelte';
-
-	let disabledScroll = true;
+	import Load from 'components/general/Load.svelte';
+	import PageHeader from 'components/general/PageHeader.svelte';
+	import { onMount } from 'svelte';
+	import ItemFormModal from './forms/ItemFormModal.svelte';
+	import ItemCard from './itemCard.svelte';
+	import { handleCreateNewItem, handleDeleteItem, handleEditItem } from './itemHandlerFunctions';
 
 	let items: Array<Item> = [];
 	let allRoles: Array<Role> = [];
@@ -67,18 +62,10 @@
 	{/if}
 </svelte:head>
 
-<div class="mt-16 mb-8">
-	<h1 class="mb-5">Tracked items</h1>
-	<button
-		class="btn btn-accent"
-		on:click={() => {
-			showCreateItemModal = true;
-		}}
-	>
-		<Icon size="lg" class="mr-4" icon="faPlus" />
-		Add new tracking
-	</button>
-</div>
+<PageHeader buttonText="Add new tracking" on:buttonClick={() => (showCreateItemModal = true)}>
+	<svelte:fragment slot="title">Tracked items</svelte:fragment>
+</PageHeader>
+
 {#if isLoading}
 	<Load />
 {:else}

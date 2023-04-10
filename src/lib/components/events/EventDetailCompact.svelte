@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { getRemainingTime } from 'utils/date';
-	import dayjs from 'dayjs';
-	import relativeTime from 'dayjs/plugin/relativeTime';
-	import RoleBadge from 'components/roles/RoleBadge.svelte';
-	import PersonLink from 'components/people/PersonLink.svelte';
-	import Counter from 'components/general/Counter.svelte';
-	import ItemLink from 'components/items/ItemLink.svelte';
 	import type { Event } from '$lib/types/event';
-	import type { TimeStruct } from '$lib/types/utils';
 	import type { Participant } from '$lib/types/participant';
 	import { ColorStyle, TypeStyle } from '$lib/types/styles';
+	import type { TimeStruct } from '$lib/types/utils';
+	import Counter from 'components/general/Counter.svelte';
+	import ItemLink from 'components/items/ItemLink.svelte';
+	import PersonLink from 'components/people/PersonLink.svelte';
+	import RoleBadge from 'components/roles/RoleBadge.svelte';
+	import dayjs from 'dayjs';
+	import relativeTime from 'dayjs/plugin/relativeTime';
+	import { getRemainingTime } from 'utils/date';
 
 	export let event: Event = {
 		_id: '',

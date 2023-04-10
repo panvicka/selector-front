@@ -1,17 +1,17 @@
 <script lang="ts">
-	import TextInput from 'components/general/TextInput.svelte';
+	import type { Group } from '$lib/types/group';
+	import type { Item, ItemRequestType } from '$lib/types/item';
+	import type { Role } from '$lib/types/role';
+	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
+	import SelectDropdown from 'components/forms/SelectDropdown.svelte';
+	import TextField from 'components/forms/TextField.svelte';
+	import TextInput from 'components/forms/TextInput.svelte';
+	import RoleBadge from 'components/roles/RoleBadge.svelte';
 	import {
 		addItemToArrayIfNotAlreadyThere,
 		findByKeyInArray,
 		removeItemFromArray
 	} from 'utils/arrayUtils';
-	import SelectDropdown from 'components/general/SelectDropdown.svelte';
-	import TextField from 'components/general/TextField.svelte';
-	import RoleBadge from 'components/roles/RoleBadge.svelte';
-	import type { Item, ItemRequestType } from '$lib/types/item';
-	import type { Group } from '$lib/types/group';
-	import type { Role } from '$lib/types/role';
-	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
 
 	export let formValidation = {
 		nameInputIsMissing: false

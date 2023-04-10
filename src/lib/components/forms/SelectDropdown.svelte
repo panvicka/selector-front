@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Select from 'svelte-select';
-	import { createEventDispatcher, onMount } from 'svelte';
-	import type { SvelteSelectEvent } from '$lib/types/svelte-select/event';
 	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
+	import type { SvelteSelectEvent } from '$lib/types/svelte-select/event';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import Select from 'svelte-select';
 	import { removeFromArrayBasedOnKey } from 'utils/arrayUtils';
 
 	export let items: Array<SvelteSelectableItem> = [];

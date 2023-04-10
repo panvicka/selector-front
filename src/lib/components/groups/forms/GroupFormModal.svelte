@@ -2,8 +2,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Group } from '$lib/types/group';
 	import Modal from 'components/general/Modal.svelte';
-	import ActionButtons from './ActionButtons.svelte';
-	import GroupFormFields from './groupFormFields.svelte';
+	import ActionButtons from 'components/forms/ActionButtons.svelte';
+	import GroupFormFields from './GroupFormFields.svelte';
 
 	const dispatch = createEventDispatcher<{ submit: Group; close: void }>();
 	$: classesFromTheParent = $$props.class;
