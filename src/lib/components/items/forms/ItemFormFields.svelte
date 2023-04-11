@@ -97,11 +97,11 @@
 
 <form id="itemForm" class="mt-4 ">
 	<div class="flex flex-col w-full lg:flex-row mt-2">
-		<div class="w-80 p-4 grid flex-grow  card bg-base-300 rounded-box">
+		<div class="lg:w-80 w-full p-4 grid flex-grow  card bg-base-300 rounded-box">
 			<TextInput
 				isRequired={true}
 				inputLabel={'Name'}
-				class={`${formValidation.nameInputIsMissing ? 'input-error' : 'input-primary'}`}
+				class={`${formValidation.nameInputIsMissing ? 'input-error' : 'input-primary'}  w-full`}
 				inputPlaceholder="name of the item"
 				bind:textValue={formItem.name}
 				on:onUserInteraction={() => {
@@ -112,14 +112,14 @@
 			<TextField
 				inputLabel={'Long description'}
 				inputLabelHelp={'supports Markdown, shown on the Detail page'}
-				class="textarea-primary leading-tight h-44"
+				class=" w-full textarea-primary leading-tight h-44"
 				inputPlaceholder="long description"
 				bind:textValue={formItem.longDescription}
 			/>
 		</div>
 		<div class="divider lg:divider-horizontal" />
 
-		<div class="w-80 p-4 grid flex-grow card bg-base-300 rounded-box">
+		<div class="lg:w-80 w-full p-4 grid flex-grow card bg-base-300 rounded-box">
 			<div>
 				<TextField
 					inputLabel={'Short description'}
@@ -165,7 +165,7 @@
 
 		<div class="divider lg:divider-horizontal" />
 
-		<div class="w-40 p-4  grid flex-grow  card bg-base-300 rounded-box">
+		<div class="lg:w-40 w-full p-4  grid flex-grow  card bg-base-300 rounded-box">
 			<span class="label-text">Group</span>
 
 			<div class="flex flex-col">

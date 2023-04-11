@@ -55,9 +55,8 @@
 
 	const fetchAllItemEvents = async () => {
 		itemEvents = await LocalApiItems.getItemEvents(item._id, 'all', '10');
-		console.log(itemEvents)
+		console.log(itemEvents);
 	};
-	
 
 	let peopleAttendance: Attendance = {};
 
@@ -67,7 +66,7 @@
 </script>
 
 <svelte:head>
-	<title>{`Detail of ${item.name}`}</title>
+	<title>{`${item.name} tracking | Selector`}</title>
 	{#if showCreateEventModalOpened || showEditModalOpened || showDeleteEventModal}
 		<style>
 			body {
