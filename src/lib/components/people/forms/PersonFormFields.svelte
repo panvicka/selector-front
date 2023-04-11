@@ -142,7 +142,7 @@
 <div class="p-4">
 	<form id="personForm" class="mt-4">
 		<div class="flex flex-col w-full lg:flex-row mt-2">
-			<div class="bg-base-300 rounded-box w-80 p-4">
+			<div class="lg:w-80 w-full bg-base-300 rounded-box p-4">
 				<TextInput
 					isRequired={true}
 					inputLabel={'Name'}
@@ -161,7 +161,7 @@
 			</div>
 			<div class="divider divider-horizontal" />
 
-			<div class="bg-base-300 rounded-box w-80 p-4">
+			<div class="lg:mt-0 mt-4 lg:w-80 w-full bg-base-300 rounded-box p-4">
 				{#each mappedData as groupData}
 					<GroupToggle
 						data={groupData}
