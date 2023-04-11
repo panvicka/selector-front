@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ItemsList from 'components/items/ItemsList.svelte';
+	import ItemsList from 'components/items/ItemList.svelte';
 </script>
 
 <svelte:head>
