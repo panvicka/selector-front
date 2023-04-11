@@ -67,9 +67,15 @@
 		person: string;
 	}> = [];
 
+	// there is some kind of weird bug, when binding directly to formEvent.eventNote there is some weird rerender, calling getNamesForRole...
+	// but this looks to work ok :)
+	let auxEventNote: string;
+	$: formEvent.eventNote = auxEventNote;
+	// end of weird bug
+
 	onMount(async () => {
 		console.log('rerender');
-		console.log(event)
+		console.log(event);
 		event.participants.forEach((participant) => {
 			selectedParticipantsIds.push({
 				role: participant.role._id,
@@ -77,6 +83,7 @@
 			});
 		});
 		console.log(selectedParticipantsIds);
+		auxEventNote = event.eventNote || '';
 	});
 
 	let startDate = event.startDate || new Date().toDateString();
@@ -182,9 +189,9 @@
 
 		<TextField
 			inputLabel={'Optional event notes'}
-			class="textarea-primary leading-tight h-15"
+			class="textarea-primary leading-tight h-15 w-full"
 			inputPlaceholder="Optional event note"
-			bind:textValue={formEvent.eventNote}
+			bind:textValue={auxEventNote}
 		/>
 	</form>
 </div>

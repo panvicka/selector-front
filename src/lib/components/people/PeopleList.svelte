@@ -87,16 +87,14 @@
 {:else}
 	<div class="flex flex-wrap gap-9 ">
 		{#each people as person}
-			<div>
-				<PersonCard
-					{person}
-					on:onDelete={triggeredDeletePerson}
-					on:onEdit={(event) => {
-						letShowEditModal = true;
-						personToBeEdited = event.detail;
-					}}
-				/>
-			</div>
+			<PersonCard
+				{person}
+				on:onDelete={triggeredDeletePerson}
+				on:onEdit={(event) => {
+					letShowEditModal = true;
+					personToBeEdited = event.detail;
+				}}
+			/>
 		{/each}
 	</div>
 {/if}

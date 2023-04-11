@@ -10,6 +10,10 @@
 
 	$: futureEvents = getEventsWithFutureDates(lastFewEvents);
 	$: runningEvents = getActiveEvents(lastFewEvents);
+
+	console.log(lastFewEvents);
+	console.log(futureEvents);
+	console.log(runningEvents);
 </script>
 
 <div class="flex flex-wrap ">

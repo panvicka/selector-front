@@ -9,6 +9,7 @@ html {
 	margin: auto;
 	line-height: 1.75;
 	font-size: 1.15em;
+	min-width: 375px;
 }
 
 @layer base {

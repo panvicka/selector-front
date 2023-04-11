@@ -56,9 +56,8 @@
 </script>
 
 <Card
-	width={400}
 	testId="EventCard"
-	class="mb-4 lg:mb-0"
+	class="mb-4 lg:mb-0 lg:w-3/12 w-full min-w-fit"
 	on:deleteTrigger={() => {
 		dispatch('delete', {
 			...event
@@ -115,8 +114,10 @@
 			</div>
 		{/each}
 		<br />
-		{#if event.eventNote}
-			Note: {event.eventNote}
-		{/if}
+		<div class="max-w-xs">
+			{#if event.eventNote}
+				Note: {event.eventNote}
+			{/if}
+		</div>
 	</div>
 </Card>

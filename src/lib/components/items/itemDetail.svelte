@@ -55,7 +55,9 @@
 
 	const fetchAllItemEvents = async () => {
 		itemEvents = await LocalApiItems.getItemEvents(item._id, 'all', '10');
+		console.log(itemEvents)
 	};
+	
 
 	let peopleAttendance: Attendance = {};
 
@@ -110,7 +112,7 @@
 
 	{#if showCreateEventModalOpened}
 		<EventFormModal
-			class="lg:w-7/12 w-full"
+			class="lg:w-4/12 w-full"
 			peopleToSelectFrom={selectablePeople}
 			{item}
 			on:submit={(event) => {
@@ -130,7 +132,7 @@
 
 	{#if showEditModalOpened}
 		<EventFormModal
-			class="lg:w-7/12 w-full"
+			class="lg:w-4/12 w-full"
 			peopleToSelectFrom={selectablePeople}
 			{item}
 			event={workingEventReference}

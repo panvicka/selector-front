@@ -69,23 +69,21 @@
 {#if isLoading}
 	<Load />
 {:else}
-	<div class="flex flex-wrap gap-9 ">
+	<div class="flex flex-wrap gap-9">
 		{#each items as item}
-			<div>
-				<ItemCard
-					{item}
-					on:delete={(event) => {
-						workingItemReference = event.detail;
-						showDeleteItemModal = true;
-					}}
-					on:edit={(event) => {
-						showEditItemModal = true;
-						workingItemReference = event.detail;
-						console.log(workingItemReference);
-						console.log(event.detail);
-					}}
-				/>
-			</div>
+			<ItemCard
+				{item}
+				on:delete={(event) => {
+					workingItemReference = event.detail;
+					showDeleteItemModal = true;
+				}}
+				on:edit={(event) => {
+					showEditItemModal = true;
+					workingItemReference = event.detail;
+					console.log(workingItemReference);
+					console.log(event.detail);
+				}}
+			/>
 		{/each}
 	</div>
 {/if}

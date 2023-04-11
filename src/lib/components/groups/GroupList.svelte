@@ -86,16 +86,14 @@
 {:else}
 	<div class="flex flex-wrap gap-9 ">
 		{#each groups as group}
-			<div>
-				<GroupCard
-					{group}
-					on:delete={triggeredDeleteGroup}
-					on:edit={(event) => {
-						letShowEditModal = true;
-						groupToBeEdited = event.detail;
-					}}
-				/>
-			</div>
+			<GroupCard
+				{group}
+				on:delete={triggeredDeleteGroup}
+				on:edit={(event) => {
+					letShowEditModal = true;
+					groupToBeEdited = event.detail;
+				}}
+			/>
 		{/each}
 	</div>
 {/if}

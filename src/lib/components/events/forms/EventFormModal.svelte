@@ -127,6 +127,8 @@
 				.set('second', 0)
 				.toDate()
 				.toISOString();
+		} else {
+			formEventSubmitted.endDate = '';
 		}
 
 		dispatch('submit', {

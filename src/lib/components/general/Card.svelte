@@ -4,9 +4,6 @@
 	import { faTrash } from '@fortawesome/free-solid-svg-icons';
 	import { faGear } from '@fortawesome/free-solid-svg-icons';
 
-	export let width = 300;
-	export let backgroundColor = 'bg-neutral';
-	export let titleTextColor = 'accent';
 	export let testId = 'Card';
 
 	const dispatch = createEventDispatcher<{ deleteTrigger: void; settingsTrigger: void }>();
@@ -22,19 +19,16 @@
 </script>
 
 <div
-	class="card w-96 {backgroundColor} shadow-xl overflow-visible p-2 h-fit {classesFromTheParent}"
-	style="width: {width}px"
+	class="card bg-neutral shadow-xl overflow-visible p-2 h-fit {classesFromTheParent}"
 	data-testid={testId}
 >
 	<div class="card-body">
 		<div class="card-header flex justify-between align-center">
 			{#if $$slots.title}
-				<!-- <h2 class="text-{titleTextColor} hover:text-{titleTextColor}-focus card-title"> -->
 				<slot name="title" />
-				<!-- </h2> -->
 			{/if}
 
-			<div class="card-actions justify-end">
+			<div class="ml-4 card-actions justify-end">
 				<button on:click={settingsTrigger}><Fa size="lg" id="setting" icon={faGear} /></button>
 				<button on:click={deleteTrigger}><Fa size="lg" id="delete" icon={faTrash} /></button>
 			</div>

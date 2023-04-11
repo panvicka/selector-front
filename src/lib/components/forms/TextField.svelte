@@ -37,7 +37,7 @@
 </label>
 
 <textarea
-	class={`textarea w-full max-w-xs focus:ring-0 focus:ring-offset-0 
+	class={`textarea w-full focus:ring-0 focus:ring-offset-0 
 	focus:border-none placeholder-opacity-75 placeholder-gray-500 ${classesFromTheParent} ${
 		isMissingValue ? 'textarea-error' : ''
 	}`}

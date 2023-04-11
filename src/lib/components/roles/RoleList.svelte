@@ -81,16 +81,14 @@
 {:else}
 	<div class="flex flex-wrap gap-9 ">
 		{#each roles as role}
-			<div>
-				<RoleCard
-					{role}
-					on:delete={triggeredDeleteRole}
-					on:edit={(event) => {
-						letShowEditModal = true;
-						roleToBeEdited = event.detail;
-					}}
-				/>
-			</div>
+			<RoleCard
+				{role}
+				on:delete={triggeredDeleteRole}
+				on:edit={(event) => {
+					letShowEditModal = true;
+					roleToBeEdited = event.detail;
+				}}
+			/>
 		{/each}
 	</div>
 {/if}
