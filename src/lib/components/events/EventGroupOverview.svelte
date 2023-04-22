@@ -11,7 +11,7 @@
 
 <div class="mt-1 mr-5  w-full">
 	{#if eventArray.length > 0}
-		<h4 class="text-2xl font-bold">
+		<h4 class="text-2xl font-bold mb-5">
 			<slot name="title" />
 		</h4>
 	{/if}
