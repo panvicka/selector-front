@@ -42,6 +42,7 @@
 
 	const fetchAllPeople = async () => {
 		people = await LocalApiPeople.getAllPeople();
+		isLoading = false;
 	};
 
 	const handleCreateNewPerson = async (event: CustomEvent<Person>) => {
@@ -52,6 +53,7 @@
 
 	const handleDeletePerson = async (personId: string) => {
 		await LocalApiPeople.deletePerson(personId);
+		isLoading = true;
 		fetchAllPeople();
 		showDeleteModal = false;
 	};

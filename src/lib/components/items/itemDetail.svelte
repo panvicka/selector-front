@@ -153,16 +153,19 @@
 	{#if showDeleteEventModal}
 		<DangerZoneConfirmDeleteActionModal
 			class="lg:w-1/2"
-			subject="Group"
+			subject="Event"
 			expectedConfirmationText=""
 			on:cancel={() => {
 				showDeleteEventModal = false;
 			}}
 			on:ok={() => {
+				isLoading = true;
 				handleDeleteEvent(workingEventReference).then(() => {
 					fetchAllItemEvents();
 					fetchPeopleAttendance();
+					isLoading = false;
 				});
+			
 				showDeleteEventModal = false;
 			}}
 		>

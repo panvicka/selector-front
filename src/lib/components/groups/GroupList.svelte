@@ -32,10 +32,12 @@
 	const fetchAllGroups = async () => {
 		const res = await LocalApiGroups.getAllGroups();
 		groups = res;
+		isLoading = false;
 	};
 
 	const handleDeleteGroup = async (groupId: Group['_id']) => {
 		const res = await LocalApiGroups.deleteGroup(groupId);
+		isLoading = true;
 		fetchAllGroups();
 		showDeleteModal = false;
 	};

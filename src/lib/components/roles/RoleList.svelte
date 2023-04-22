@@ -36,6 +36,7 @@
 
 	const fetchAllRoles = async () => {
 		roles = await LocalApiRoles.getAllRoles();
+		isLoading = false;
 	};
 
 	const handleCreateNewRole = async (event: CustomEvent<Role>) => {
@@ -46,6 +47,7 @@
 
 	const handleDeleteRole = async (roleId: Role['_id']) => {
 		await LocalApiRoles.deleteRole(roleId);
+		isLoading = true;
 		fetchAllRoles();
 		showDeleteModal = false;
 	};

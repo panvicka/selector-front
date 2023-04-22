@@ -44,6 +44,7 @@
 		items = await LocalApiItems.getAllItems();
 		allRoles = await LocalApiRoles.getAllRoles();
 		allGroupes = await LocalApiGroups.getAllGroups();
+		isLoading = false;
 	};
 
 	let showCreateItemModal = false;
@@ -121,8 +122,10 @@
 					showDeleteItemModal = false;
 					alertInfo.text = 'Item deleted.';
 					alertInfo.type = 'success';
-					showAlert = true;
-					fetchEverything();
+					isLoading = true;
+					fetchEverything().then(() => {
+						showAlert = true;
+					});
 				})
 				.catch((e) => {
 					showDeleteItemModal = false;
