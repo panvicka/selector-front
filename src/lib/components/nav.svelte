@@ -40,7 +40,7 @@
 			id: 'page-about'
 		},
 		{
-			label: 'On Call Duty',
+			label: 'OCD',
 			href: '/ocd',
 			showCondition: () => env.PUBLIC_OCD_SHOW === 'true',
 			id: 'page-ocd'
@@ -69,7 +69,6 @@
 		 bg-neutral-focus 
 		 shadow-lg 
 		 border-none
-		 flex-wrap
 		 justify-between
 		 w-full
 		 p-2
@@ -90,7 +89,7 @@
 			class="h-6 w-6 cursor-pointer md:hidden block mt-2"
 			fill="none"
 			viewBox="0 0 24 24"
-			stroke="currentColor"
+			stroke="hsl(var(--a))"
 		>
 			<path
 				stroke-linecap="round"
@@ -108,6 +107,7 @@
 			 flex-column
 			 flex
 			 flex-wrap
+			 md:flex-nowrap
 			 md:flex
 			 md:flex-column
 			 md:justify-between 
@@ -136,8 +136,11 @@
 			</ul>
 		</div>
 
-		<div class={`${showMenu && 'hidden'} mt-1`}>
-			<select class="dropdown-content menu p-2 shadow bg-base-100 rounded-box" data-choose-theme>
+		<div class={`${showMenu && 'hidden'} mt-1  `}>
+			<select
+				class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-auto"
+				data-choose-theme
+			>
 				<option disabled value=""> Pick a theme </option>
 				<option value="">default (dark)</option>
 				<option value="light">light</option>
