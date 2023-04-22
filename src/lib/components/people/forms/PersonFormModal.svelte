@@ -13,6 +13,8 @@
 		nameInputIsMissing: false
 	};
 
+	let saveButtonDisabled = false;
+
 	export let person: Person = {
 		_id: '',
 		name: '',
@@ -36,9 +38,11 @@
 	function submit() {
 		if (!formPersonSubmitted.name) {
 			formValidation.nameInputIsMissing = true;
+			saveButtonDisabled = false;
 			return;
 		}
 
+		saveButtonDisabled = true;
 		dispatch('submit', {
 			...formPersonSubmitted
 		});
@@ -60,6 +64,6 @@
 	</svelte:fragment>
 
 	<svelte:fragment slot="modal-buttons">
-		<ActionButtons on:save={() => submit()} on:close={() => close()} />
+		<ActionButtons on:save={() => submit()} on:close={() => close()} {saveButtonDisabled} />
 	</svelte:fragment>
 </Modal>

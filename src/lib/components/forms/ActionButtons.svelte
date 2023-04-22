@@ -3,6 +3,10 @@
 
 	const dispatch = createEventDispatcher<{ save: void; close: void }>();
 
+	export let saveButtonDisabled = false;
+
+	console.log({ saveButtonDisabled });
+
 	function close() {
 		dispatch('close');
 	}
@@ -23,6 +27,7 @@
 	<button
 		type="button"
 		class="btn btn-outline btn-info"
+		disabled={saveButtonDisabled}
 		on:click={() => {
 			save();
 		}}>Save</button
