@@ -23,7 +23,7 @@
 	data-testid={testId}
 >
 	<div class="card-body">
-		<div class="card-header flex justify-between align-center lg:max-w-lg">
+		<div class="card-header flex justify-between align-center">
 			{#if $$slots.title}
 				<slot name="title" />
 			{/if}
