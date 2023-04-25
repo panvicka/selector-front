@@ -13,6 +13,8 @@
 		descriptionInputIsMissing: false
 	};
 
+	let saveButtonDisabled = false;
+
 	export let group: Group = {
 		_id: '',
 		name: '',
@@ -39,9 +41,11 @@
 			formValidation.descriptionInputIsMissing = true;
 		}
 		if (formValidation.nameInputIsMissing || formValidation.descriptionInputIsMissing) {
+			saveButtonDisabled = false;
 			return;
 		}
 
+		saveButtonDisabled = true;
 		dispatch('submit', {
 			...formGroupSubmitted
 		});
@@ -56,6 +60,6 @@
 	</svelte:fragment>
 
 	<svelte:fragment slot="modal-buttons">
-		<ActionButtons on:save={() => submit()} on:close={() => close()} />
+		<ActionButtons on:save={() => submit()} on:close={() => close()} {saveButtonDisabled} />
 	</svelte:fragment>
 </Modal>

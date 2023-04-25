@@ -12,7 +12,7 @@
 	}
 </script>
 
-<div class="mt-16 mb-16 lg:w-auto lg:block w-full flex flex-col grow-0 items-center">
+<div class="mt-20 mb-16 lg:w-auto lg:block w-full flex flex-col grow-0 items-center">
 	<h1 class="mb-5"><slot name="title" /></h1>
 
 	<button class="btn btn-accent lg:w-auto w-full" on:click={buttonClick}>

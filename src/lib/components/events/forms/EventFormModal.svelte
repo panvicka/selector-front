@@ -63,7 +63,8 @@
 		endDateMissing: false
 	};
 
-	console.log(peopleToSelectFrom);
+	let saveButtonDisabled = false;
+
 	let selectedParticipantsIds: Array<{
 		role: string;
 		person: string;
@@ -98,10 +99,6 @@
 	}
 
 	function submit() {
-		console.log(startDate);
-		console.log(endDate);
-		console.log(selectedParticipantsIds);
-
 		if (!formEventSubmitted.startDate || formEventSubmitted.startDate == 'Invalid Date') {
 			formValidation.startDateMissing = true;
 		}
@@ -111,9 +108,11 @@
 		}
 
 		if (formValidation.startDateMissing || formValidation.endDateMissing) {
+			saveButtonDisabled = false;
 			return;
 		}
 
+		saveButtonDisabled = true;
 		formEventSubmitted.startDate = dayjs(formEventSubmitted.startDate)
 			.set('hour', 7)
 			.set('minute', 0)
@@ -151,6 +150,6 @@
 	</svelte:fragment>
 
 	<svelte:fragment slot="modal-buttons">
-		<ActionButtons on:save={() => submit()} on:close={() => close()} />
+		<ActionButtons on:save={() => submit()} on:close={() => close()} {saveButtonDisabled} />
 	</svelte:fragment>
 </Modal>
