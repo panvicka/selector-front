@@ -121,7 +121,9 @@
 		endDateModified === undefined &&
 		endDate === ''
 	) {
-		endDate = dayjs(startDate).add(item.usualLenght, 'day').toString();
+		endDate = dayjs(startDate)
+			.add(item.usualLenght - 1, 'day')
+			.toString();
 	}
 
 	$: formEvent.startDate = startDate;
