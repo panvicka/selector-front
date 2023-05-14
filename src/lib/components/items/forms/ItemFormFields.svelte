@@ -26,7 +26,7 @@
 		longDescription: '',
 		roles: [],
 		isLongerThenOneDay: false,
-		usualLenght: 0,
+		usualLenght: null,
 		groupes: []
 	};
 
@@ -52,7 +52,7 @@
 		isLongerThenOneDay: item.isLongerThenOneDay || false,
 		description: item.description || '',
 		longDescription: item.longDescription || '',
-		usualLenght: item.usualLenght || 0,
+		usualLenght: item.usualLenght || null,
 		name: item.name || '',
 		groupes: [],
 		roles: []
@@ -164,13 +164,13 @@
 				/>
 
 				<NumberInput
-					minimalValue={0}
+					minimalValue={2}
 					isRequired={false}
 					inputIsDisabled={!formItem.isLongerThenOneDay}
 					inputLabel={'Predefined length in days'}
 					class={`input-primary w-full`}
 					inputPlaceholder="Predefined item duration"
-					inputLabelHelp={"Leave at 0 if you don't want to define any. This will help \
+					inputLabelHelp={"Leave empty if don't want to define any. This will help \
 					you when creating new events with interval tracking as you will only have to select the starting date."}
 					bind:numberValue={formItem.usualLenght}
 				/>

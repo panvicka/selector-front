@@ -23,14 +23,14 @@
 		longDescription: '',
 		roles: [],
 		isLongerThenOneDay: false,
-		usualLenght: 0,
+		usualLenght: null,
 		groupes: []
 	};
 
 	let formItemSubmitted: ItemRequestType = {
 		_id: item?._id || '',
 		isLongerThenOneDay: item?.isLongerThenOneDay || false,
-		usualLenght: item?.usualLenght || 0,
+		usualLenght: item?.usualLenght || null,
 		description: item?.description || '',
 		longDescription: item?.longDescription || '',
 		name: item?.name || '',

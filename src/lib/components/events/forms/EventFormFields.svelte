@@ -103,16 +103,20 @@
 
 	$: if (
 		item.isLongerThenOneDay === true &&
+		item.usualLenght &&
 		item.usualLenght > 0 &&
 		endDateModified !== undefined &&
 		endDateModified === false
 	) {
-		endDate = dayjs(startDate).add(item.usualLenght, 'day').toString();
+		endDate = dayjs(startDate)
+			.add(item.usualLenght - 1, 'day')
+			.toString();
 	}
 
 	// creating new event, automatically fill in end date
 	$: if (
 		item.isLongerThenOneDay === true &&
+		item.usualLenght &&
 		item.usualLenght > 0 &&
 		endDateModified === undefined &&
 		endDate === ''
@@ -190,7 +194,7 @@
 			<DateInput
 				isRequired={true}
 				inputLabel={`${
-					item.usualLenght > 0
+					item.usualLenght && item.usualLenght > 0
 						? `End date (predefined length ${item.usualLenght} days)`
 						: 'End date'
 				}`}
