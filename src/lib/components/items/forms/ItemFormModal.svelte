@@ -23,6 +23,7 @@
 		longDescription: '',
 		roles: [],
 		isLongerThenOneDay: false,
+		hasAutomaticStartDate: false,
 		usualLenght: null,
 		groupes: []
 	};
@@ -33,6 +34,7 @@
 		usualLenght: item?.usualLenght || null,
 		description: item?.description || '',
 		longDescription: item?.longDescription || '',
+		hasAutomaticStartDate: item?.hasAutomaticStartDate || false,
 		name: item?.name || '',
 		groupes: [],
 		roles: []
