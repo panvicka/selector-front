@@ -11,8 +11,11 @@ declare namespace App {
 declare global {
 	namespace App {
 		interface Error {
-			code: string;
-			id: string;
+			button?: {
+				text: string;
+				icon: string;
+				link: string;
+			};
 		}
 	}
 }

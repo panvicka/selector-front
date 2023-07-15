@@ -45,11 +45,11 @@
 				<br />
 				<br />
 
-				<a href="/">
+				<a href={$page?.error?.button?.link || '/'}>
 					<button class="btn btn-accent lg:w-auto w-full">
-						<Icon size="lg" class="mr-4" icon={'faHome'} />
-						Go home</button
-					>
+						<Icon size="lg" class="mr-4" icon={$page?.error?.button?.icon || 'faHome'} />
+						{$page?.error?.button?.text || 'Go home'}
+					</button>
 				</a>
 			</div>
 		</div>

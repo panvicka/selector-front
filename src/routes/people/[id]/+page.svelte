@@ -14,8 +14,6 @@
 	let futureEvents: Array<Event> = [];
 	let runningEvents: Array<Event> = [];
 
-	let invalidPerson = false;
-
 	onMount(async () => {
 		if (data._id) {
 			allAttendedEvents = await LocalApiPeople.getAllPersonEvents(data._id);
@@ -23,7 +21,6 @@
 			runningEvents = getActiveEvents(allAttendedEvents);
 			isLoading = false;
 		} else {
-			invalidPerson = true;
 			isLoading = false;
 		}
 	});
@@ -31,11 +28,6 @@
 
 {#if isLoading}
 	<Load />
-{:else if invalidPerson}
-	<Error
-		>Uh no. This person doesnt exist.
-		<a class="link" href="/people">Check all people here.</a>
-	</Error>
 {:else}
 	<PersonDetail person={data} {futureEvents} {runningEvents} />
 {/if}

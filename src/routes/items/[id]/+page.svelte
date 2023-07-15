@@ -1,5 +1,7 @@
-<script>
-	export let data;
+<script lang="ts">
+	import type { Item } from '$lib/types/item';
+
+	export let data: Item;
 	import ItemDetail from 'components/items/itemDetail.svelte';
 </script>
 
