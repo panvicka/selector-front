@@ -77,5 +77,46 @@ export const RemoteApiItems = {
 			console.error(error);
 			return null;
 		}
+	},
+
+	getRandomizedPeopleForAttendance: async (
+		itemId: string,
+		roleId: string,
+		{
+			daysSince,
+			lessThenAverage,
+			notAlreadyPlanned,
+			hasDoneTheRole
+		}: {
+			daysSince?: string | null;
+			lessThenAverage?: string | null;
+			notAlreadyPlanned?: string | null;
+			hasDoneTheRole?: string | null;
+		}
+	): Promise<Item | null> => {
+		const params = new URLSearchParams();
+
+		if (daysSince) {
+			params.append('days-since', daysSince.toString());
+		}
+		if (lessThenAverage) {
+			params.append('less-average', lessThenAverage.toString());
+		}
+		if (notAlreadyPlanned) {
+			params.append('not-planned', notAlreadyPlanned.toString());
+		}
+		if (hasDoneTheRole) {
+			params.append('has-done', hasDoneTheRole.toString());
+		}
+
+		try {
+			const response = await Api.get(
+				`/rotationItems/get/${itemId}/randomize/${roleId}${params && `?${params}`}`
+			);
+			return response.possibleMatches;
+		} catch (error) {
+			console.error(error);
+			return null;
+		}
 	}
 };

@@ -1,4 +1,4 @@
-import type { Item, ItemRequestType } from '$lib/types/item';
+import type { Item, ItemRequestType, RandomOptions } from '$lib/types/item';
 
 import type { Attendance } from '$lib/types/attendance';
 import ClientAPI from '$lib/apiClient/ClientAPI.js';
@@ -30,6 +30,28 @@ export const LocalApiItems = {
 		return await ClientAPI.get(
 			`/items/${itemId}/events${urlSearchParams && `?${urlSearchParams}`}`
 		);
+	},
+
+	getRandomizedPeopleForAttendance: async (
+		itemId: string,
+		roleId: string,
+		{ daysSince, lessThenAverage, notAlreadyPlanned, hasDoneTheRole }: RandomOptions
+	): Promise<unknown> => {
+		const params = new URLSearchParams();
+		if (daysSince) {
+			params.append('days-since', daysSince.toString());
+		}
+		if (lessThenAverage) {
+			params.append('less-average', lessThenAverage.toString());
+		}
+		if (notAlreadyPlanned) {
+			params.append('not-planned', notAlreadyPlanned.toString());
+		}
+		if (hasDoneTheRole) {
+			params.append('has-done', hasDoneTheRole.toString());
+		}
+
+		return await ClientAPI.get(`/items/${itemId}/random/${roleId}${params && `?${params}`}`);
 	},
 
 	/* TODO types for return */
