@@ -26,3 +26,11 @@ export interface RandomOptions {
 	notAlreadyPlanned: boolean;
 	hasDoneTheRole: boolean;
 }
+
+export interface RandomResult {
+	attended: number;
+	dates: Array<string>;
+	latestDate: string;
+	name: string;
+	_id: string;
+}

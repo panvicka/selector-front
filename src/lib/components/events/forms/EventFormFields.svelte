@@ -10,6 +10,9 @@
 	import dayjs from 'dayjs';
 	import { onMount } from 'svelte';
 	import { replaceKeyValueInToArrayIfKeyExistOrAdd } from 'utils/arrayUtils';
+	import RandomSelectionFields from './random/RandomSelectionFields.svelte';
+	import RandomSelectionModal from './random/RandomSelectionModal.svelte';
+	import Icon from 'components/general/Icon.svelte';
 
 	export let formValidation = {
 		startDateMissing: false,
@@ -141,6 +144,8 @@
 	$: formEvent.endDate = endDate;
 	$: formEvent.participants = selectedParticipantsIds;
 
+	let showRandomSelectionModal = false;
+
 	const getNamesForRole = (role: Role): string | string[] => {
 		let person = '';
 		let personNameArray: string[] = [];
@@ -235,7 +240,28 @@
 						value={getNamesForRole(role)}
 						on:dropdownSelect={(e) => handleSelect(e, role._id, role.canHaveMultipleParticipants)}
 					/>
+					<button
+						on:click={() => {
+							showRandomSelectionModal = true;
+						}}><Icon size="lg" id="random" icon={'faDice'} /></button
+					>
 				</div>
+				{#if showRandomSelectionModal}
+					<RandomSelectionModal
+						{event}
+						{item}
+						{role}
+						class="lg:w-4/12 w-full"
+						on:close={() => {
+							showRandomSelectionModal = false;
+						}}
+						on:submit={(e) => {
+							console.log(e.detail);
+						}}
+					>
+						<h1 slot="title">{`Randomize for ${role.name}`}</h1>
+					</RandomSelectionModal>
+				{/if}
 			{/each}
 		{/if}
 
