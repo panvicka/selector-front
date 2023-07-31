@@ -11,8 +11,17 @@
 	import type { Role } from '$lib/types/role';
 	import RandomSelectionFields from './RandomSelectionFields.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
+	import Alert from 'components/general/Alert.svelte';
 
-	const dispatch = createEventDispatcher<{ submit: EventRequestType; close: void }>();
+	const dispatch = createEventDispatcher<{
+		submit: {
+			person: {
+				_id: string;
+				name: string;
+			};
+		};
+		close: void;
+	}>();
 	$: classesFromTheParent = $$props.class;
 
 	export let event: Event = {
@@ -56,8 +65,6 @@
 		dispatch('close');
 	}
 
-	let listOfResults = [];
-
 	let randomOptions: RandomOptions = {
 		hasDoneTheRole: false,
 		lessThenAverage: true,
@@ -65,7 +72,23 @@
 		notAlreadyPlanned: true
 	};
 
-	onMount(async () => {});
+	let listOfResults = [];
+	let isLoading = true;
+
+	const fetchRandomResults = async (randomOptions: any) => {
+		// @ts-ignore
+		isLoading = true;
+		listOfResults = await LocalApiItems.getRandomizedPeopleForAttendance(
+			item._id,
+			role._id,
+			randomOptions
+		);
+		isLoading = false;
+	};
+
+	onMount(async () => {
+		fetchRandomResults(randomOptions);
+	});
 </script>
 
 <Modal class={classesFromTheParent}>
@@ -75,14 +98,15 @@
 		<RandomSelectionFields
 			{randomOptions}
 			{listOfResults}
+			{isLoading}
 			on:change={async ({ detail }) => {
-				// @ts-ignore
-				listOfResults = await LocalApiItems.getRandomizedPeopleForAttendance(
-					item._id,
-					role._id,
-					detail
-				);
-				console.log(listOfResults);
+				fetchRandomResults(detail);
+			}}
+			on:personSelect={({ detail }) => {
+				dispatch('submit', {
+					...detail
+				});
+				console.log(detail);
 			}}
 		/>
 	</svelte:fragment>

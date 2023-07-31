@@ -177,6 +177,7 @@
 				role: roleId,
 				person: event.detail[0].value
 			});
+			console.log(selectedParticipantsIds);
 		} else {
 			selectedParticipantsIds = selectedParticipantsIds.filter((item) => item.role !== roleId);
 			for (const [_key, participantItem] of Object.entries(event.detail)) {
@@ -251,12 +252,16 @@
 						{event}
 						{item}
 						{role}
-						class="lg:w-4/12 w-full"
+						class="lg:w-fit w-full"
 						on:close={() => {
 							showRandomSelectionModal = false;
 						}}
-						on:submit={(e) => {
-							console.log(e.detail);
+						on:submit={({ detail }) => {
+							replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipantsIds, 'role', {
+								role: role._id,
+								person: detail.person._id
+							});
+							showRandomSelectionModal = false;
 						}}
 					>
 						<h1 slot="title">{`Randomize for ${role.name}`}</h1>

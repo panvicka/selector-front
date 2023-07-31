@@ -1,42 +1,34 @@
 <script lang="ts">
-	import type { Event, EventRequestType } from '$lib/types/event';
-	import type { Item, RandomOptions, RandomResult } from '$lib/types/item';
-	import type { Role } from '$lib/types/role';
-	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
-	import DateInput from 'components/forms/DateInput.svelte';
-	import SelectDropdown from 'components/forms/SelectDropdown.svelte';
-	import TextField from 'components/forms/TextField.svelte';
-	import ToggleInput from 'components/forms/ToggleInput.svelte';
-	import RoleParticipantNumber from 'components/roles/RoleParticipantNumber.svelte';
-	import dayjs from 'dayjs';
-	import { onMount } from 'svelte';
-	import { bind, createEventDispatcher } from 'svelte/internal';
-	import { replaceKeyValueInToArrayIfKeyExistOrAdd } from 'utils/arrayUtils';
+	import type { RandomOptions, RandomResult } from '$lib/types/item';
 
-	const dispatch = createEventDispatcher<{ change: any }>();
+	import ToggleInput from 'components/forms/ToggleInput.svelte';
+	import Load from 'components/general/Load.svelte';
+	import Slider from 'components/general/Slider.svelte';
+	import { createEventDispatcher } from 'svelte/internal';
+
+	const dispatch = createEventDispatcher<{ change: any; personSelect: any }>();
 
 	export let randomOptions: RandomOptions;
 	export let listOfResults: Array<RandomResult> = [];
+	export let isLoading: boolean;
 	$: {
-		console.log(randomOptions);
 		dispatch('change', {
 			...randomOptions
 		});
 	}
-
-	const steps = [7, 14, 30, 60, 90, 182, 356];
-	const labels = ['week', '14 days', 'month', '2 months', '1/4 year', '1/2 Year', 'Year'];
+	const rangeStepsDays = [0, 30, 60, 90, 120, 150, 182, 365];
+	const rangeStepsLabels = ['N/A', '1', '2', '3', '4', '5', '6', '12'];
+	let selectedStep = 0;
 </script>
 
 <div class="p-4">
-	<form id="randomSelectorForm" class="mt-4">
+	<form id="randomSelectorForm" class="mt-1">
 		<ToggleInput
 			inputLabel={'Has done the role'}
 			class="toggle-primary"
 			bind:value={randomOptions.hasDoneTheRole}
 			inputLabelHelp={'Select only persons with experience in the role'}
 		/>
-
 		<ToggleInput
 			inputLabel={'Less then average attendance'}
 			class="toggle-primary"
@@ -52,32 +44,41 @@
 		/>
 
 		<br />
-		Days since last time
-		<input
-			type="range"
-			min="0"
-			max="100"
-			bind:value={randomOptions.daysSince}
-			class="range"
-			step="25"
+		{#if selectedStep == 0}
+			{`No restriction on last attended`}
+		{:else}
+			{`Last attended before ${rangeStepsLabels[selectedStep]} months ago`}
+		{/if}
+		<Slider
+			value={selectedStep}
+			rangeSteps={rangeStepsDays}
+			rangeLabels={rangeStepsLabels}
+			on:change={({ detail }) => {
+				selectedStep = detail.step;
+				randomOptions.daysSince = parseInt(detail.translatedValue.toString());
+			}}
 		/>
-		<div class="w-full flex justify-between text-xs px-2">
-			<span>5</span>
-			<span>|</span>
-			<span>|</span>
-			<span>|</span>
-			<span>|</span>
-		</div>
 
 		<br />
 		Top Results
 		<br />
-		{#if listOfResults.length > 0}
-			{#each listOfResults as result, i}
-				<div>
-					{result.name}
-				</div>
-			{/each}
-		{/if}
+		<div class="flex flex-col">
+			{#if isLoading}
+				<Load />
+			{:else if listOfResults.length > 0}
+				{#each listOfResults as result, i}
+					<a
+						class="link link-accent"
+						on:click={() => {
+							dispatch('personSelect', {
+								person: result
+							});
+						}}
+					>
+						{result.name}
+					</a>
+				{/each}
+			{/if}
+		</div>
 	</form>
 </div>
