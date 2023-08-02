@@ -156,13 +156,6 @@
 				}
 			});
 			return personNameArray;
-		} else {
-			event.participants.forEach((participant) => {
-				if (participant.role._id == role._id) {
-					person = participant.person.name;
-					return person;
-				}
-			});
 		}
 		return person;
 	};
@@ -257,6 +250,7 @@
 							showRandomSelectionModal = false;
 						}}
 						on:submit={({ detail }) => {
+							// console.log(detail);
 							replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipantsIds, 'role', {
 								role: role._id,
 								person: detail.person._id
