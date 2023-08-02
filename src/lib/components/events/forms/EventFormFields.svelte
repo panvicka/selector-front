@@ -86,6 +86,21 @@
 	$: formEvent.eventNote = auxEventNote;
 	// end of weird bug
 
+	let roleParticipants: { [key: string]: Array<string> } = {};
+
+	const mapParticipants = () => {
+		event.participants.forEach((participant) => {
+			// check somehow the role and if it is multiple or not
+			// if it is multiple, then add to the array
+			// if it is not multiple, then just add the name
+			if (roleParticipants[participant.role._id]) {
+				roleParticipants[participant.role._id].push(participant.person.name);
+			} else {
+				roleParticipants[participant.role._id] = participant.person.name;
+			}
+		});
+	};
+
 	onMount(async () => {
 		event.participants.forEach((participant) => {
 			selectedParticipantsIds.push({
@@ -94,6 +109,12 @@
 			});
 		});
 		auxEventNote = event.eventNote || '';
+		mapParticipants();
+		console.log(roleParticipants);
+		console.log(roleParticipants[item.roles[0]._id]);
+		console.log(getNamesForRole(item.roles[0]));
+		console.log(getNamesForRole(item.roles[1]));
+		console.log(getNamesForRole(item.roles[2]));
 	});
 
 	let startDate = '';
@@ -156,6 +177,13 @@
 				}
 			});
 			return personNameArray;
+		} else {
+			event.participants.forEach((participant) => {
+				if (participant.role._id == role._id) {
+					person = participant.person.name;
+					return person;
+				}
+			});
 		}
 		return person;
 	};
@@ -231,7 +259,7 @@
 						items={peopleToSelectFrom}
 						placeholder={`Select ${role.name.toLowerCase()}`}
 						multiSelect={role.canHaveMultipleParticipants}
-						value={getNamesForRole(role)}
+						bind:value={roleParticipants[role._id]}
 						on:dropdownSelect={(e) => handleSelect(e, role._id, role.canHaveMultipleParticipants)}
 					/>
 					<button
