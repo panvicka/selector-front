@@ -19,8 +19,7 @@
 	};
 
 	export let peopleToSelectFrom: Array<SvelteSelectableItem> = [];
-	console.log('peopleToSelectFrom');
-	console.log(peopleToSelectFrom);
+
 	export let lastItemEvent: Event | undefined = undefined;
 	export let event: Event = {
 		_id: '',
@@ -40,9 +39,6 @@
 		eventNote: '',
 		participants: []
 	};
-
-	console.log('event.participants');
-	console.log(event.participants);
 
 	export let formEvent: Event = {
 		_id: event?._id || '',
@@ -97,9 +93,9 @@
 	const mapParticipants = () => {
 		event.participants.forEach((participant) => {
 			if (roleParticipants[participant.role._id]) {
-				roleParticipants[participant.role._id].push(participant.person.name);
+				roleParticipants[participant.role._id].push(participant.person._id);
 			} else {
-				roleParticipants[participant.role._id] = [participant.person.name];
+				roleParticipants[participant.role._id] = [participant.person._id];
 			}
 		});
 	};
@@ -113,8 +109,6 @@
 		});
 		auxEventNote = event.eventNote || '';
 		mapParticipants();
-		console.log('roleParticipants');
-		console.log(roleParticipants);
 	});
 
 	let startDate = '';
@@ -167,10 +161,6 @@
 
 	let showRandomSelectionModal = false;
 
-	const mapPeopleNamesToId = (name: string) => {
-		return peopleToSelectFrom.find((person) => person.label === name)?.value || '';
-	};
-
 	const mapToFormFormat = (selectedRole: Role, selectedPerson: string | string[]) => {
 		if (!selectedRole.canHaveMultipleParticipants) {
 			replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipantsIds, 'role', {
@@ -185,7 +175,7 @@
 				selectedPerson.forEach((selectedPersonName) => {
 					selectedParticipantsIds.push({
 						role: selectedRole._id,
-						person: mapPeopleNamesToId(selectedPersonName)
+						person: selectedPersonName
 					});
 				});
 			}
@@ -193,23 +183,31 @@
 	};
 
 	function handleSelect(event: CustomEvent<{ [key: number]: SvelteSelectableItem }>, role: Role) {
-		console.log(event);
-		console.log(role);
 		if (!role.canHaveMultipleParticipants) {
 			replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipantsIds, 'role', {
 				role: role._id,
 				person: event.detail[0].value
 			});
+			roleParticipants[role._id] = [event.detail[0].value];
 		} else {
 			selectedParticipantsIds = selectedParticipantsIds.filter((item) => item.role !== role._id);
-			console.log(event.detail);
 			for (const [_key, participantItem] of Object.entries(event.detail)) {
-				console.log(event.detail);
 				selectedParticipantsIds.push({
 					role: role._id,
 					person: participantItem.value
 				});
 			}
+			selectedParticipantsIds.forEach((participant) => {
+				if (roleParticipants[role._id]) {
+					// push it if it does not exist
+					if (!roleParticipants[role._id].includes(participant.person)) {
+						roleParticipants[role._id].push(participant.person);
+					}
+					// roleParticipants[role._id].push(participant.person);
+				} else {
+					roleParticipants[role._id] = [participant.person];
+				}
+			});
 		}
 	}
 </script>
@@ -262,7 +260,7 @@
 						items={peopleToSelectFrom}
 						placeholder={`Select ${role.name.toLowerCase()}`}
 						multiSelect={role.canHaveMultipleParticipants}
-						bind:value={roleParticipants[role._id]}
+						bind:values={roleParticipants[role._id]}
 						on:dropdownSelect={(e) => handleSelect(e, role)}
 					/>
 					<button
@@ -295,16 +293,16 @@
 					showRandomSelectionModal = false;
 					if (selectedRole.canHaveMultipleParticipants) {
 						if (roleParticipants[selectedRole._id]) {
-							roleParticipants[selectedRole._id].push(detail.person.name);
+							roleParticipants[selectedRole._id].push(detail.person._id);
 						} else {
-							roleParticipants[selectedRole._id] = [detail.person.name];
+							roleParticipants[selectedRole._id] = [detail.person._id];
 						}
 						// trick for svelte to rerender
 						roleParticipants = roleParticipants;
 
 						mapToFormFormat(selectedRole, roleParticipants[selectedRole._id]);
 					} else {
-						roleParticipants[selectedRole._id] = [detail.person.name];
+						roleParticipants[selectedRole._id] = [detail.person._id];
 						mapToFormFormat(selectedRole, detail.person._id);
 					}
 				}}
