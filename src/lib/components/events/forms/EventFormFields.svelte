@@ -77,6 +77,8 @@
 		person: string;
 	}> = [];
 
+	let selectedRole: Role;
+
 	let startDateModified: boolean | undefined = false;
 	let endDateModified: boolean | undefined = undefined;
 
@@ -86,17 +88,25 @@
 	$: formEvent.eventNote = auxEventNote;
 	// end of weird bug
 
-	let roleParticipants: { [key: string]: Array<string> } = {};
+	let roleParticipants: { [key: string]: Array<string> | string } = {};
 
 	const mapParticipants = () => {
+		console.log(item.roles);
 		event.participants.forEach((participant) => {
+			const role = item.roles.find((role) => role._id === participant.role._id);
 			// check somehow the role and if it is multiple or not
 			// if it is multiple, then add to the array
 			// if it is not multiple, then just add the name
-			if (roleParticipants[participant.role._id]) {
-				roleParticipants[participant.role._id].push(participant.person.name);
-			} else {
-				roleParticipants[participant.role._id] = participant.person.name;
+			if (role) {
+				if (role.canHaveMultipleParticipants) {
+					if (roleParticipants[participant.role._id]) {
+						roleParticipants[participant.role._id].push(participant.person.name);
+					} else {
+						roleParticipants[participant.role._id] = [participant.person.name];
+					}
+				} else {
+					roleParticipants[participant.role._id] = participant.person.name;
+				}
 			}
 		});
 	};
@@ -111,10 +121,12 @@
 		auxEventNote = event.eventNote || '';
 		mapParticipants();
 		console.log(roleParticipants);
-		console.log(roleParticipants[item.roles[0]._id]);
-		console.log(getNamesForRole(item.roles[0]));
-		console.log(getNamesForRole(item.roles[1]));
-		console.log(getNamesForRole(item.roles[2]));
+		// console.log(selectedParticipantsIds);
+		// console.log(roleParticipants);
+		// console.log(roleParticipants[item.roles[0]._id]);
+		// console.log(getNamesForRole(item.roles[0]));
+		// console.log(getNamesForRole(item.roles[1]));
+		// console.log(getNamesForRole(item.roles[2]));
 	});
 
 	let startDate = '';
@@ -265,30 +277,10 @@
 					<button
 						on:click={() => {
 							showRandomSelectionModal = true;
+							selectedRole = role;
 						}}><Icon size="lg" id="random" icon={'faDice'} /></button
 					>
 				</div>
-				{#if showRandomSelectionModal}
-					<RandomSelectionModal
-						{event}
-						{item}
-						{role}
-						class="lg:w-fit w-full"
-						on:close={() => {
-							showRandomSelectionModal = false;
-						}}
-						on:submit={({ detail }) => {
-							// console.log(detail);
-							replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipantsIds, 'role', {
-								role: role._id,
-								person: detail.person._id
-							});
-							showRandomSelectionModal = false;
-						}}
-					>
-						<h1 slot="title">{`Randomize for ${role.name}`}</h1>
-					</RandomSelectionModal>
-				{/if}
 			{/each}
 		{/if}
 
@@ -298,5 +290,34 @@
 			inputPlaceholder="Optional event note"
 			bind:textValue={auxEventNote}
 		/>
+
+		{#if showRandomSelectionModal}
+			<RandomSelectionModal
+				{event}
+				{item}
+				role={selectedRole}
+				class="lg:w-fit w-full"
+				on:close={() => {
+					showRandomSelectionModal = false;
+				}}
+				on:submit={({ detail }) => {
+					showRandomSelectionModal = false;
+					if (selectedRole.canHaveMultipleParticipants) {
+						if (roleParticipants[selectedRole._id]) {
+							roleParticipants[selectedRole._id].push(detail.person.name);
+						} else {
+							roleParticipants[selectedRole._id] = [detail.person.name];
+						}
+						// trick for svelte to rerender
+						roleParticipants = roleParticipants;
+						console.log(roleParticipants);
+					} else {
+						roleParticipants[selectedRole._id] = detail.person.name;
+					}
+				}}
+			>
+				<h1 slot="title">{`Randomize for ${selectedRole.name}`}</h1>
+			</RandomSelectionModal>
+		{/if}
 	</form>
 </div>
