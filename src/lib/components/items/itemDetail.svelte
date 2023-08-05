@@ -110,7 +110,7 @@
 
 	{#if showCreateEventModalOpened}
 		<EventFormModal
-			class="lg:w-4/12 w-full"
+			class="lg:w-4/12 w-full min-w-72"
 			peopleToSelectFrom={selectablePeople}
 			lastItemEvent={itemEvents?.[0] || null}
 			{item}
@@ -131,7 +131,7 @@
 
 	{#if showEditModalOpened}
 		<EventFormModal
-			class="lg:w-4/12 w-full"
+			class="lg:w-4/12 w-full min-w-72"
 			peopleToSelectFrom={selectablePeople}
 			{item}
 			event={workingEventReference}

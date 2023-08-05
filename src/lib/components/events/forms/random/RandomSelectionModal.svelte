@@ -24,6 +24,11 @@
 	}>();
 	$: classesFromTheParent = $$props.class;
 
+	export let alreadySelectedParticipants: Array<{
+		role: string;
+		person: string;
+	}> = [];
+
 	export let event: Event = {
 		_id: '',
 		item: {
@@ -80,6 +85,16 @@
 	const fetchRandomResults = async (randomOptions: any) => {
 		// @ts-ignore
 		isLoading = true;
+
+		console.log(alreadySelectedParticipants);
+
+		// filter out the people that are already selected
+		randomOptions.excludePeople = alreadySelectedParticipants
+			.filter((participant) => participant.role === role._id)
+			.map((participant) => participant.person);
+
+		console.log(randomOptions.excludePeople);
+
 		listOfResults = await LocalApiItems.getRandomizedPeopleForAttendance(
 			item._id,
 			role._id,

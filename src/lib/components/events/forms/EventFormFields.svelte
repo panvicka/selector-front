@@ -256,19 +256,23 @@
 						<RoleParticipantNumber canHaveMultipleParticipants={role.canHaveMultipleParticipants} />
 						<span class="label-text"> {role.name}</span>
 					</div>
-					<SelectDropdown
-						items={peopleToSelectFrom}
-						placeholder={`Select ${role.name.toLowerCase()}`}
-						multiSelect={role.canHaveMultipleParticipants}
-						bind:values={roleParticipants[role._id]}
-						on:dropdownSelect={(e) => handleSelect(e, role)}
-					/>
-					<button
-						on:click={() => {
-							showRandomSelectionModal = true;
-							selectedRole = role;
-						}}><Icon size="lg" id="random" icon={'faDice'} /></button
-					>
+					<div class="flex flex-row">
+						<SelectDropdown
+							class="w-full"
+							items={peopleToSelectFrom}
+							placeholder={`Select ${role.name.toLowerCase()}`}
+							multiSelect={role.canHaveMultipleParticipants}
+							bind:values={roleParticipants[role._id]}
+							on:dropdownSelect={(e) => handleSelect(e, role)}
+						/>
+						<button
+							class="ml-2"
+							on:click={() => {
+								showRandomSelectionModal = true;
+								selectedRole = role;
+							}}><Icon size="lg" id="random" icon={'faDice'} /></button
+						>
+					</div>
 				</div>
 			{/each}
 		{/if}
@@ -282,6 +286,7 @@
 
 		{#if showRandomSelectionModal}
 			<RandomSelectionModal
+				alreadySelectedParticipants={selectedParticipantsIds}
 				{event}
 				{item}
 				role={selectedRole}
