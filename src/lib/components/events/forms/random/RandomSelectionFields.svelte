@@ -65,7 +65,7 @@
 		<div class="flex flex-col">
 			{#if isLoading}
 				<Load />
-			{:else if listOfResults.length > 0}
+			{:else if listOfResults?.length > 0}
 				{#each listOfResults as result, i}
 					<a
 						class="link link-accent"

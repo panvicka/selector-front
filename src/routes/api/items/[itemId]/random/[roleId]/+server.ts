@@ -2,21 +2,9 @@ import { json } from '@sveltejs/kit';
 import { RemoteApiItems } from 'api/item';
 import type { RequestHandler } from '../../$types';
 
-export const GET: RequestHandler = async ({ params, url }) => {
-	// todo why is this not working? the roleId is there
-	const { itemId, roleId } = params;
-
-	const daysSince = url.searchParams.get('days-since');
-	const lessThenAverage = url.searchParams.get('less-average');
-	const notAlreadyPlanned = url.searchParams.get('not-planned');
-	const hasDoneTheRole = url.searchParams.get('has-done');
-
+// todo why i have type error here? the roleId exists
+export const POST: RequestHandler = async ({ request, params: { itemId, roleId } }) => {
 	return json(
-		await RemoteApiItems.getRandomizedPeopleForAttendance(itemId, roleId, {
-			daysSince,
-			lessThenAverage,
-			notAlreadyPlanned,
-			hasDoneTheRole
-		})
+		await RemoteApiItems.getRandomizedPeopleForAttendance(itemId, roleId, await request.json())
 	);
 };

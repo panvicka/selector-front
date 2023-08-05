@@ -35,23 +35,9 @@ export const LocalApiItems = {
 	getRandomizedPeopleForAttendance: async (
 		itemId: string,
 		roleId: string,
-		{ daysSince, lessThenAverage, notAlreadyPlanned, hasDoneTheRole }: RandomOptions
+		payload: RandomOptions
 	): Promise<unknown> => {
-		const params = new URLSearchParams();
-		if (daysSince) {
-			params.append('days-since', daysSince.toString());
-		}
-		if (lessThenAverage) {
-			params.append('less-average', lessThenAverage.toString());
-		}
-		if (notAlreadyPlanned) {
-			params.append('not-planned', notAlreadyPlanned.toString());
-		}
-		if (hasDoneTheRole) {
-			params.append('has-done', hasDoneTheRole.toString());
-		}
-
-		return await ClientAPI.get(`/items/${itemId}/random/${roleId}${params && `?${params}`}`);
+		return await ClientAPI.post(`/items/${itemId}/random/${roleId}`, payload);
 	},
 
 	/* TODO types for return */

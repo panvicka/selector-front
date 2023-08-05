@@ -69,7 +69,9 @@
 		hasDoneTheRole: false,
 		lessThenAverage: true,
 		daysSince: 40,
-		notAlreadyPlanned: true
+		notAlreadyPlanned: true,
+		numberOfResults: 5,
+		excludePeople: []
 	};
 
 	let listOfResults = [];

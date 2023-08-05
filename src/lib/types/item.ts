@@ -25,6 +25,8 @@ export interface RandomOptions {
 	lessThenAverage: boolean;
 	notAlreadyPlanned: boolean;
 	hasDoneTheRole: boolean;
+	numberOfResults: number;
+	excludePeople: Array<string>;
 }
 
 export interface RandomResult {
