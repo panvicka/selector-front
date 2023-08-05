@@ -10,7 +10,6 @@
 	import dayjs from 'dayjs';
 	import { onMount } from 'svelte';
 	import { replaceKeyValueInToArrayIfKeyExistOrAdd } from 'utils/arrayUtils';
-	import RandomSelectionFields from './random/RandomSelectionFields.svelte';
 	import RandomSelectionModal from './random/RandomSelectionModal.svelte';
 	import Icon from 'components/general/Icon.svelte';
 
@@ -20,7 +19,8 @@
 	};
 
 	export let peopleToSelectFrom: Array<SvelteSelectableItem> = [];
-
+	console.log('peopleToSelectFrom');
+	console.log(peopleToSelectFrom);
 	export let lastItemEvent: Event | undefined = undefined;
 	export let event: Event = {
 		_id: '',
@@ -40,6 +40,9 @@
 		eventNote: '',
 		participants: []
 	};
+
+	console.log('event.participants');
+	console.log(event.participants);
 
 	export let formEvent: Event = {
 		_id: event?._id || '',
@@ -88,25 +91,15 @@
 	$: formEvent.eventNote = auxEventNote;
 	// end of weird bug
 
-	let roleParticipants: { [key: string]: Array<string> | string } = {};
+	// to feed to dropdown as currectly selected values
+	let roleParticipants: { [key: string]: Array<string> } = {};
 
 	const mapParticipants = () => {
-		console.log(item.roles);
 		event.participants.forEach((participant) => {
-			const role = item.roles.find((role) => role._id === participant.role._id);
-			// check somehow the role and if it is multiple or not
-			// if it is multiple, then add to the array
-			// if it is not multiple, then just add the name
-			if (role) {
-				if (role.canHaveMultipleParticipants) {
-					if (roleParticipants[participant.role._id]) {
-						roleParticipants[participant.role._id].push(participant.person.name);
-					} else {
-						roleParticipants[participant.role._id] = [participant.person.name];
-					}
-				} else {
-					roleParticipants[participant.role._id] = participant.person.name;
-				}
+			if (roleParticipants[participant.role._id]) {
+				roleParticipants[participant.role._id].push(participant.person.name);
+			} else {
+				roleParticipants[participant.role._id] = [participant.person.name];
 			}
 		});
 	};
@@ -120,13 +113,8 @@
 		});
 		auxEventNote = event.eventNote || '';
 		mapParticipants();
+		console.log('roleParticipants');
 		console.log(roleParticipants);
-		// console.log(selectedParticipantsIds);
-		// console.log(roleParticipants);
-		// console.log(roleParticipants[item.roles[0]._id]);
-		// console.log(getNamesForRole(item.roles[0]));
-		// console.log(getNamesForRole(item.roles[1]));
-		// console.log(getNamesForRole(item.roles[2]));
 	});
 
 	let startDate = '';
@@ -179,43 +167,46 @@
 
 	let showRandomSelectionModal = false;
 
-	const getNamesForRole = (role: Role): string | string[] => {
-		let person = '';
-		let personNameArray: string[] = [];
-		if (role.canHaveMultipleParticipants) {
-			event.participants.forEach((participant) => {
-				if (participant.role._id == role._id) {
-					personNameArray.push(participant.person._id);
-				}
-			});
-			return personNameArray;
-		} else {
-			event.participants.forEach((participant) => {
-				if (participant.role._id == role._id) {
-					person = participant.person.name;
-					return person;
-				}
-			});
-		}
-		return person;
+	const mapPeopleNamesToId = (name: string) => {
+		return peopleToSelectFrom.find((person) => person.label === name)?.value || '';
 	};
 
-	function handleSelect(
-		event: CustomEvent<{ [key: number]: SvelteSelectableItem }>,
-		roleId: Role['_id'],
-		roleWithMultiplePeople: boolean
-	) {
-		if (!roleWithMultiplePeople) {
+	const mapToFormFormat = (selectedRole: Role, selectedPerson: string | string[]) => {
+		if (!selectedRole.canHaveMultipleParticipants) {
 			replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipantsIds, 'role', {
-				role: roleId,
+				role: selectedRole._id,
+				person: selectedPerson
+			});
+		} else {
+			selectedParticipantsIds = selectedParticipantsIds.filter(
+				(item) => item.role !== selectedRole._id
+			);
+			if (selectedPerson?.length > 0) {
+				selectedPerson.forEach((selectedPersonName) => {
+					selectedParticipantsIds.push({
+						role: selectedRole._id,
+						person: mapPeopleNamesToId(selectedPersonName)
+					});
+				});
+			}
+		}
+	};
+
+	function handleSelect(event: CustomEvent<{ [key: number]: SvelteSelectableItem }>, role: Role) {
+		console.log(event);
+		console.log(role);
+		if (!role.canHaveMultipleParticipants) {
+			replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipantsIds, 'role', {
+				role: role._id,
 				person: event.detail[0].value
 			});
-			console.log(selectedParticipantsIds);
 		} else {
-			selectedParticipantsIds = selectedParticipantsIds.filter((item) => item.role !== roleId);
+			selectedParticipantsIds = selectedParticipantsIds.filter((item) => item.role !== role._id);
+			console.log(event.detail);
 			for (const [_key, participantItem] of Object.entries(event.detail)) {
+				console.log(event.detail);
 				selectedParticipantsIds.push({
-					role: roleId,
+					role: role._id,
 					person: participantItem.value
 				});
 			}
@@ -272,7 +263,7 @@
 						placeholder={`Select ${role.name.toLowerCase()}`}
 						multiSelect={role.canHaveMultipleParticipants}
 						bind:value={roleParticipants[role._id]}
-						on:dropdownSelect={(e) => handleSelect(e, role._id, role.canHaveMultipleParticipants)}
+						on:dropdownSelect={(e) => handleSelect(e, role)}
 					/>
 					<button
 						on:click={() => {
@@ -310,9 +301,11 @@
 						}
 						// trick for svelte to rerender
 						roleParticipants = roleParticipants;
-						console.log(roleParticipants);
+
+						mapToFormFormat(selectedRole, roleParticipants[selectedRole._id]);
 					} else {
-						roleParticipants[selectedRole._id] = detail.person.name;
+						roleParticipants[selectedRole._id] = [detail.person.name];
+						mapToFormFormat(selectedRole, detail.person._id);
 					}
 				}}
 			>

@@ -8,9 +8,16 @@
 	export let items: Array<SvelteSelectableItem> = [];
 
 	export let placeholder = '';
-	export let value: string | string[] = '';
+	export let value: string[];
 	export let colorStyle = 'primary';
 	export let multiSelect = false;
+
+	let dropdownValue: string | string[] = [];
+	$: if (multiSelect === false) {
+		dropdownValue = value?.[0];
+	} else {
+		dropdownValue = value;
+	}
 
 	$: classesFromTheParent = $$props.class;
 
@@ -20,8 +27,8 @@
 
 	let visible = false;
 	onMount(async () => {
-		if (value instanceof Array) {
-			value.map((item) => {
+		if (dropdownValue instanceof Array) {
+			dropdownValue.map((item) => {
 				selectedItems.push({ value: item, label: '' });
 			});
 		}
@@ -70,7 +77,7 @@
 			id="dropdown"
 			{items}
 			multiple={multiSelect}
-			{value}
+			value={dropdownValue}
 			{placeholder}
 			{placeholderAlwaysShow}
 			on:change={(e) => handleSelect(e)}
