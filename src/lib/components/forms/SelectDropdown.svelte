@@ -12,6 +12,14 @@
 	export let colorStyle = 'primary';
 	export let multiSelect = false;
 
+	let dropdownValue: string | string[] = [];
+	$: if (multiSelect === false) {
+		dropdownValue = values?.[0];
+	} else {
+		dropdownValue = values;
+		console.log(values);
+	}
+
 	$: classesFromTheParent = $$props.class;
 
 	let selectedItems: Array<SvelteSelectableItem> = [];
@@ -47,13 +55,30 @@
 		dispatch('dropdownSelect', {
 			...selectedItems
 		});
+		console.log('selectedItems after handle select');
+		console.log(selectedItems);
 	};
 
 	const handleClear = (e: SvelteSelectEvent) => {
-		removeFromArrayBasedOnKey('value', e.detail.value, selectedItems);
-		dispatch('dropdownSelect', {
-			...selectedItems
-		});
+		console.log('clean event');
+		console.log(e);
+		// for multiselection
+		if (e?.detail?.value) {
+			console.log('handle clear selectedItems before');
+			console.log(selectedItems);
+			removeFromArrayBasedOnKey('value', e.detail.value, selectedItems);
+			console.log('handle clear selectedItems after');
+			console.log(selectedItems);
+			dispatch('dropdownSelect', {
+				...selectedItems
+			});
+		} else {
+			// for normal selection
+			selectedItems = [];
+			dispatch('dropdownSelect', {
+				...selectedItems
+			});
+		}
 	};
 
 	let floatingConfig = {
