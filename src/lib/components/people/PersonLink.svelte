@@ -6,7 +6,7 @@
 	export let type: ColorStyle | null = ColorStyle.primary;
 </script>
 
-<a class={`link link-${type}`} href={`/people/${person._id}`}>{person.name}</a>
+<a class={`link link-${type}`} href={`/people/${person?._id}`}>{person?.name}</a>
 
 <style>
 </style>

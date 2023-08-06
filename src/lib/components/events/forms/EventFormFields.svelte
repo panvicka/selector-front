@@ -10,6 +10,8 @@
 	import dayjs from 'dayjs';
 	import { onMount } from 'svelte';
 	import { replaceKeyValueInToArrayIfKeyExistOrAdd } from 'utils/arrayUtils';
+	import RandomSelectionModal from './random/RandomSelectionModal.svelte';
+	import Icon from 'components/general/Icon.svelte';
 
 	export let formValidation = {
 		startDateMissing: false,
@@ -74,6 +76,8 @@
 		person: string;
 	}> = [];
 
+	let selectedRole: Role;
+
 	let startDateModified: boolean | undefined = false;
 	let endDateModified: boolean | undefined = undefined;
 
@@ -83,6 +87,19 @@
 	$: formEvent.eventNote = auxEventNote;
 	// end of weird bug
 
+	// to feed to dropdown as currectly selected values
+	let roleParticipants: { [key: string]: Array<string> } = {};
+
+	const mapParticipants = () => {
+		event.participants.forEach((participant) => {
+			if (roleParticipants[participant.role._id]) {
+				roleParticipants[participant.role._id].push(participant.person._id);
+			} else {
+				roleParticipants[participant.role._id] = [participant.person._id];
+			}
+		});
+	};
+
 	onMount(async () => {
 		event.participants.forEach((participant) => {
 			selectedParticipantsIds.push({
@@ -91,6 +108,7 @@
 			});
 		});
 		auxEventNote = event.eventNote || '';
+		mapParticipants();
 	});
 
 	let startDate = '';
@@ -141,25 +159,27 @@
 	$: formEvent.endDate = endDate;
 	$: formEvent.participants = selectedParticipantsIds;
 
-	const getNamesForRole = (role: Role): string | string[] => {
-		let person = '';
-		let personNameArray: string[] = [];
-		if (role.canHaveMultipleParticipants) {
-			event.participants.forEach((participant) => {
-				if (participant.role._id == role._id) {
-					personNameArray.push(participant.person._id);
-				}
+	let showRandomSelectionModal = false;
+
+	const mapToFormFormat = (selectedRole: Role, selectedPerson: string | string[]) => {
+		if (!selectedRole.canHaveMultipleParticipants) {
+			replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipantsIds, 'role', {
+				role: selectedRole._id,
+				person: selectedPerson
 			});
-			return personNameArray;
 		} else {
-			event.participants.forEach((participant) => {
-				if (participant.role._id == role._id) {
-					person = participant.person.name;
-					return person;
-				}
-			});
+			selectedParticipantsIds = selectedParticipantsIds.filter(
+				(item) => item.role !== selectedRole._id
+			);
+			if (selectedPerson?.length > 0) {
+				selectedPerson.forEach((selectedPersonName) => {
+					selectedParticipantsIds.push({
+						role: selectedRole._id,
+						person: selectedPersonName
+					});
+				});
+			}
 		}
-		return person;
 	};
 
 	function handleSelect(event: CustomEvent<{ [key: number]: SvelteSelectableItem }>, role: Role) {
@@ -182,7 +202,7 @@
 
 			for (const [_key, participantItem] of Object.entries(event.detail)) {
 				selectedParticipantsIds.push({
-					role: roleId,
+					role: role._id,
 					person: participantItem.value
 				});
 			}
@@ -260,13 +280,23 @@
 						<RoleParticipantNumber canHaveMultipleParticipants={role.canHaveMultipleParticipants} />
 						<span class="label-text"> {role.name}</span>
 					</div>
-					<SelectDropdown
-						items={peopleToSelectFrom}
-						placeholder={`Select ${role.name.toLowerCase()}`}
-						multiSelect={role.canHaveMultipleParticipants}
-						value={getNamesForRole(role)}
-						on:dropdownSelect={(e) => handleSelect(e, role._id, role.canHaveMultipleParticipants)}
-					/>
+					<div class="flex flex-row">
+						<SelectDropdown
+							class="w-full"
+							items={peopleToSelectFrom}
+							placeholder={`Select ${role.name.toLowerCase()}`}
+							multiSelect={role.canHaveMultipleParticipants}
+							bind:values={roleParticipants[role._id]}
+							on:dropdownSelect={(e) => handleSelect(e, role)}
+						/>
+						<button
+							class="ml-2"
+							on:click={() => {
+								showRandomSelectionModal = true;
+								selectedRole = role;
+							}}><Icon size="lg" id="random" icon={'faDice'} /></button
+						>
+					</div>
 				</div>
 			{/each}
 		{/if}
@@ -277,5 +307,37 @@
 			inputPlaceholder="Optional event note"
 			bind:textValue={auxEventNote}
 		/>
+
+		{#if showRandomSelectionModal}
+			<RandomSelectionModal
+				alreadySelectedParticipants={selectedParticipantsIds}
+				{event}
+				{item}
+				role={selectedRole}
+				class="lg:w-fit w-full"
+				on:close={() => {
+					showRandomSelectionModal = false;
+				}}
+				on:submit={({ detail }) => {
+					showRandomSelectionModal = false;
+					if (selectedRole.canHaveMultipleParticipants) {
+						if (roleParticipants[selectedRole._id]) {
+							roleParticipants[selectedRole._id].push(detail.person._id);
+						} else {
+							roleParticipants[selectedRole._id] = [detail.person._id];
+						}
+						// trick for svelte to rerender
+						roleParticipants = roleParticipants;
+
+						mapToFormFormat(selectedRole, roleParticipants[selectedRole._id]);
+					} else {
+						roleParticipants[selectedRole._id] = [detail.person._id];
+						mapToFormFormat(selectedRole, detail.person._id);
+					}
+				}}
+			>
+				<h1 slot="title">{`Randomize for ${selectedRole.name}`}</h1>
+			</RandomSelectionModal>
+		{/if}
 	</form>
 </div>

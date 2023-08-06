@@ -19,3 +19,31 @@ export interface ItemRequestType extends Omit<Item, 'roles' | 'groupes' | '_id'>
 	roles?: Array<string>;
 	groupes?: Array<string>;
 }
+
+export interface RandomOptions {
+	daysSince: number;
+	lessThenAverage: boolean;
+	notAlreadyPlanned: boolean;
+	hasDoneTheRole: boolean | undefined;
+	numberOfResults: number;
+	excludePeople: Array<string>;
+}
+
+export interface RandomResult {
+	attended: number;
+	dates: Array<string>;
+	latestDate: string;
+	name: string;
+	_id: string;
+}
+
+export interface RandomResultResponse {
+	possibleMatches: Array<{
+		attended: number;
+		dates: Array<string>;
+		latestDate: string;
+		name: string;
+		_id: string;
+	}>;
+	averageAttendance: number;
+}

@@ -8,7 +8,7 @@
 	export let items: Array<SvelteSelectableItem> = [];
 
 	export let placeholder = '';
-	export let value: string | string[] = '';
+	export let values: string[];
 	export let colorStyle = 'primary';
 	export let multiSelect = false;
 
@@ -27,20 +27,30 @@
 	$: placeholderAlwaysShow = selectedItems.length === 0 ? true : false;
 
 	let visible = false;
-	onMount(async () => {
-		if (value instanceof Array) {
-			value.map((item) => {
-				selectedItems.push({ value: item, label: '' });
+
+	$: if (values instanceof Array) {
+		selectedItems = [];
+		values.map((value) => {
+			selectedItems.push({
+				value: value,
+				label: items.find((item) => item.value === value)?.label || ''
 			});
-		}
-		visible = true;
+		});
+
+		selectedItems = selectedItems;
+
 		placeholderAlwaysShow = selectedItems.length === 0 ? true : false;
+	}
+
+	onMount(async () => {
+		visible = true;
 	});
 	const dispatch = createEventDispatcher<{
 		dropdownSelect: { [key: number]: SvelteSelectableItem };
 	}>();
 
 	const handleSelect = (e: SvelteSelectEvent) => {
+		selectedItems = e.detail;
 		if (e.detail instanceof Array) {
 			selectedItems = e.detail;
 		} else {
@@ -95,7 +105,7 @@
 			id="dropdown"
 			{items}
 			multiple={multiSelect}
-			{value}
+			value={dropdownValue}
 			{placeholder}
 			{placeholderAlwaysShow}
 			on:change={(e) => handleSelect(e)}

@@ -46,6 +46,7 @@ export const RemoteApiItems = {
 			return response.rotationItemId;
 		} catch (error) {
 			console.error(error);
+			throw new Error(`Item with id ${itemId} not found`);
 		}
 	},
 
@@ -73,6 +74,25 @@ export const RemoteApiItems = {
 		try {
 			const response = await Api.get(`/rotationItems/get/${itemId}/peopleCount`);
 			return response.attendanceByRole;
+		} catch (error) {
+			console.error(error);
+			return null;
+		}
+	},
+
+	getRandomizedPeopleForAttendance: async (
+		itemId: string,
+		roleId: string,
+		payload: {
+			daysSince?: string | null;
+			lessThenAverage?: string | null;
+			notAlreadyPlanned?: string | null;
+			hasDoneTheRole?: string | null;
+		}
+	): Promise<Item | null> => {
+		try {
+			const response = await Api.post(`/rotationItems/get/${itemId}/randomize/${roleId}`, payload);
+			return response;
 		} catch (error) {
 			console.error(error);
 			return null;
