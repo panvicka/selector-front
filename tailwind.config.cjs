@@ -13,7 +13,11 @@ module.exports = {
 		'alert-warning'
 	],
 	theme: {
-		extend: {}
+		extend: {
+			minWidth: (theme) => ({
+				72: theme('spacing[72]')
+			})
+		}
 	},
 	plugins: [require('daisyui'), require('@tailwindcss/typography')],
 	darkMode: 'class'

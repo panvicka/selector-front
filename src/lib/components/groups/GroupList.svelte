@@ -43,7 +43,6 @@
 	};
 
 	const handleCreateNewGroup = async (event: CustomEvent<Group>) => {
-		console.log(event);
 		const res = await LocalApiGroups.createGroup({
 			name: event.detail.name,
 			description: event.detail.description
@@ -53,7 +52,6 @@
 	};
 
 	const handleEditGroup = async (event: CustomEvent<Group>) => {
-		console.log(event);
 		const res = await LocalApiGroups.updateGroup(groupToBeEdited._id, event.detail);
 		fetchAllGroups();
 		letShowEditModal = false;

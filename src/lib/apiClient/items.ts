@@ -1,4 +1,4 @@
-import type { Item, ItemRequestType } from '$lib/types/item';
+import type { Item, ItemRequestType, RandomOptions, RandomResultResponse } from '$lib/types/item';
 
 import type { Attendance } from '$lib/types/attendance';
 import ClientAPI from '$lib/apiClient/ClientAPI.js';
@@ -30,6 +30,14 @@ export const LocalApiItems = {
 		return await ClientAPI.get(
 			`/items/${itemId}/events${urlSearchParams && `?${urlSearchParams}`}`
 		);
+	},
+
+	getRandomizedPeopleForAttendance: async (
+		itemId: string,
+		roleId: string,
+		payload: RandomOptions
+	): Promise<RandomResultResponse> => {
+		return await ClientAPI.post(`/items/${itemId}/random/${roleId}`, payload);
 	},
 
 	/* TODO types for return */

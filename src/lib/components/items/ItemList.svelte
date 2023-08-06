@@ -81,8 +81,6 @@
 				on:edit={(event) => {
 					showEditItemModal = true;
 					workingItemReference = event.detail;
-					console.log(workingItemReference);
-					console.log(event.detail);
 				}}
 			/>
 		{/each}

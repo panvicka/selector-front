@@ -111,12 +111,12 @@
 		{#each event.participants as participant}
 			<div>
 				<RoleBadge
-					type={highlightPersonId === participant.person._id ? TypeStyle.primary : TypeStyle.ghost}
+					type={highlightPersonId === participant?.person?._id ? TypeStyle.primary : TypeStyle.ghost}
 					role={participant.role}
 				/>
 				<PersonLink
 					person={participant.person}
-					type={highlightPersonId === participant.person._id
+					type={highlightPersonId === participant?.person?._id
 						? ColorStyle.primary
 						: ColorStyle.neutral}
 				/>

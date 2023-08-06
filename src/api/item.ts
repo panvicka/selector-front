@@ -78,5 +78,24 @@ export const RemoteApiItems = {
 			console.error(error);
 			return null;
 		}
+	},
+
+	getRandomizedPeopleForAttendance: async (
+		itemId: string,
+		roleId: string,
+		payload: {
+			daysSince?: string | null;
+			lessThenAverage?: string | null;
+			notAlreadyPlanned?: string | null;
+			hasDoneTheRole?: string | null;
+		}
+	): Promise<Item | null> => {
+		try {
+			const response = await Api.post(`/rotationItems/get/${itemId}/randomize/${roleId}`, payload);
+			return response;
+		} catch (error) {
+			console.error(error);
+			return null;
+		}
 	}
 };
