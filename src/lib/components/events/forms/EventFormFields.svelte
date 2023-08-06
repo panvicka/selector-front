@@ -184,30 +184,54 @@
 
 	function handleSelect(event: CustomEvent<{ [key: number]: SvelteSelectableItem }>, role: Role) {
 		if (!role.canHaveMultipleParticipants) {
-			replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipantsIds, 'role', {
-				role: role._id,
-				person: event.detail[0].value
-			});
-			roleParticipants[role._id] = [event.detail[0].value];
+			if (event?.detail[0]?.value) {
+				replaceKeyValueInToArrayIfKeyExistOrAdd(selectedParticipantsIds, 'role', {
+					role: role._id,
+					person: event.detail[0].value
+				});
+				roleParticipants[role._id] = [event.detail[0].value];
+			} else {
+				// for the case the item was delted
+				roleParticipants[role._id] = [];
+
+				// remove entry from selectedParticipantsIds as well
+				selectedParticipantsIds = selectedParticipantsIds.filter((item) => item.role !== role._id);
+			}
 		} else {
 			selectedParticipantsIds = selectedParticipantsIds.filter((item) => item.role !== role._id);
+
 			for (const [_key, participantItem] of Object.entries(event.detail)) {
 				selectedParticipantsIds.push({
 					role: role._id,
 					person: participantItem.value
 				});
 			}
+
 			selectedParticipantsIds.forEach((participant) => {
-				if (roleParticipants[role._id]) {
-					// push it if it does not exist
-					if (!roleParticipants[role._id].includes(participant.person)) {
-						roleParticipants[role._id].push(participant.person);
+				if (participant.role === role._id) {
+					if (roleParticipants[role._id]) {
+						// push it if it does not exist
+						if (!roleParticipants[role._id].includes(participant.person)) {
+							roleParticipants[role._id].push(participant.person);
+						}
+						// roleParticipants[role._id].push(participant.person);
+					} else {
+						roleParticipants[role._id] = [participant.person];
 					}
-					// roleParticipants[role._id].push(participant.person);
-				} else {
-					roleParticipants[role._id] = [participant.person];
 				}
 			});
+
+			// remove items from roleParticipants that are not in selectedParticipantsIds anymore (check the role as well)
+			for (const [key, participantItem] of Object.entries(roleParticipants)) {
+				if (key === role._id) {
+					roleParticipants[key] = participantItem.filter((item) => {
+						return selectedParticipantsIds.some(
+							(selectedParticipant) =>
+								selectedParticipant.role === role._id && selectedParticipant.person === item
+						);
+					});
+				}
+			}
 		}
 	}
 </script>
