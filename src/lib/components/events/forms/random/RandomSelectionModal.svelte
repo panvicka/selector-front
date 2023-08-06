@@ -86,20 +86,16 @@
 		// @ts-ignore
 		isLoading = true;
 
-		console.log(alreadySelectedParticipants);
-
-		// filter out the people that are already selected
-		randomOptions.excludePeople = alreadySelectedParticipants
-			.filter((participant) => participant.role === role._id)
-			.map((participant) => participant.person);
-
-		console.log(randomOptions.excludePeople);
+		randomOptions.excludePeople = alreadySelectedParticipants.map(
+			(participant) => participant.person
+		);
 
 		listOfResults = await LocalApiItems.getRandomizedPeopleForAttendance(
 			item._id,
 			role._id,
 			randomOptions
 		);
+		console.log(listOfResults);
 		isLoading = false;
 	};
 

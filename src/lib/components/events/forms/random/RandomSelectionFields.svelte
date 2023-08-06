@@ -62,7 +62,7 @@
 		<br />
 		Top Results
 		<br />
-		<div class="flex flex-col">
+		<div class="flex flex-col flex-start">
 			{#if isLoading}
 				<Load />
 			{:else if listOfResults?.length > 0}
