@@ -82,6 +82,7 @@
 		<RandomSelectionFields
 			{randomOptions}
 			{listOfResults}
+			averageAttendace={randomResult?.averageAttendance}
 			{isLoading}
 			on:change={async ({ detail }) => {
 				fetchRandomResults(detail);

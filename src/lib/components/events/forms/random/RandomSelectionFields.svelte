@@ -11,6 +11,7 @@
 
 	export let randomOptions: RandomOptions;
 	export let listOfResults: Array<RandomResult> = [];
+	export let averageAttendace: number;
 	export let isLoading: boolean;
 	$: {
 		dispatch('change', {
@@ -69,7 +70,7 @@
 		<div class="flex items-center">
 			<ToggleInput
 				inputOrder={'inputFirst'}
-				inputLabel={'Less then average attendance'}
+				inputLabel={`Less then average attendance ${averageAttendace ? `(${averageAttendace})` : ''}`}
 				class="toggle-primary"
 				bind:value={randomOptions.lessThenAverage}
 				inputLabelHelp={'Select people that have done the role less then average'}
