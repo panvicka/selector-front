@@ -8,4 +8,16 @@ declare namespace App {
 	// interface Platform {}
 }
 
+declare global {
+	namespace App {
+		interface Error {
+			button?: {
+				text: string;
+				icon: string;
+				link: string;
+			};
+		}
+	}
+}
 
+export {};

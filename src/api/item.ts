@@ -46,6 +46,7 @@ export const RemoteApiItems = {
 			return response.rotationItemId;
 		} catch (error) {
 			console.error(error);
+			throw new Error(`Item with id ${itemId} not found`);
 		}
 	},
 
