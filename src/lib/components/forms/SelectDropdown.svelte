@@ -64,7 +64,6 @@
 		dispatch('dropdownSelect', {
 			...selectedItems
 		});
-		console.log('selectedItems', selectedItems);
 	};
 
 	const handleClear = (e: SvelteSelectEvent) => {

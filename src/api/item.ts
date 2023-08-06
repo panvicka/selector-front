@@ -91,7 +91,7 @@ export const RemoteApiItems = {
 	): Promise<Item | null> => {
 		try {
 			const response = await Api.post(`/rotationItems/get/${itemId}/randomize/${roleId}`, payload);
-			return response.possibleMatches;
+			return response;
 		} catch (error) {
 			console.error(error);
 			return null;

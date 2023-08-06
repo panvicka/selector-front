@@ -46,7 +46,6 @@ export const removeFromArrayBasedOnKey = (key, keyValue, array) => {
 };
 
 export const replaceKeyValueInToArrayIfKeyExistOrAdd = (array, keyToExist, object) => {
-	console.log('replaceKeyValueInToArrayIfKeyExistOrAdd', array, keyToExist, object);
 	let index = findIndexByKeyInArray(keyToExist, object[keyToExist], array);
 	if (index == -1) {
 		array.push(object);

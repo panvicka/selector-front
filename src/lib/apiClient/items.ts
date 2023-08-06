@@ -1,4 +1,4 @@
-import type { Item, ItemRequestType, RandomOptions } from '$lib/types/item';
+import type { Item, ItemRequestType, RandomOptions, RandomResultResponse } from '$lib/types/item';
 
 import type { Attendance } from '$lib/types/attendance';
 import ClientAPI from '$lib/apiClient/ClientAPI.js';
@@ -36,7 +36,7 @@ export const LocalApiItems = {
 		itemId: string,
 		roleId: string,
 		payload: RandomOptions
-	): Promise<unknown> => {
+	): Promise<RandomResultResponse> => {
 		return await ClientAPI.post(`/items/${itemId}/random/${roleId}`, payload);
 	},
 

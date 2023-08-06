@@ -107,8 +107,6 @@
 	}
 
 	function submit() {
-		console.log('submit');
-		console.log(formEventSubmitted.participants);
 		if (!formEventSubmitted.startDate || formEventSubmitted.startDate == 'Invalid Date') {
 			formValidation.startDateMissing = true;
 		}

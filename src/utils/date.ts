@@ -1,6 +1,7 @@
 import type { Event } from '$lib/types/event';
 import type { TimeStruct } from '$lib/types/utils';
 import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 export function formatDate(dateString: string) {
 	const date = new Date(dateString);
@@ -12,6 +13,12 @@ export function formatDate(dateString: string) {
 	if (day.length < 2) day = '0' + day;
 
 	return [year, month, day].join('-');
+}
+
+export function timeFrom(dateString: string) {
+	dayjs.extend(relativeTime);
+
+	return dayjs(new Date()).from(dateString, true);
 }
 
 export function formatDateForHuman(dateString: string) {

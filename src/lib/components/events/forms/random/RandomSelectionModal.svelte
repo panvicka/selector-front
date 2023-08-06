@@ -1,17 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { onMount } from 'svelte';
-	import dayjs from 'dayjs';
-	import type { Event, EventRequestType } from '$lib/types/event';
-	import type { Item, RandomOptions } from '$lib/types/item';
-	import type { SvelteSelectableItem } from '$lib/types/svelte-select/detail';
+	import type { Item, RandomOptions, RandomResultResponse } from '$lib/types/item';
 	import Modal from 'components/general/Modal.svelte';
-	import EventFormFields from './RandomSelectionFields.svelte';
-	import ActionButtons from 'components/forms/ActionButtons.svelte';
 	import type { Role } from '$lib/types/role';
 	import RandomSelectionFields from './RandomSelectionFields.svelte';
 	import { LocalApiItems } from '$lib/apiClient/items';
-	import Alert from 'components/general/Alert.svelte';
 
 	const dispatch = createEventDispatcher<{
 		submit: {
@@ -29,25 +23,6 @@
 		person: string;
 	}> = [];
 
-	export let event: Event = {
-		_id: '',
-		item: {
-			_id: '',
-			description: '',
-			isLongerThenOneDay: false,
-			longDescription: '',
-			hasAutomaticStartDate: false,
-			usualLenght: null,
-			name: '',
-			groupes: [],
-			roles: []
-		},
-		startDate: '',
-		endDate: '',
-		eventNote: '',
-		participants: []
-	};
-
 	export let item: Item = {
 		_id: '',
 		roles: [],
@@ -60,42 +35,38 @@
 		longDescription: ''
 	};
 
-	export let role: Role = {
-		_id: '',
-		name: '',
-		participantNumber: 0
-	};
+	export let role: Role;
 
 	function close() {
 		dispatch('close');
 	}
 
 	let randomOptions: RandomOptions = {
-		hasDoneTheRole: false,
+		hasDoneTheRole: undefined,
 		lessThenAverage: true,
-		daysSince: 40,
+		daysSince: 0,
 		notAlreadyPlanned: true,
 		numberOfResults: 5,
 		excludePeople: []
 	};
 
-	let listOfResults = [];
+	let randomResult: RandomResultResponse;
+	let listOfResults: Array<any> = [];
 	let isLoading = true;
 
 	const fetchRandomResults = async (randomOptions: any) => {
-		// @ts-ignore
 		isLoading = true;
 
 		randomOptions.excludePeople = alreadySelectedParticipants.map(
 			(participant) => participant.person
 		);
 
-		listOfResults = await LocalApiItems.getRandomizedPeopleForAttendance(
+		randomResult = await LocalApiItems.getRandomizedPeopleForAttendance(
 			item._id,
 			role._id,
 			randomOptions
 		);
-		console.log(listOfResults);
+		listOfResults = randomResult.possibleMatches;
 		isLoading = false;
 	};
 
@@ -119,7 +90,6 @@
 				dispatch('submit', {
 					...detail
 				});
-				console.log(detail);
 			}}
 		/>
 	</svelte:fragment>
