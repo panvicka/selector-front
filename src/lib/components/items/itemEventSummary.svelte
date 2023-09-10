@@ -17,11 +17,23 @@
 </script>
 
 <div class="flex flex-wrap ">
-	<EventGroupOverview runningEvent={true} eventArray={runningEvents} on:delete on:edit>
+	<EventGroupOverview
+		runningEvent={true}
+		eventArray={runningEvents}
+		on:delete
+		on:edit
+		data-testid="RunningEvents"
+	>
 		<svelte:fragment slot="title">Events running</svelte:fragment>
 	</EventGroupOverview>
 
-	<EventGroupOverview futureEvent={true} eventArray={futureEvents} on:delete on:edit>
+	<EventGroupOverview
+		futureEvent={true}
+		eventArray={futureEvents}
+		on:delete
+		on:edit
+		data-testid="FuturuEvents"
+	>
 		<svelte:fragment slot="title">Comming up...</svelte:fragment>
 	</EventGroupOverview>
 </div>

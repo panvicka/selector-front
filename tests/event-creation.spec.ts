@@ -56,15 +56,21 @@ test.beforeAll(async ({ browser }) => {
 });
 
 test('Can create a new currently running event', async () => {
+	const today = formatDate(new Date(), 'DD.MM.YYYY');
 	const endDate = new Date(Date.now() + 2000 * 86400);
 	const endDateString = formatDate(endDate, 'YYYY-MM-DD');
 	const divs = page.getByTestId('ItemCard');
 	await expect(divs).toHaveCount(6);
 	await page.getByRole('link', { name: 'Regular alliance attack on Darth Vader' }).click();
 
-	const eventCardsBefore = page.getByTestId('EventCard');
+	const runningEventCardsBefore = page.getByTestId('RunningEvents').getByTestId('EventCard');
 
 	await page.getByRole('button', { name: 'Add new event' }).click();
+
+	// try saving without filling in end date
+	await page.getByText('Save').click();
+	await expect(page.getByLabel('End date*')).toBeVisible();
+
 	await page.getByLabel('End date*').fill(endDateString);
 
 	await page.getByPlaceholder('Select main assasin').click();
@@ -84,16 +90,83 @@ test('Can create a new currently running event', async () => {
 
 	await page.locator('#eventForm').getByText('Chewbacca', { exact: true }).click();
 
+	await page
+		.locator('#eventForm div')
+		.filter({
+			hasText: 'Support Assasin Option Han Solo, Chewbacca, selected. Select is focused, type to'
+		})
+		.locator('#dropdown')
+		.fill('a');
+
+	await page.locator('#eventForm').getByText('Ahsoka', { exact: true }).click();
+
+	await page.locator('.multi-item-clear').first().click();
 	await page.getByText('Save').click();
 
 	await expect(page.getByText('Detail of Regular alliance attack on Darth Vader')).toBeVisible();
-	const eventCardsAfter = page.getByTestId('EventCard');
-	await expect(eventCardsAfter).toHaveCount((await eventCardsBefore.count()) + 1);
 
-	const createdCard = page.getByTestId('EventCard').nth(1);
-	expect(createdCard.getByText('from10.09.2023').nth(1)).toBeVisible;
-	expect(createdCard.getByText('to12.09.2023').nth(1)).toBeVisible;
-	expect(createdCard.getByText('Main Assasin Ackbar')).toBeVisible;
-	expect(createdCard.getByText('Support Assasin Han Solo')).toBeVisible;
-	expect(createdCard.getByText('Support Chewbacca')).toBeVisible;
+	const runningEventCardsAfter = page.getByTestId('RunningEvents').getByTestId('EventCard');
+	await expect(runningEventCardsAfter).toHaveCount((await runningEventCardsBefore.count()) + 1);
+
+	const createdEventCard = page.getByTestId('EventCard').nth(0);
+
+	await expect(createdEventCard.getByTestId('TimeCounter')).toBeVisible();
+	await expect(createdEventCard.getByTestId('StartDate')).toHaveText(today);
+	await expect(createdEventCard.getByTestId('EndDate')).toHaveText('12.09.2023');
+	await expect(
+		createdEventCard.getByTestId('EventRole').nth(0).getByTestId('RoleBadge')
+	).toHaveText('Main Assasin');
+	await expect(createdEventCard.getByTestId('EventRole').nth(0).getByRole('link')).toHaveText(
+		'Ackbar'
+	);
+
+	await expect(
+		createdEventCard.getByTestId('EventRole').nth(1).getByTestId('RoleBadge')
+	).toHaveText('Support Assasin');
+	await expect(createdEventCard.getByTestId('EventRole').nth(1).getByRole('link')).toHaveText(
+		'Chewbacca'
+	);
+
+	await expect(
+		createdEventCard.getByTestId('EventRole').nth(2).getByTestId('RoleBadge')
+	).toHaveText('Support Assasin');
+	await expect(createdEventCard.getByTestId('EventRole').nth(2).getByRole('link')).toHaveText(
+		'Ahsoka'
+	);
 });
+
+// test('Can edit an event', async () => {
+// 	const endDate = new Date(Date.now() + 2000 * 86400);
+// 	const endDateString = formatDate(endDate, 'YYYY-MM-DD');
+// 	const divs = page.getByTestId('ItemCard');
+// 	await expect(divs).toHaveCount(6);
+// 	await page.getByRole('link', { name: 'Regular alliance attack on Darth Vader' }).click();
+
+// 	const eventCardsBefore = page.getByTestId('EventCard');
+
+// 	await page.getByRole('button', { name: 'Add new event' }).click();
+// 	await page.getByLabel('End date*').fill(endDateString);
+
+// 	await page.getByPlaceholder('Select main assasin').click();
+// 	await page.getByPlaceholder('Select main assasin').fill('a');
+// 	await page.locator('#eventForm').getByText('Ackbar', { exact: true }).click();
+
+// 	await page.getByPlaceholder('Select support assasin').click();
+// 	await page.getByPlaceholder('Select support assasin').fill('a');
+// 	await page.locator('#eventForm').getByText('Han Solo', { exact: true }).click();
+// 	await page
+// 		.locator('#eventForm div')
+// 		.filter({
+// 			hasText: 'Support Assasin Option Han Solo, selected. Select is focused, type to refine lis'
+// 		})
+// 		.locator('#dropdown')
+// 		.fill('a');
+
+// 	await page.locator('#eventForm').getByText('Chewbacca', { exact: true }).click();
+
+// 	await page.getByText('Save').click();
+
+// 	await expect(page.getByText('Detail of Regular alliance attack on Darth Vader')).toBeVisible();
+// 	const eventCardsAfter = page.getByTestId('EventCard');
+// 	await expect(eventCardsAfter).toHaveCount((await eventCardsBefore.count()) + 1);
+// });

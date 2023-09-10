@@ -25,7 +25,8 @@
 			longDescription: '',
 			name: '',
 			groupes: [],
-			roles: []
+			roles: [],
+			hasAutomaticStartDate: false
 		},
 		participants: [],
 		startDate: '',
@@ -100,16 +101,16 @@
 			<span> {`on ${formatDateForHuman(event.startDate)}`} </span>
 		{:else}
 			<div class="flex flex-row justify-between max-w-xs">
-				<span>from</span><span>{formatDateForHuman(event.startDate)}</span>
+				<span>from</span><span data-testid="StartDate">{formatDateForHuman(event.startDate)}</span>
 			</div>
 			<div class="flex flex-row justify-between max-w-xs">
-				<span>to</span><span>{formatDateForHuman(event.endDate)}</span>
+				<span>to</span><span data-testid="EndDate">{formatDateForHuman(event.endDate)}</span>
 			</div>
 		{/if}
 		<br />
 
 		{#each event.participants as participant}
-			<div>
+			<div data-testid="EventRole">
 				<RoleBadge
 					type={highlightPersonId === participant.person._id ? TypeStyle.primary : TypeStyle.ghost}
 					role={participant.role}
@@ -123,7 +124,7 @@
 			</div>
 		{/each}
 		<br />
-		<div class="max-w-xs">
+		<div class="max-w-xs" data-testid="EventNote">
 			{#if event.eventNote}
 				Note: {event.eventNote}
 			{/if}

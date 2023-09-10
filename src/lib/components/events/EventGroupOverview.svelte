@@ -7,9 +7,10 @@
 	export let runningEvent = false;
 	export let futureEvent = false;
 	export let showItemDetails = false;
+	$: dataTestIds = $$props['data-testid'];
 </script>
 
-<div class="mt-1 mr-5  w-full">
+<div class="mt-1 mr-5  w-full" data-testid={dataTestIds}>
 	{#if eventArray.length > 0}
 		<h4 class="text-2xl font-bold mb-5">
 			<slot name="title" />
