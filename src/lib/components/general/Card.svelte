@@ -29,8 +29,12 @@
 			{/if}
 
 			<div class="ml-4 card-actions justify-end min-w-min flex flex-nowrap text-base-content">
-				<button on:click={settingsTrigger}><Fa size="lg" id="setting" icon={faGear} /></button>
-				<button on:click={deleteTrigger}><Fa size="lg" id="delete" icon={faTrash} /></button>
+				<button aria-label="edit" on:click={settingsTrigger}
+					><Fa size="lg" id="setting" icon={faGear} /></button
+				>
+				<button aria-label="delete" on:click={deleteTrigger}
+					><Fa size="lg" id="delete" icon={faTrash} /></button
+				>
 			</div>
 		</div>
 		<slot name="content" />
