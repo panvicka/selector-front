@@ -1,8 +1,20 @@
 import { expect, test, type Page } from '@playwright/test';
 import * as dotenv from 'dotenv';
-import { formatDate, getApiContext, getAuthBasePageContext } from './helpers';
+import { getApiContext, getAuthBasePageContext } from './helpers';
 
 dotenv.config();
+
+const getIdsWithE2ETestIncluded = (data: any) => {
+	const matchingIds = [];
+
+	for (const item of data) {
+		if (item.name.includes('E2E test')) {
+			matchingIds.push(item._id);
+		}
+	}
+
+	return matchingIds;
+};
 
 let page: Page;
 
@@ -25,69 +37,88 @@ test.beforeEach(async ({ browser }) => {
 	page = await context.newPage();
 	// Go to the starting url before each test.
 	await page.goto('http://localhost:5173/roles');
+});
 
+test.afterEach(async () => {
 	const requestContext = await getApiContext();
+	const response = await requestContext.get('/api/roles');
+	const idsToDelete = getIdsWithE2ETestIncluded(await response.json());
 
-	const response = await requestContext.get('/api/items');
-	console.log(await response.text());
-	// expect(response.ok()).toBeTruthy();
+	idsToDelete.forEach(async (id) => {
+		const response = await requestContext.delete(`/api/roles/${id}`);
+		expect(response.ok()).toBeTruthy();
+	});
 });
 
-test.afterEach(async ({ browser }) => {
-	// delete all e2e created role
-});
-
-test('Should create a new role', async () => {
-	await createRoleWithSingleParticipant();
+test('Should create a new role with one participant', async () => {
 	await page.getByRole('heading', { name: 'Roles' }).isVisible();
+	await page.getByRole('button', { name: 'Add Role' }).click();
+	await page.getByRole('heading', { name: 'Create new role' }).isVisible();
+	// Try to save without filling in name and description
+	await page.getByRole('button', { name: 'Save' }).click();
+	await page.getByRole('heading', { name: 'Create new role' }).isVisible();
+	await page.getByPlaceholder('role name').fill('E2E test role with one participant');
+
+	// Try to save without filling in description
+	await page.getByRole('button', { name: 'Save' }).click();
+	await page.getByRole('heading', { name: 'Create new role' }).isVisible();
+	await page
+		.getByPlaceholder('role description')
+		.fill('E2E test role with one participant description');
+
+	await page.locator('#dropdown').click();
+	await page.getByText('biohazard').click();
+
+	await page.getByRole('button', { name: 'Save' }).click();
+
+	await page.getByRole('heading', { name: 'Create new role' }).isHidden();
+	await page.getByRole('heading', { name: 'Roles' }).isVisible();
+
+	const createdCard = page
+		.getByTestId('RoleCard')
+		.filter({ hasText: 'E2E test role with one participant' });
+	createdCard.isVisible();
+
+	const participantIcons = createdCard.locator('#icon-faMale');
+	expect(participantIcons).toHaveCount(1);
+
+	await createdCard.getByTestId('icon-faBiohazard').isVisible();
+	await createdCard.getByText('E2E test role description with single participant').isVisible();
 });
 
-// test('Can edit event', async () => {
-// 	const newStartDate = new Date(Date.now() + 20000 * 86400);
-// 	const newEndDate = new Date(Date.now() + 22000 * 86400);
+test('Should create a new role with multiple participant', async () => {
+	await page.getByRole('heading', { name: 'Roles' }).isVisible();
+	await page.getByRole('button', { name: 'Add Role' }).click();
+	await page.getByRole('heading', { name: 'Create new role' }).isVisible();
 
-// 	const divs = page.getByTestId('ItemCard');
-// 	await expect(divs).toHaveCount(6);
-// 	await page.getByRole('link', { name: 'Regular alliance attack on Darth Vader' }).click();
+	await page.getByPlaceholder('role name').fill('E2E test role with multiple participants');
+	await page
+		.getByPlaceholder('role description')
+		.fill('E2E test role with multiple participant description');
 
-// 	await page
-// 		.getByTestId('FuturuEvents')
-// 		.getByTestId('EventCard')
-// 		.nth(0)
-// 		.getByRole('button', { name: 'edit' })
-// 		.click();
+	await page.locator('#dropdown').click();
+	await page.getByText('sack-dollar').click();
 
-// 	await page.getByLabel('Start date*').fill(formatDate(newStartDate, 'YYYY-MM-DD'));
-// 	await page.getByLabel('End date*').fill(formatDate(newEndDate, 'YYYY-MM-DD'));
+	await page.getByLabel('Can have multiple participants?').check();
 
-// 	await page
-// 		.locator('#eventForm div')
-// 		.filter({ hasText: 'Main Assasin Ahsoka' })
-// 		.locator('#dropdown')
-// 		.click();
-// 	await page.locator('#eventForm').getByText('Han Solo', { exact: true }).click();
+	await page.getByRole('button', { name: 'Save' }).click();
 
-// 	await page
-// 		.locator('#eventForm div')
-// 		.filter({ hasText: 'Support Assasin Ackbar' })
-// 		.locator('#dropdown')
-// 		.click();
-// 	await page.locator('#eventForm').getByText('Mace Windu').click();
+	await page.getByRole('heading', { name: 'Create new role' }).isHidden();
+	await page.getByRole('heading', { name: 'Roles' }).isVisible();
 
-// 	await page.getByPlaceholder('Optional event note').fill('This is a test note');
+	await page
+		.getByTestId('RoleCard')
+		.filter({ hasText: 'E2E test role with multiple participants' })
+		.isVisible();
 
-// 	await page.getByText('Save').click();
+	const createdCard = page
+		.getByTestId('RoleCard')
+		.filter({ hasText: 'E2E test role with multiple participants' });
 
-// 	await expect(page.getByText('Detail of Regular alliance attack on Darth Vader')).toBeVisible();
+	await createdCard.locator('#icon-faMale').nth(0).isVisible();
+	await createdCard.locator('#icon-faMale').nth(1).isVisible();
+	await createdCard.locator('#icon-faMale').nth(5).isVisible();
 
-// 	const editedCard = page.getByTestId('FuturuEvents').getByTestId('EventCard').nth(0);
-
-// 	await expect(editedCard.getByTestId('StartDate')).toHaveText('04.10.2023');
-// 	// await expect(editedCard.getByTestId('EndDate')).toHaveText(formatDate(newEndDate, 'DD.MM.YYYY'));
-
-// 	// await expect(editedCard.getByTestId('EventRole').nth(0).getByRole('link')).toHaveText('Han Solo');
-// 	// await expect(editedCard.getByTestId('EventRole').nth(1).getByRole('link')).toHaveText('Ackbar');
-// 	// await expect(editedCard.getByTestId('EventRole').nth(2).getByRole('link')).toHaveText(
-// 	// 	'Mace Windu'
-// 	// );
-// });
+	await createdCard.getByTestId('icon-faSackDollar').isVisible();
+	await createdCard.getByText('E2E test role description with multiple participants').isVisible();
+});

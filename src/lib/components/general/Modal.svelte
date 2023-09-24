@@ -7,7 +7,7 @@
 	id="exampleModalScrollable"
 	tabindex="-1"
 	aria-labelledby="exampleModalScrollableLabel"
-	aria-hidden="true"
+	aria-hidden="false"
 >
 	<div
 		class="sm:h-[calc(100%-3rem)] my-6 mx-auto relative w-auto pointer-events-none  {classesFromTheParent} "
